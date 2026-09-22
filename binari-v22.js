@@ -64,16 +64,16 @@ function cellKey(x){return `${x.color}:${x.symbol}`}
 function findMatches(){const out=new Set();for(let r=0;r<ROWS;r++){let c=0;while(c<COLS){let x=state.board[r][c];if(!isMatchable(x)){c++;continue}let k=cellKey(x),e=c+1;while(e<COLS&&isMatchable(state.board[r][e])&&cellKey(state.board[r][e])===k)e++;if(e-c>=MATCH)for(let i=c;i<e;i++)out.add(`${r},${i}`);c=e}}for(let c=0;c<COLS;c++){let r=0;while(r<ROWS){let x=state.board[r][c];if(!isMatchable(x)){r++;continue}let k=cellKey(x),e=r+1;while(e<ROWS&&isMatchable(state.board[e][c])&&cellKey(state.board[e][c])===k)e++;if(e-r>=MATCH)for(let i=r;i<e;i++)out.add(`${i},${c}`);r=e}}return out}
 function isMatchable(x){return x&&(x.kind==='normal'||x.kind==='locked')}
 function expandBonuses(set){let add=new Set(set);for(const k of [...set]){const [r,c]=k.split(',').map(Number),x=state.board[r][c];if(!x?.bonus)continue;if(x.bonus==='bomb'){for(let dr=-1;dr<=1;dr++)for(let dc=-1;dc<=1;dc++)if(inBounds(r+dr,c+dc))add.add(`${r+dr},${c+dc}`);sfx('boom')}if(x.bonus==='loco'){for(let cc=0;cc<COLS;cc++)add.add(`${r},${cc}`);sfx('whistle')}if(x.bonus==='clock'){state.slowPieces=Math.max(state.slowPieces,3);toast('🕐 Orologio: caduta rallentata per 3 pezzi')}}return add}
-async function resolveBoard(){let chain=0;while(true){let m=findMatches();if(!m.size)break;chain++;state.comboMax=Math.max(state.comboMax,chain);m=expandBonuses(m);state.flash=new Set(m);render();sfx(chain>1?'combo':'match');if(chain>1)combo(chain);await sleep(180);let cleared=[];for(const k of m){const [r,c]=k.split(',').map(Number),x=state.board[r][c];if(!x)continue;if(x.kind==='locked'||x.kind==='normal'){cleared.push([r,c,x]);state.score+=x.kind==='locked'?350:90;state.board[r][c]=null}}
- damageAdjacent(cleared);state.flash.clear();await gravityAnimated();recount();updateUI();await sleep(80)}
+async function resolveBoard(){let chain=0;while(true){let m=findMatches();if(!m.size)break;chain++;state.comboMax=Math.max(state.comboMax,chain);m=expandBonuses(m);state.flash=new Set(m);render();sfx(chain>1?'combo':'match');if(chain>1)combo(chain);await sleep(240);let cleared=[];for(const k of m){const [r,c]=k.split(',').map(Number),x=state.board[r][c];if(!x)continue;if(x.kind==='locked'||x.kind==='normal'){cleared.push([r,c,x]);state.score+=x.kind==='locked'?350:90;state.board[r][c]=null}}
+ damageAdjacent(cleared);state.flash.clear();await gravityAnimated();recount();updateUI();await sleep(140)}
  if(checkWin()){win();return} }
 function damageAdjacent(cleared){const hit=new Set();for(const [r,c] of cleared)for(const [dr,dc] of [[1,0],[-1,0],[0,1],[0,-1]]){const rr=r+dr,cc=c+dc;if(!inBounds(rr,cc))continue;const x=state.board[rr][cc];if(x&&(x.kind==='obstacle'||x.kind==='breakable')&&!x.fixed)hit.add(`${rr},${cc}`)}for(const k of hit){const [r,c]=k.split(',').map(Number),x=state.board[r][c];x.hp--;state.shake.add(k);state.score+=120;if(x.hp<=0){state.board[r][c]=null;state.score+=300}}setTimeout(()=>state.shake.clear(),240)}
-async function gravityAnimated(){let moved=true,guard=0;while(moved&&guard++<ROWS){moved=gravityStep();if(moved){render();await sleep(38)}}}
+async function gravityAnimated(){let moved=true,guard=0;while(moved&&guard++<ROWS){moved=gravityStep();if(moved){render();await sleep(52)}}}
 function gravityStep(){let moved=false;const seen=new Set();for(let r=ROWS-2;r>=0;r--)for(let c=0;c<COLS;c++){let x=state.board[r][c];if(!x||x.kind!=='normal'||seen.has(x.id))continue;if(x.linkId){const mates=[];for(let rr=Math.max(0,r-1);rr<=Math.min(ROWS-1,r+1);rr++)for(let cc=Math.max(0,c-1);cc<=Math.min(COLS-1,c+1);cc++){let y=state.board[rr][cc];if(y&&y.kind==='normal'&&y.linkId===x.linkId)mates.push([rr,cc,y])}if(mates.length===2){mates.forEach(v=>seen.add(v[2].id));const sorted=[...mates].sort((a,b)=>b[0]-a[0]);let can=mates.every(([rr,cc])=>rr+1<ROWS&&(state.board[rr+1][cc]===null||mates.some(([mr,mc])=>mr===rr+1&&mc===cc)));if(can){for(const [rr,cc] of sorted){state.board[rr+1][cc]=state.board[rr][cc];state.board[rr][cc]=null}moved=true}continue}}
  if(r+1<ROWS&&!state.board[r+1][c]){state.board[r+1][c]=x;state.board[r][c]=null;moved=true}}
  return moved}
 function checkWin(){return state.locked<=0&&(state.cfg.level<11||state.obstacles<=0)&&(state.cfg.level<16||state.breakables<=0)}
-function win(){state.running=false;state.resolving=false;frun=false;fscore=state.score;const stars=state.comboMax>=3?3:state.comboMax>=2?2:1;if(window.MimmoLives)window.MimmoLives.awardStarsBonus(stars);showOverlay('Tratta completata!',`Hai liberato tutti i vagoni. ${'★'.repeat(stars)}${'☆'.repeat(3-stars)}`,[['Continua',()=>{hideOverlay();completeLevel('falling')}],['Rigioca',()=>{hideOverlay();buildLevel(state.level)},'secondary']]);sfx('whistle')}
+function win(){state.running=false;state.resolving=false;frun=false;fscore=state.score;const stars=state.comboMax>=3?3:state.comboMax>=2?2:1;if(window.MimmoLives)window.MimmoLives.awardStarsBonus(stars);sfx('whistle');setTimeout(()=>{showOverlay('Tratta completata!',`Hai liberato tutti i vagoni. ${'★'.repeat(stars)}${'☆'.repeat(3-stars)}`,[['Continua',()=>{hideOverlay();completeLevel('falling')}],['Rigioca',()=>{hideOverlay();buildLevel(state.level)},'secondary']]);},380)}
 function gameOver(){
  state.running=false;state.resolving=false;sfx('boom');
  if(!window.MimmoLives){showOverlay('Fine corsa','Non c’è più spazio per far entrare una nuova coppia di vagoni.',[['Riprova',()=>{hideOverlay();buildLevel(state.level)}],['Percorso',()=>{hideOverlay();selectedMode='falling';buildMap('falling');show('mapScreen')},'secondary']]);return}
@@ -103,7 +103,42 @@ function drawBoardBg(){let g=ctx.createLinearGradient(0,0,0,720);g.addColorStop(
 function drawConnector(piece){const a=posCells(piece)[0],b=posCells(piece)[1];let ax=a.c*CELL+30,ay=a.r*CELL+31,bx=b.c*CELL+30,by=b.r*CELL+31;ctx.save();ctx.strokeStyle='#ffd76a';ctx.lineWidth=9;ctx.lineCap='round';ctx.beginPath();ctx.moveTo(ax,ay);ctx.lineTo(bx,by);ctx.stroke();ctx.strokeStyle='#4b596a';ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(ax,ay);ctx.lineTo(bx,by);ctx.stroke();ctx.restore()}
 function drawCell(r,c,x,ghost=false){if(x.kind==='normal'||x.kind==='locked')drawWagon(r,c,x,1,false,false,x.kind==='locked');else if(x.kind==='obstacle')drawObstacle(r,c,x);else if(x.kind==='breakable')drawBreakable(r,c,x)}
 function drawWagon(r,c,u,alpha=1,ghost=false,active=false,locked=false){const x=c*CELL+5,y=r*CELL+8,w=50,h=42,col=COLORS[u.color%COLORS.length];ctx.save();ctx.globalAlpha=alpha;if(active){ctx.shadowColor='#ffe66f';ctx.shadowBlur=16}let g=ctx.createLinearGradient(x,y,x,y+h);g.addColorStop(0,col.a);g.addColorStop(.58,col.b);g.addColorStop(1,col.rim);ctx.fillStyle=g;roundRect(ctx,x,y,w,h,9);ctx.fill();ctx.lineWidth=3;ctx.strokeStyle='#e9f6ff';ctx.stroke();ctx.fillStyle='rgba(255,255,255,.34)';roundRect(ctx,x+6,y+5,w-12,8,4);ctx.fill();ctx.fillStyle='#162b4a';ctx.beginPath();ctx.arc(x+12,y+h+4,6,0,Math.PI*2);ctx.arc(x+w-12,y+h+4,6,0,Math.PI*2);ctx.fill();ctx.fillStyle='#93a9c4';ctx.beginPath();ctx.arc(x+12,y+h+4,2.5,0,Math.PI*2);ctx.arc(x+w-12,y+h+4,2.5,0,Math.PI*2);ctx.fill();drawSymbol(ctx,u.symbol,x+w/2,y+25,13);if(u.bonus)drawBonus(ctx,u.bonus,x+w-9,y+9);if(locked){ctx.fillStyle='rgba(6,18,35,.28)';roundRect(ctx,x,y,w,h,9);ctx.fill();ctx.strokeStyle='#d9e1ec';ctx.lineWidth=2;ctx.setLineDash([5,4]);roundRect(ctx,x+3,y+3,w-6,h-6,7);ctx.stroke();ctx.setLineDash([]);drawLock(ctx,x+w-10,y+h-4)}if(state.flash.has(`${r},${c}`)){ctx.fillStyle='rgba(255,255,255,.7)';roundRect(ctx,x-2,y-2,w+4,h+8,11);ctx.fill()}ctx.restore()}
-function drawSymbol(c,s,cx,cy,rad){c.save();c.fillStyle='#fff';c.strokeStyle='rgba(10,34,63,.65)';c.lineWidth=2.5;c.beginPath();if(SYMBOLS[s]==='circle')c.arc(cx,cy,rad,0,Math.PI*2);else if(SYMBOLS[s]==='triangle'){c.moveTo(cx,cy-rad);c.lineTo(cx+rad,cy+rad);c.lineTo(cx-rad,cy+rad);c.closePath()}else if(SYMBOLS[s]==='diamond'){c.moveTo(cx,cy-rad);c.lineTo(cx+rad,cy);c.lineTo(cx,cy+rad);c.lineTo(cx-rad,cy);c.closePath()}else if(SYMBOLS[s]==='square')c.rect(cx-rad*.78,cy-rad*.78,rad*1.56,rad*1.56);else{for(let i=0;i<10;i++){let a=-Math.PI/2+i*Math.PI/5,rr=i%2?rad*.46:rad;c.lineTo(cx+Math.cos(a)*rr,cy+Math.sin(a)*rr)}c.closePath()}c.fill();c.stroke();c.restore()}
+// Ogni simbolo è un piccolo "oggetto da viaggio" riconoscibile, non solo una forma
+// geometrica astratta: così ogni combinazione colore+simbolo ha davvero un'identità
+// propria (richiesta esplicita: "devono esserci cose diverse ognuno con una propria
+// identità"), un po' come i personaggi/capsule di un puzzle game classico.
+function drawSymbol(c,s,cx,cy,rad){
+ c.save();c.lineJoin='round';
+ const type=SYMBOLS[s];
+ if(type==='circle'){ // ruota ferroviaria a raggi
+   c.fillStyle='#eef3f8';c.strokeStyle='rgba(10,34,63,.7)';c.lineWidth=2.3;
+   c.beginPath();c.arc(cx,cy,rad,0,Math.PI*2);c.fill();c.stroke();
+   c.fillStyle='#33445c';c.beginPath();c.arc(cx,cy,rad*.34,0,Math.PI*2);c.fill();
+   c.strokeStyle='#33445c';c.lineWidth=1.6;
+   for(let i=0;i<4;i++){const a=i*Math.PI/2+.5;c.beginPath();c.moveTo(cx+Math.cos(a)*rad*.34,cy+Math.sin(a)*rad*.34);c.lineTo(cx+Math.cos(a)*rad*.88,cy+Math.sin(a)*rad*.88);c.stroke();}
+ } else if(type==='triangle'){ // bandiera di segnalazione su asta
+   c.strokeStyle='rgba(10,34,63,.75)';c.lineWidth=2.4;
+   c.beginPath();c.moveTo(cx-rad*.6,cy-rad*.95);c.lineTo(cx-rad*.6,cy+rad);c.stroke();
+   c.beginPath();c.moveTo(cx-rad*.6,cy-rad*.92);c.lineTo(cx+rad*.92,cy-rad*.4);c.lineTo(cx-rad*.6,cy+rad*.12);c.closePath();
+   c.fillStyle='#fff4e0';c.fill();c.strokeStyle='rgba(10,34,63,.7)';c.lineWidth=1.8;c.stroke();
+ } else if(type==='diamond'){ // lanterna/gemma con riflesso
+   c.fillStyle='#fff7d8';c.strokeStyle='rgba(10,34,63,.7)';c.lineWidth=2.3;
+   c.beginPath();c.moveTo(cx,cy-rad);c.lineTo(cx+rad*.8,cy);c.lineTo(cx,cy+rad);c.lineTo(cx-rad*.8,cy);c.closePath();c.fill();c.stroke();
+   c.strokeStyle='rgba(255,255,255,.9)';c.lineWidth=1.5;c.beginPath();c.moveTo(cx-rad*.1,cy-rad*.55);c.lineTo(cx+rad*.35,cy-rad*.05);c.stroke();
+ } else if(type==='square'){ // valigetta con maniglia
+   c.fillStyle='#f1e3c9';c.strokeStyle='rgba(10,34,63,.7)';c.lineWidth=2.3;
+   roundRect(c,cx-rad*.82,cy-rad*.58,rad*1.64,rad*1.2,3);c.fill();c.stroke();
+   c.strokeStyle='rgba(10,34,63,.7)';c.lineWidth=1.8;
+   c.beginPath();c.moveTo(cx-rad*.28,cy-rad*.58);c.lineTo(cx-rad*.28,cy-rad*.92);c.lineTo(cx+rad*.28,cy-rad*.92);c.lineTo(cx+rad*.28,cy-rad*.58);c.stroke();
+   c.beginPath();c.moveTo(cx,cy-rad*.3);c.lineTo(cx,cy+rad*.5);c.stroke();
+ } else { // stella-medaglia
+   c.fillStyle='#fff2b8';c.strokeStyle='rgba(10,34,63,.7)';c.lineWidth=2.3;
+   c.beginPath();
+   for(let i=0;i<10;i++){let a=-Math.PI/2+i*Math.PI/5,rr=i%2?rad*.46:rad;i===0?c.moveTo(cx+Math.cos(a)*rr,cy+Math.sin(a)*rr):c.lineTo(cx+Math.cos(a)*rr,cy+Math.sin(a)*rr);}
+   c.closePath();c.fill();c.stroke();
+ }
+ c.restore();
+}
 function drawLock(c,x,y){c.save();c.fillStyle='#ffd453';c.strokeStyle='#8b5600';c.lineWidth=2;roundRect(c,x-9,y-7,18,15,4);c.fill();c.stroke();c.beginPath();c.arc(x,y-8,6,Math.PI,0);c.stroke();c.fillStyle='#6a4100';c.fillRect(x-1,y-2,2,6);c.restore()}
 function drawBonus(c,type,x,y){c.save();c.fillStyle=type==='bomb'?'#111':type==='loco'?'#ffe054':'#eaf7ff';c.strokeStyle='#fff';c.lineWidth=2;c.beginPath();c.arc(x,y,8,0,Math.PI*2);c.fill();c.stroke();c.fillStyle=type==='bomb'?'#ffcc45':'#1c4c85';c.font='bold 10px sans-serif';c.textAlign='center';c.textBaseline='middle';c.fillText(type==='bomb'?'✹':type==='loco'?'➜':'◷',x,y+1);c.restore()}
 function drawObstacle(r,c,x){let px=c*CELL+7,py=r*CELL+8;ctx.save();if(x.variant==='rock'){ctx.fillStyle='#737b8c';ctx.strokeStyle='#3e4656';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(px+7,py+36);ctx.lineTo(px+3,py+21);ctx.lineTo(px+14,py+6);ctx.lineTo(px+36,py+3);ctx.lineTo(px+48,py+19);ctx.lineTo(px+42,py+39);ctx.closePath();ctx.fill();ctx.stroke()}else{ctx.fillStyle='#f5f7fa';roundRect(ctx,px,py+8,46,28,6);ctx.fill();ctx.fillStyle='#e33b3b';for(let i=-8;i<50;i+=16){ctx.save();ctx.translate(px+i,py+8);ctx.rotate(-.55);ctx.fillRect(0,0,8,34);ctx.restore()}ctx.fillStyle='#58677b';ctx.fillRect(px+8,py+36,6,10);ctx.fillRect(px+34,py+36,6,10)}if(x.hp<90){ctx.fillStyle='#ffcf45';ctx.strokeStyle='#fff';ctx.lineWidth=2;ctx.beginPath();ctx.arc(px+40,py+8,10,0,Math.PI*2);ctx.fill();ctx.stroke();ctx.fillStyle='#553000';ctx.font='bold 11px sans-serif';ctx.textAlign='center';ctx.fillText(x.hp,px+40,py+12)}ctx.restore()}
@@ -114,9 +149,33 @@ function drawMiniWagon(c,x,y,u){let col=COLORS[u.color];let g=c.createLinearGrad
 function roundRect(c,x,y,w,h,r){c.beginPath();c.roundRect(x,y,w,h,r)}
 function loop(t){try{if(state.running&&!state.paused&&!state.resolving&&state.active&&t-state.lastDrop>state.dropMs){if(!move(0,1))lockPiece();state.lastDrop=t}render();}catch(e){console.warn('[Mimmo Express] binari render error:',e);}raf=requestAnimationFrame(loop)}
 function resize(){/* canvas uses fixed logical pixels and CSS scaling */}
-function onPointerDown(e){if(!state.running||state.paused||state.resolving)return;state.inputStart={x:e.clientX,y:e.clientY,t:performance.now(),lx:e.clientX,ly:e.clientY,moved:false};canvas.setPointerCapture?.(e.pointerId);e.preventDefault()}
-function onPointerMove(e){let s=state.inputStart;if(!s||!state.running||state.resolving)return;let dx=e.clientX-s.lx,dy=e.clientY-s.ly;if(Math.abs(dx)>28&&Math.abs(dx)>Math.abs(dy)){if(move(dx>0?1:-1,0)){s.lx=e.clientX;s.moved=true}}else if(dy>34&&Math.abs(dy)>Math.abs(dx)){if(move(0,1)){s.ly=e.clientY;s.moved=true}}e.preventDefault()}
-function onPointerUp(e){let s=state.inputStart;if(!s)return;let dx=e.clientX-s.x,dy=e.clientY-s.y,dt=performance.now()-s.t;state.inputStart=null;if(!s.moved&&Math.abs(dx)<16&&Math.abs(dy)<16)rotate(1);else if(dy>75&&dt<280)hardDrop();e.preventDefault()}
+// I controlli touch ragionano in "pixel del canvas" (non pixel dello schermo): così la
+// sensibilità resta la stessa qualunque sia la dimensione con cui il tabellone viene
+// mostrato, e serve un movimento del dito pari a una buona parte di una casella per
+// spostare il vagone di una colonna — niente più spostamenti "nervosi" involontari.
+function canvasScale(){const r=canvas.getBoundingClientRect();return {sx:canvas.width/(r.width||1),sy:canvas.height/(r.height||1)}}
+function onPointerDown(e){if(!state.running||state.paused||state.resolving)return;state.inputStart={x:e.clientX,y:e.clientY,t:performance.now(),lx:e.clientX,ly:e.clientY,moved:false,lastMoveT:0};canvas.setPointerCapture?.(e.pointerId);e.preventDefault()}
+function onPointerMove(e){
+ let s=state.inputStart;if(!s||!state.running||state.resolving)return;
+ const {sx,sy}=canvasScale();
+ let dx=(e.clientX-s.lx)*sx, dy=(e.clientY-s.ly)*sy;
+ const now=performance.now(), cooldown=110;
+ if(Math.abs(dx)>CELL*.62 && Math.abs(dx)>Math.abs(dy) && now-s.lastMoveT>cooldown){
+   if(move(dx>0?1:-1,0)){s.lx=e.clientX;s.moved=true;s.lastMoveT=now}
+ } else if(dy>CELL*.95 && Math.abs(dy)>Math.abs(dx) && now-s.lastMoveT>cooldown){
+   if(move(0,1)){s.ly=e.clientY;s.moved=true;s.lastMoveT=now}
+ }
+ e.preventDefault()
+}
+function onPointerUp(e){
+ let s=state.inputStart;if(!s)return;
+ const {sx,sy}=canvasScale();
+ let dx=(e.clientX-s.x)*sx, dy=(e.clientY-s.y)*sy, dt=performance.now()-s.t;
+ state.inputStart=null;
+ if(!s.moved && Math.abs(dx)<CELL*.4 && Math.abs(dy)<CELL*.4) rotate(1);
+ else if(dy>CELL*1.35 && dt<340) hardDrop();
+ e.preventDefault()
+}
 canvas.addEventListener('pointerdown',onPointerDown);canvas.addEventListener('pointermove',onPointerMove);canvas.addEventListener('pointerup',onPointerUp);canvas.addEventListener('contextmenu',e=>e.preventDefault());
 document.addEventListener('keydown',e=>{if(!$('#fallGame')?.classList.contains('active')||!window.MIMMO_BINARI_V22)return;if(['ArrowLeft','ArrowRight','ArrowDown','ArrowUp',' ','z','Z','x','X'].includes(e.key))e.preventDefault();if(e.key==='ArrowLeft')move(-1,0);else if(e.key==='ArrowRight')move(1,0);else if(e.key==='ArrowDown')move(0,1);else if(e.key==='ArrowUp'||e.key==='x'||e.key==='X')rotate(1);else if(e.key==='z'||e.key==='Z')rotate(-1);else if(e.key===' ')hardDrop()});
 $('#bpPause').onclick=togglePause;

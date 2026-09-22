@@ -4,7 +4,7 @@ const $$ = s=>[...document.querySelectorAll(s)];
 const ROUTE_TRAIN_SVG=`<svg viewBox="0 0 180 90" aria-hidden="true"><g stroke="#17365c" stroke-width="5" stroke-linejoin="round"><rect x="25" y="35" width="92" height="34" rx="9" fill="#e64545"/><rect x="105" y="20" width="43" height="49" rx="8" fill="#e64545"/><rect x="116" y="29" width="22" height="16" rx="3" fill="#c9f2ff"/><rect x="37" y="44" width="22" height="12" rx="3" fill="#c9f2ff"/><rect x="65" y="44" width="18" height="12" rx="3" fill="#c9f2ff"/><rect x="88" y="44" width="15" height="12" rx="3" fill="#ffd457"/><path d="M148 49l24 13-24 10z" fill="#ffd457"/><path d="M42 35V20h18v15M37 20h28" fill="#17365c" stroke-linecap="round"/><circle cx="51" cy="73" r="13" fill="#27384f"/><circle cx="51" cy="73" r="5" fill="#aebdce" stroke="none"/><circle cx="111" cy="73" r="13" fill="#27384f"/><circle cx="111" cy="73" r="5" fill="#aebdce" stroke="none"/><circle cx="143" cy="73" r="11" fill="#27384f"/><circle cx="143" cy="73" r="4" fill="#aebdce" stroke="none"/></g><circle cx="151" cy="52" r="6" fill="#fff09b"/></svg>`;
 
 const SCENES = [
- {name:"Ardore",area:"Locride",year:1987,img:"assets/stations/st01_ardore.jpg",cine:"assets/cinematics/cine_ardore.png",summary:"Nel 1987 nasce il sogno ferroviario di Mimmo.",beats:[
+ {name:"Ardore",area:"Locride",year:1987,img:"assets/stations/st01_ardore.jpg",cine:"assets/cinematics/cine_ardore.png",type:"railway",summary:"Nel 1987 nasce il sogno ferroviario di Mimmo.",beats:[
    "1987 • Ad Ardore tutto comincia: Mimmo scopre il fascino dei treni e dei binari.",
    "Tra mare e rotaie, ogni passaggio di locomotiva accende la sua immaginazione.",
    "Una piccola stazione e un grande sogno: la ferrovia entra nel suo cuore.",
@@ -12,7 +12,7 @@ const SCENES = [
    "Da Ardore parte il viaggio che cambierà tutta la famiglia."
  ]},
  {name:"Bovalino",area:"Locride",year:1987,img:"assets/stations/st02_bovalino.jpg",cine:"assets/stations/st02_bovalino.jpg",summary:"I primi sogni sui binari diventano sempre più reali."},
- {name:"Locri",area:"Locride",year:1987,img:"assets/stations/st03_locri.jpg",cine:"assets/stations/st03_locri.jpg",summary:"A Locri Mimmo conosce la donna che diventerà sua moglie.",beats:[
+ {name:"Locri",area:"Locride",year:1987,img:"assets/stations/st03_locri.jpg",cine:"assets/stations/st03_locri.jpg",type:"love",summary:"A Locri Mimmo conosce la donna che diventerà sua moglie.",beats:[
    "1987 • A Locri Mimmo incontra la ragazza che gli cambia il viaggio e il cuore.",
    "Tra uno sguardo e un sorriso nasce una simpatia che sa già di destino.",
    "Un caffè vicino alla stazione diventa il loro piccolo rituale.",
@@ -21,7 +21,7 @@ const SCENES = [
  ]},
  {name:"Gioiosa Ionica",area:"Locride",year:1988,img:"assets/stations/st04_gioiosa.jpg",cine:"assets/stations/st04_gioiosa.jpg",summary:"Nel 1988 l'amore cresce e prende coraggio."},
  {name:"Siderno",area:"Locride",year:1988,img:"assets/stations/st05_siderno.jpg",cine:"assets/stations/st05_siderno.jpg",summary:"Le promesse diventano progetto di vita."},
- {name:"Firenze S.M.N.",area:"Firenze",year:1988,img:"assets/stations/st06_firenze_matrimonio.jpg",cine:"assets/cinematics/cine_matrimonio_1988.png",summary:"Nel 1988 Mimmo si sposa a Firenze.",beats:[
+ {name:"Firenze S.M.N.",area:"Firenze",year:1988,img:"assets/stations/st06_firenze_matrimonio.jpg",cine:"assets/cinematics/cine_matrimonio_1988.png",type:"wedding",summary:"Nel 1988 Mimmo si sposa a Firenze.",beats:[
    "1988 • Firenze accoglie Mimmo e la donna della sua vita per il grande giorno.",
    "Il matrimonio rende questa stazione il simbolo della loro unione.",
    "Tra sorrisi, promesse e binari, il viaggio prende una rotta nuova.",
@@ -30,7 +30,7 @@ const SCENES = [
  ]},
  {name:"Figline Valdarno",area:"Toscana",year:1989,img:"assets/stations/st07_figline.jpg",cine:"assets/cinematics/cine_figline_1989.png",summary:"La famiglia si trasferisce a Figline e mette radici."},
  {name:"Valdarno",area:"Toscana",year:1990,img:"assets/stations/st08_valdarno.jpg",cine:"assets/cinematics/cine_figline_1989.png",summary:"Nuova casa, nuove abitudini, nuova rotta di vita."},
- {name:"Figline Valdarno",area:"Toscana",year:1991,img:"assets/stations/st09_giuseppe.jpg",cine:"assets/cinematics/cine_giuseppe_1991_correct.png",summary:"Nel 1991 nasce Giuseppe.",beats:[
+ {name:"Figline Valdarno",area:"Toscana",year:1991,img:"assets/stations/st09_giuseppe.jpg",cine:"assets/cinematics/cine_giuseppe_1991_correct.png",type:"baby",summary:"Nel 1991 nasce Giuseppe.",beats:[
    "1991 • Una grande notizia corre più veloce di un espresso: nasce Giuseppe.",
    "La casa si riempie di gioia, stanchezza e meraviglia.",
    "Mimmo capisce che questo è il viaggio più bello di tutti.",
@@ -38,7 +38,7 @@ const SCENES = [
    "Figline custodisce il primo grande capitolo dei figli."
  ]},
  {name:"Firenze S.M.N.",area:"Firenze",year:1993,img:"assets/stations/st10_turni.jpg",summary:"I turni in ferrovia diventano il cuore della sua vita lavorativa."},
- {name:"Valdarno",area:"Toscana",year:1997,img:"assets/stations/st11_duccio.jpg",cine:"assets/cinematics/cine_duccio_1997_correct.png",summary:"Nel 1997 nasce Duccio.",beats:[
+ {name:"Valdarno",area:"Toscana",year:1997,img:"assets/stations/st11_duccio.jpg",cine:"assets/cinematics/cine_duccio_1997_correct.png",type:"baby",summary:"Nel 1997 nasce Duccio.",beats:[
    "1997 • Arriva anche Duccio e la famiglia si allarga ancora.",
    "Due figli significano doppia gioia e mille ricordi da costruire.",
    "Mimmo divide il suo tempo tra turni, casa e sogni per il futuro.",
@@ -46,21 +46,21 @@ const SCENES = [
    "Il Valdarno diventa il paesaggio della crescita della famiglia."
  ]},
  {name:"Toscana",area:"Toscana",year:2000,img:"assets/stations/st12_toscana.jpg",summary:"Anni di crescita, lavoro e avventure romanzate tra binari e famiglia."},
- {name:"Figline Valdarno",area:"Toscana",year:2008,img:"assets/stations/st13_lucky.jpg",cine:"assets/cinematics/cine_lucky_2008.png",summary:"Nel 2008 arriva Lucky, il primo Yorkshire.",beats:[
+ {name:"Figline Valdarno",area:"Toscana",year:2008,img:"assets/stations/st13_lucky.jpg",cine:"assets/cinematics/cine_lucky_2008.png",type:"pet",summary:"Nel 2008 arriva Lucky, il primo Yorkshire.",beats:[
    "2008 • In casa arriva Lucky e porta allegria a tutta la famiglia.",
    "Piccolo, vivace e sempre presente: Lucky diventa subito uno di casa.",
    "Tra giochi e corse, la casa guadagna un nuovo compagno di viaggio.",
    "Ogni ritorno di Mimmo dai turni ha adesso anche quattro zampette ad aspettarlo.",
    "Lucky entra a pieno titolo nella storia della famiglia."
  ]},
- {name:"Figline Valdarno",area:"Toscana",year:2018,img:"assets/stations/st15_boris.jpg",cine:"assets/cinematics/cine_boris_2018.png",summary:"Nel 2018 arriva Boris; Lucky resta un ricordo speciale.",beats:[
+ {name:"Figline Valdarno",area:"Toscana",year:2018,img:"assets/stations/st15_boris.jpg",cine:"assets/cinematics/cine_boris_2018.png",type:"pet",summary:"Nel 2018 arriva Boris; Lucky resta un ricordo speciale.",beats:[
    "2018 • Boris entra in famiglia e porta una nuova energia in casa.",
    "Il ricordo di Lucky resta vivo, ma il viaggio continua anche con Boris.",
    "Un altro piccolo Yorkshire si unisce alle giornate della famiglia.",
    "Le passeggiate e i momenti semplici diventano ancora più pieni.",
    "Anche Boris conquista un posto speciale nel grande viaggio di Mimmo."
  ]},
- {name:"Figline Valdarno",area:"Toscana",year:2020,img:"assets/stations/st14_ferrovia.jpg",summary:"Nel 2020 Kiki entra nella vita di Giuseppe: è la sua compagna e futura moglie.",beats:[
+ {name:"Figline Valdarno",area:"Toscana",year:2020,img:"assets/stations/st14_ferrovia.jpg",type:"love",summary:"Nel 2020 Kiki entra nella vita di Giuseppe: è la sua compagna e futura moglie.",beats:[
    "2020 • Giuseppe incontra Kiki, la sua compagna e futura moglie: nasce una nuova storia d'amore in famiglia.",
    "Tra giornate semplici e nuovi progetti, Mimmo osserva tutto con orgoglio.",
    "Anche questa tappa diventa una stazione importante del grande viaggio.",
@@ -68,7 +68,7 @@ const SCENES = [
    "Il viaggio di Mimmo adesso guarda anche alla nuova generazione."
  ]},
  {name:"Firenze",area:"Firenze",year:2021,img:"assets/stations/st16_laurea.jpg",cine:"assets/cinematics/cine_duccio_2021_photo.jpg",summary:"Nel 2021 Duccio si laurea: un grande traguardo di famiglia."},
- {name:"Firenze S.M.N.",area:"Firenze",year:2023,img:"assets/stations/st17_pensione.jpg",cine:"assets/cinematics/cine_pensione_2023.png",summary:"Nel 2023 arriva la pensione del babbo.",beats:[
+ {name:"Firenze S.M.N.",area:"Firenze",year:2023,img:"assets/stations/st17_pensione.jpg",cine:"assets/cinematics/cine_pensione_2023.png",type:"retire",summary:"Nel 2023 arriva la pensione del babbo.",beats:[
    "2023 • Dopo una lunga vita sui binari, arriva la pensione di Mimmo.",
    "Si chiude un capitolo enorme fatto di turni, partenze e responsabilità.",
    "Santa Maria Novella resta il simbolo di una carriera vissuta con orgoglio.",
@@ -77,7 +77,7 @@ const SCENES = [
  ]},
  {name:"Figline Valdarno",area:"Toscana",year:2024,img:"assets/stations/st18_caty.jpg",cine:"assets/cinematics/cine_caty_2024_photo.jpg",summary:"Nel 2024 nasce Caty, la prima nipote."},
  {name:"Toscana",area:"Toscana",year:2025,img:"assets/stations/st19_matrimonio_giuseppe.jpg",cine:"assets/cinematics/cine_matrimonio_2025_photo.jpg",summary:"Nel 2025 arriva il matrimonio di Giuseppe."},
- {name:"Figline Valdarno",area:"Toscana",year:2026,img:"assets/stations/st20_kiko.jpg",cine:"assets/cinematics/cine_kiko_2026_photo.jpg",summary:"Nel 2026 nasce Kiko e il viaggio arriva ai due nipoti.",beats:[
+ {name:"Figline Valdarno",area:"Toscana",year:2026,img:"assets/stations/st20_kiko.jpg",cine:"assets/cinematics/cine_kiko_2026_photo.jpg",type:"family",summary:"Nel 2026 nasce Kiko e il viaggio arriva ai due nipoti.",beats:[
    "2026 • Con la nascita di Kiko, Mimmo diventa ancora più nonno nel cuore.",
    "Caty e Kiko riempiono la famiglia di nuove storie, sorrisi e futuro.",
    "Il viaggio partito da Ardore arriva fino ai nipoti e continua oltre.",
@@ -150,25 +150,93 @@ function updateStoryBoxes(level){
 }
 
 
-function playCinematic(mode, nextLevel, done){
- const level = Math.max(1, Math.min(100, nextLevel));
- const st = stationFor(level);
- const currentBeat = storyFor(level);
- const bg = document.getElementById('cineBg'); if(bg) bg.style.backgroundImage = `url("${st.img}")`;
- const scene = document.getElementById('cineScene'); if(scene){ scene.src = st.cine || st.img; scene.alt = `Scena di ${st.name}`; }
- const y = document.getElementById('cineYear'); if(y) y.textContent = st.year || 'Mimmo Express';
- const s = document.getElementById('cineStation'); if(s) s.textContent = st.name;
- const t = document.getElementById('cineTitle'); if(t) t.textContent = currentLevel===100 ? 'Gran finale del viaggio' : `Verso il livello ${level}`;
- const tx = document.getElementById('cineText'); if(tx) tx.textContent = currentBeat;
+const ACT_ICONS = {
+ railway:{emoji:'🚂',cls:'act-move'},
+ love:{emoji:'💞',cls:'act-pulse'},
+ wedding:{emoji:'💍',cls:'act-pulse-gold'},
+ baby:{emoji:'👶',cls:'act-bounce'},
+ pet:{emoji:'🐾',cls:'act-wiggle'},
+ retire:{emoji:'🎖️',cls:'act-rise'},
+ family:{emoji:'👨‍👩‍👧‍👦',cls:'act-pulse'}
+};
+function genericToast(text,ms=1900){
+ let el=document.getElementById('genericToast');
+ if(!el){ el=document.createElement('div'); el.id='genericToast'; el.className='life-toast'; document.body.appendChild(el); }
+ el.textContent=text; el.classList.add('show');
+ clearTimeout(genericToast._t);
+ genericToast._t=setTimeout(()=>el.classList.remove('show'),ms);
+}
+
+// Cinematica di stazione: mostrata SOLO al passaggio da una stazione alla successiva
+// (non ad ogni singolo livello). Le tappe con "beats" (i grandi eventi della vita di Mimmo)
+// diventano una piccola scena a più atti con icona animata e biglietto di "capitolo completato";
+// le tappe minori restano uno slide singolo e veloce.
+function playStationCinematic(mode, stationIndex, done){
+ const st = SCENES[Math.max(0,Math.min(SCENES.length-1,stationIndex))];
+ const isFinale = currentLevel===100;
+ const isMilestone = !!(st.beats && st.type);
+ const acts = isMilestone ? [st.beats[0], st.beats[2], st.beats[4]] : [st.summary];
+ const icon = ACT_ICONS[st.type] || ACT_ICONS.railway;
+
+ const root = document.getElementById('cinematicScreen');
+ const bg = document.getElementById('cineBg');
+ const scene = document.getElementById('cineScene');
+ const y = document.getElementById('cineYear');
+ const s = document.getElementById('cineStation');
+ const t = document.getElementById('cineTitle');
+ const tx = document.getElementById('cineText');
+ const dots = document.getElementById('cineActs');
+ const badge = document.getElementById('cineVictory');
+ const btn = document.getElementById('cineContinue');
+ const note = root.querySelector('.cine-note');
+ const iconEl = document.getElementById('cineActIcon');
+
+ if(bg) bg.style.backgroundImage = `url("${st.img}")`;
+ if(scene){ scene.src = st.cine || st.img; scene.alt = `Scena di ${st.name}`; }
+ if(y) y.textContent = st.year || 'Mimmo Express';
+ if(s) s.textContent = st.name;
+ if(badge) badge.classList.remove('show');
+ if(dots){ dots.innerHTML = acts.map((_,i)=>`<span class="cine-dot-act" data-i="${i}"></span>`).join(''); }
+ if(iconEl){ iconEl.textContent = icon.emoji; iconEl.className = 'cine-act-icon '+icon.cls; }
+ root.classList.toggle('cine-milestone', isMilestone);
  show('cinematicScreen');
  playSfx('whistle');
- const wrap = document.querySelector('.cine-train-wrap');
- if(wrap){ wrap.style.animation='none'; wrap.offsetHeight; wrap.style.animation='cinetrain 2.2s ease-in-out forwards'; }
- let finished = false;
- const finish = ()=>{ if(finished) return; finished = true; clearTimeout(timer); document.getElementById('cinematicScreen').onclick=null; const btn=document.getElementById('cineContinue'); if(btn) btn.onclick=null; done(); };
- const timer = setTimeout(finish, 3000);
- document.getElementById('cinematicScreen').onclick = finish;
- const btn=document.getElementById('cineContinue'); if(btn) btn.onclick = (ev)=>{ ev.stopPropagation(); finish(); };
+
+ let finished=false, idx=0;
+ const cleanup=()=>{ clearTimeout(timer); root.onclick=null; if(btn) btn.onclick=null; };
+ const finish=()=>{ if(finished) return; finished=true; cleanup(); done(); };
+
+ const renderAct=(i)=>{
+   idx=i;
+   const card=root.querySelector('.cine-card');
+   if(card){ card.classList.remove('cine-in'); void card.offsetWidth; card.classList.add('cine-in'); }
+   const last = i===acts.length-1;
+   if(t) t.textContent = isFinale ? 'Gran finale del viaggio' : (isMilestone ? `Capitolo ${i+1} di ${acts.length}` : 'Tra una stazione e l\'altra');
+   if(tx) tx.textContent = acts[i];
+   if(dots) dots.querySelectorAll('.cine-dot-act').forEach((d,j)=>d.classList.toggle('on',j<=i));
+   if(iconEl){ iconEl.style.animation='none'; void iconEl.offsetWidth; iconEl.style.animation=''; }
+   const wrap = document.querySelector('.cine-train-wrap');
+   if(wrap){ wrap.style.animation='none'; wrap.offsetHeight; wrap.style.animation='cinetrain 2.6s ease-in-out forwards'; }
+
+   if(last && isMilestone){
+     // atto finale delle tappe importanti: si ferma su un biglietto di "capitolo completato"
+     if(badge) badge.classList.add('show');
+     if(note) note.textContent = 'tocca "Continua" per proseguire il viaggio';
+     if(btn) btn.textContent = 'Continua ▶';
+     root.onclick = null;
+     if(btn) btn.onclick = (ev)=>{ ev.stopPropagation(); finish(); };
+     return;
+   }
+   if(note) note.textContent = isMilestone ? 'tocca per continuare la scena' : 'tocca per continuare';
+   if(btn) btn.textContent = isMilestone ? 'Avanti ▶' : 'Continua ▶';
+   const advance=(ev)=>{ if(ev) ev.stopPropagation(); if(i<acts.length-1) renderAct(i+1); else finish(); };
+   clearTimeout(timer);
+   timer = setTimeout(advance, isMilestone?5200:4200);
+   root.onclick = advance;
+   if(btn) btn.onclick = advance;
+ };
+ let timer;
+ renderAct(0);
 }
 
 
@@ -312,8 +380,8 @@ function buildMap(mode, requestedWorld=null){
   <div class="world-secret-v21">${completed && si<SCENES.length-1?'🚂 La tratta continua oltre la collina':'⛰️ Il futuro è oltre la collina'}</div>
   <div class="world-head-v2"><span class="world-number-v2">MONDO ${si+1}</span><b>${si+1}. ${st.name}</b><small>${stationTag(st)} • livelli ${first}-${last}</small></div>
   <svg class="world-track-v2" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-    <path class="world-track-shadow-v2" d="M50,88 C76,74 27,62 40,50 C55,37 78,33 63,23 C53,16 47,13 48,10"/>
-    <path class="world-track-rail-v2" d="M50,88 C76,74 27,62 40,50 C55,37 78,33 63,23 C53,16 47,13 48,10"/>
+    <path class="world-track-shadow-v2" d="M50,88 C52.7,84.3 68,72.5 66,66 C64,59.5 38.3,54.8 38,49 C37.7,43.2 62.3,37 64,31 C65.7,25 50.7,16 48,13"/>
+    <path class="world-track-rail-v2" d="M50,88 C52.7,84.3 68,72.5 66,66 C64,59.5 38.3,54.8 38,49 C37.7,43.2 62.3,37 64,31 C65.7,25 50.7,16 48,13"/>
   </svg>
   <div class="world-caption-v2">${st.summary}</div>`;
  for(let i=0;i<5;i++){
@@ -448,8 +516,15 @@ function completeLevel(mode){
  }
  const msg=mode==="falling"?$("#fMessage"):$("#mMessage");
  const nextLevel=Math.min(100,currentLevel+1);
+ const enteringNewStation = within(currentLevel)===5 || currentLevel===100;
  msg.textContent=currentLevel===100?"GRAN FINALE COMPLETATO!":"Tratta completata! Prossima tappa: "+stationFor(nextLevel).name+".";
- playCinematic(mode, currentLevel===100?currentLevel:nextLevel, ()=>{selectedMode=mode;buildMap(mode);show("mapScreen")});
+ if(enteringNewStation){
+   const stIdx = Math.floor((nextLevel-1)/5);
+   playStationCinematic(mode, stIdx, ()=>{selectedMode=mode;buildMap(mode);show("mapScreen")});
+ } else {
+   genericToast('✅ Tratta completata! Si prosegue verso '+stationFor(nextLevel).name+'.');
+   selectedMode=mode;buildMap(mode);show("mapScreen");
+ }
 }
 function updateFHud(){
  $("#fScore").textContent=String(fscore).padStart(7,"0");$("#fLevel").textContent=currentLevel;$("#fSignals").textContent=fobstacles;

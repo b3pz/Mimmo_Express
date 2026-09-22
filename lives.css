@@ -1,19 +1,26 @@
 /* Mimmo Express — sistema vite: widget, pannello, overlay, toast */
-.life-widget{position:fixed;top:max(10px,env(safe-area-inset-top));left:max(10px,env(safe-area-inset-left));z-index:120;font-family:Inter,system-ui,Arial,sans-serif}
+.life-widget{position:fixed;top:max(12px,env(safe-area-inset-top) + 2px);left:max(12px,env(safe-area-inset-left) + 2px);z-index:1900;font-family:Inter,system-ui,Arial,sans-serif}
 .life-widget.life-inline{position:relative;top:auto;left:auto;right:auto;flex:0 0 auto;min-width:0}
-.life-widget.life-inline .life-pill{padding:4px 7px;gap:3px;border-color:rgba(255,255,255,.28)}
+.life-widget.life-inline .life-pill{padding:4px 7px;gap:3px;border-color:rgba(255,255,255,.28);min-height:0;background:linear-gradient(180deg,rgba(14,69,134,.96),rgba(8,42,90,.96))}
+.life-widget.life-inline .life-pill:hover{transform:none}
 .life-widget.life-inline .life-hearts{font-size:13px;gap:3px;align-items:center}
+.life-widget.life-inline .life-hearts .heart{font-size:13px}
 .life-widget.life-inline .life-count{font-size:13px;color:#fff}
-.life-widget.life-inline .life-ticket-chip{font-size:9px;padding:1px 4px}
+.life-widget.life-inline .life-ticket-chip{font-size:9px;padding:1px 4px;color:#ffe9a8;background:rgba(255,212,87,.18);border-color:rgba(255,212,87,.55)}
 #fallGame .life-widget.life-inline .life-panel,#matchGame .life-widget.life-inline .life-panel{left:auto;right:0}
 #matchGame .hud-col.left .life-widget.life-inline{margin-bottom:4px;width:100%}
 #matchGame .hud-col.left .life-widget.life-inline .life-pill{width:100%;justify-content:center}
-.life-pill{display:flex;align-items:center;gap:8px;border:2px solid rgba(255,255,255,.4);border-radius:999px;background:linear-gradient(180deg,rgba(14,69,134,.96),rgba(8,42,90,.96));padding:6px 10px;color:#fff;cursor:pointer;box-shadow:0 6px 16px rgba(0,0,0,.28);touch-action:manipulation}
-.life-hearts{display:flex;gap:1px;font-size:13px;line-height:1}
-.life-hearts .heart{filter:drop-shadow(0 1px 1px rgba(0,0,0,.3))}
-.life-hearts .heart:not(.on){opacity:.35;filter:grayscale(1)}
-.life-infinite{font-weight:1000;color:#ffd457;margin-left:2px}
-.life-ticket-chip{font-size:11px;font-weight:1000;background:rgba(255,212,87,.18);border:1px solid rgba(255,212,87,.55);border-radius:999px;padding:2px 7px;color:#ffe9a8}
+
+/* Pillola "flottante" (home screen e altre schermate senza HUD dedicata):
+   stessa famiglia cromatica oro/crema del pulsante audio, stessa altezza (56px),
+   cosi' si notano subito ed è chiaro che sono un elemento importante dell'interfaccia. */
+.life-pill{display:flex;align-items:center;gap:9px;min-height:56px;border:3px solid #fff;border-radius:999px;background:linear-gradient(180deg,#fff9e5,#f4dfa0);padding:8px 16px 8px 12px;color:#5a2f00;cursor:pointer;box-shadow:0 10px 26px rgba(0,0,0,.32),inset 0 -3px 0 rgba(0,0,0,.08);touch-action:manipulation;transition:transform .12s ease}
+.life-pill:hover{transform:translateY(-1px)}
+.life-hearts{display:flex;gap:2px;font-size:20px;line-height:1}
+.life-hearts .heart{filter:drop-shadow(0 1px 1px rgba(0,0,0,.25))}
+.life-hearts .heart:not(.on){opacity:.3;filter:grayscale(1)}
+.life-infinite{font-weight:1000;color:#c76b00;margin-left:2px;font-size:18px}
+.life-ticket-chip{font-size:13px;font-weight:1000;background:rgba(43,121,200,.14);border:1.5px solid rgba(43,121,200,.5);border-radius:999px;padding:3px 9px;color:#134a86}
 .life-panel{position:absolute;top:calc(100% + 8px);left:0;width:min(84vw,270px);background:linear-gradient(180deg,#fff9e5,#f0e0ad);border:3px solid #2b79c8;border-radius:20px;padding:14px;color:#123f76;box-shadow:0 16px 36px rgba(0,0,0,.35);opacity:0;transform:translateY(-6px);pointer-events:none;transition:opacity .15s ease,transform .15s ease}
 .life-panel.open{opacity:1;transform:translateY(0);pointer-events:auto}
 .life-panel-hearts{font-size:19px;display:flex;gap:3px;margin-bottom:8px}
@@ -36,7 +43,9 @@
 .life-overlay-actions{display:flex;flex-direction:column;gap:10px;align-items:stretch}
 .life-overlay-actions .big-btn,.life-overlay-actions .small-btn{width:100%}
 
+/* Sul desktop il pulsante audio resta in alto a destra: la pillola vite
+   resta quindi in alto a sinistra (mai sovrapposta), ben visibile e speculare. */
 @media (min-width:900px){
-  .life-widget{left:auto;right:max(14px,env(safe-area-inset-right))}
-  .life-panel{left:auto;right:0}
+  .life-widget:not(.life-inline){top:16px;left:16px}
+  .life-panel{left:0;right:auto}
 }
