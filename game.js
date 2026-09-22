@@ -149,7 +149,7 @@ const SCENES = [
    "Ogni weekend diventa un piccolo orario condiviso tra lavoro, famiglia e la nuova arrivata.",
    "Kiki si inserisce nei ritmi della famiglia come una tappa che ormai sembrava scritta."
  ]},
- {name:"Firenze",area:"Firenze",year:2021,img:"assets/stations/clean/st16_laurea.jpg",cine:"assets/cinematics/cine_duccio_2021_photo.jpg",type:"graduation",summary:"Nel 2021 Duccio si laurea: un grande traguardo di famiglia.",
+ {name:"Firenze",area:"Firenze",year:2021,img:"assets/stations/clean/st16_laurea.jpg",cine:"assets/cinematics/clean/cine_duccio_2021_photo.jpg",type:"graduation",summary:"Nel 2021 Duccio si laurea: un grande traguardo di famiglia.",
  beats:[
    "2021 • Duccio si laurea: l'emozione in famiglia è impossibile da nascondere.",
    "Anni di studio, sacrifici e piccoli grandi traguardi arrivano a compimento.",
@@ -179,7 +179,7 @@ const SCENES = [
    "Per la prima volta, Mimmo può scegliere lui stesso i propri orari.",
    "La pensione è la sua ultima, meritata manovra: cambiare binario, non fermarsi."
  ]},
- {name:"Figline Valdarno",area:"Toscana",year:2024,img:"assets/stations/clean/st18_caty.jpg",cine:"assets/cinematics/cine_caty_2024_photo.jpg",type:"grandchild",summary:"Nel 2024 nasce Caty, la prima nipote.",
+ {name:"Figline Valdarno",area:"Toscana",year:2024,img:"assets/stations/clean/st18_caty.jpg",cine:"assets/cinematics/clean/cine_caty_2024_photo.jpg",type:"grandchild",summary:"Nel 2024 nasce Caty, la prima nipote.",
  beats:[
    "2024 • Nasce Caty: Mimmo diventa nonno e il cuore trova spazio per un amore nuovo.",
    "La prima nipote porta in casa un'euforia che nessuno sapeva di aspettare così tanto.",
@@ -194,7 +194,7 @@ const SCENES = [
    "Ogni weekend diventa una tratta dedicata a stare vicino alla piccola di casa.",
    "Caty aggiunge una fermata bellissima e imprevista al percorso della famiglia."
  ]},
- {name:"Toscana",area:"Toscana",year:2025,img:"assets/stations/clean/st19_matrimonio_giuseppe.jpg",cine:"assets/cinematics/cine_matrimonio_2025_photo.jpg",type:"wedding",summary:"Nel 2025 arriva il matrimonio di Giuseppe.",
+ {name:"Toscana",area:"Toscana",year:2025,img:"assets/stations/clean/st19_matrimonio_giuseppe.jpg",cine:"assets/cinematics/clean/cine_matrimonio_2025_photo.jpg",type:"wedding",summary:"Nel 2025 arriva il matrimonio di Giuseppe.",
  beats:[
    "2025 • Giuseppe sposa Kiki: il cerchio si chiude, la storia d'amore di famiglia continua.",
    "Mimmo rivede se stesso, giovane sposo a Firenze, negli occhi di suo figlio.",
@@ -209,7 +209,7 @@ const SCENES = [
    "Nessun imprevisto ferma la festa: tutto arriva puntuale, proprio come piace in famiglia.",
    "Da questa tappa in poi, il viaggio di famiglia prosegue in due coppie, non più una sola."
  ]},
- {name:"Figline Valdarno",area:"Toscana",year:2026,img:"assets/stations/clean/st20_kiko.jpg",cine:"assets/cinematics/cine_kiko_2026_photo.jpg",type:"family",summary:"Nel 2026 nasce Kiko e il viaggio arriva ai due nipoti.",
+ {name:"Figline Valdarno",area:"Toscana",year:2026,img:"assets/stations/clean/st20_kiko.jpg",cine:"assets/cinematics/clean/cine_kiko_2026_photo.jpg",type:"family",summary:"Nel 2026 nasce Kiko e il viaggio arriva ai due nipoti.",
  beats:[
    "2026 • Con la nascita di Kiko, Mimmo diventa ancora più nonno nel cuore.",
    "Caty e Kiko riempiono la famiglia di nuove storie, sorrisi e futuro.",
@@ -580,7 +580,14 @@ function buildMap(mode, requestedWorld=null){
  const prev=document.createElement('button');prev.type='button';prev.textContent='← Tappa precedente';prev.disabled=si<=0;prev.onclick=()=>buildMap(mode,si-1);nav.appendChild(prev);
  if(si<currentWorld){const now=document.createElement('button');now.type='button';now.textContent='Torna al mondo attuale →';now.onclick=()=>buildMap(mode,currentWorld);nav.appendChild(now);}
  route.appendChild(nav);
- setTimeout(()=>sec.scrollIntoView({block:'center'}),60);
+ // Su schermi piccoli la card di una stazione è più alta dell'area visibile:
+ // centrarla (block:'center') tagliava sempre la parte alta con il nome della
+ // stazione. Se la card non entra tutta, la allineiamo in alto invece di centrarla.
+ setTimeout(()=>{
+   const scroller = route.closest('.map-scroll') || route.parentElement;
+   const viewportH = scroller ? scroller.clientHeight : window.innerHeight;
+   sec.scrollIntoView({block: sec.offsetHeight > viewportH ? 'start' : 'center'});
+ },60);
 }
 $("#resetMap").onclick=()=>{
  if(confirm("Azzerare i progressi di questa modalità?")){setUnlocked(selectedMode,1);setScores(selectedMode,{});buildMap(selectedMode)}
