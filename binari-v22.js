@@ -18,6 +18,10 @@ const nextCanvas=$('#bpNext'), nctx=nextCanvas.getContext('2d');
 const state={board:Array.from({length:ROWS},()=>Array(COLS).fill(null)),active:null,next:null,score:0,locked:0,obstacles:0,breakables:0,pieces:0,comboMax:0,running:false,resolving:false,paused:false,lastDrop:0,dropMs:780,baseDropMs:780,slowPieces:0,fastPieces:0,fogTurns:0,flash:new Set(),shake:new Set(),level:1,cfg:null,tutorialStep:0,inputStart:null};
 let idSeq=1,raf=0;
 function rng(seed){let s=seed>>>0;return()=>((s=(s*1664525+1013904223)>>>0)/4294967296)}
+// Livelli boss: l'ultimo livello di ogni stazione (multipli di 5) è più difficile,
+// il livello 100 (gran finale) il più duro di tutti — v. anche BOSSES in game.js.
+function isBossLevelFalling(level){ return level%5===0; }
+function bossMultFalling(level){ return level===100?1.35:1.22; }
 function levelCfg(level){
  const world=Math.min(10,Math.ceil(level/10)); const band=Math.floor((level-1)/5); const local=(level-1)%10+1;
  let colors=2,symbols=2,locked=3+Math.floor((level-1)/2),obstacles=0,breakables=0,bonusChance=0,malus=null,shape='open';
@@ -28,8 +32,16 @@ function levelCfg(level){
  if(level>=26) malus= level<36?'fog':level<51?'delay':level<71?'signal':'mixed';
  if(level>=31) shape=(level%3===0?'notch':level%3===1?'pillars':'open');
  colors=Math.min(5,colors+(level>=41?1:0)+(level>=71?1:0)); symbols=Math.min(5,symbols+(level>=51?1:0)+(level>=81?1:0));
- const speed=Math.max(250,820-level*4-(level>70?(level-70)*4:0));
- return {level,world,local,colors,symbols,locked:Math.min(20,locked),obstacles,breakables,bonusChance,malus,shape,speed,
+ let speed=Math.max(250,820-level*4-(level>70?(level-70)*4:0));
+ const isBoss=isBossLevelFalling(level);
+ if(isBoss){
+   const mult=bossMultFalling(level);
+   locked=Math.min(20,Math.ceil(locked*mult));
+   if(obstacles) obstacles=Math.ceil(obstacles*mult);
+   if(breakables) breakables=Math.ceil(breakables*mult);
+   speed=Math.max(190,Math.round(speed/mult));
+ }
+ return {level,world,local,colors,symbols,locked:Math.min(20,locked),obstacles,breakables,bonusChance,malus,shape,speed,isBoss,
   name:`${WORLD_NAMES[world-1]} • Tratta ${local}`,
   objective: level<11?'Libera tutti i vagoni bloccati': level<16?'Libera i vagoni e supera gli ostacoli': level<21?'Libera i vagoni e rompi i blocchi': 'Completa la tratta e sfrutta i bonus'};
 }

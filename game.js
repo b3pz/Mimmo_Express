@@ -264,6 +264,7 @@ function show(id){
  document.body.dataset.screen=id;
  placeSoundToggle(id);
  if(window.MimmoLives) window.MimmoLives.placeWidget(id);
+ document.body.classList.toggle('boss-level-active',(id==='fallGame'||id==='matchGame')&&isBossLevel(currentLevel));
 }
 function stationFor(level){return SCENES[Math.floor((level-1)/5)]}
 function within(level){return (level-1)%5+1}
@@ -535,10 +536,11 @@ function buildMap(mode, requestedWorld=null){
   <div class="world-caption-v2">${st.summary}</div>`;
  for(let i=0;i<5;i++){
    const lv=first+i,node=document.createElement('button'); node.type='button'; node.dataset.level=lv;
-   const isUnlocked=lv<=unlocked;
-   node.className='level-node-v2 '+(lv<unlocked?'done':lv===unlocked?'current':'locked');
+   const isUnlocked=lv<=unlocked, boss=isBossLevel(lv);
+   node.className='level-node-v2 '+(lv<unlocked?'done':lv===unlocked?'current':'locked')+(boss?' boss-node':'');
    node.style.left=V2_NODE_POS[i][0]+'%'; node.style.top=V2_NODE_POS[i][1]+'%';
-   node.innerHTML=isUnlocked?`<span>${lv}</span>${lv<unlocked?'<i>✓</i>':''}`:'<span>?</span>';
+   const bossBadge=boss?`<i class="boss-node-badge">${lv===100?'🏆':'⚡'}</i>`:'';
+   node.innerHTML=isUnlocked?`<span>${lv}</span>${lv<unlocked?'<i>✓</i>':bossBadge}`:`<span>?</span>${bossBadge}`;
    node.disabled=!isUnlocked; node.title=isUnlocked?storyFor(lv,mode):'Livello bloccato';
    if(isUnlocked){const go=(ev)=>{ev.preventDefault();ev.stopPropagation();startLevel(mode,lv)};node.addEventListener('click',go);node.addEventListener('touchend',go,{passive:false});}
    sec.appendChild(node);
@@ -565,11 +567,45 @@ const FCOLS=8,FROWS=12,FCELL=60,FColors=["#ed3c4c","#188be7","#36ba54","#f2c02e"
 let fboard=[],fpiece=null,frun=false,flock=false,fscore=0,fobstacles=0,fcombo=1,fdrop=650,flast=0,fstart=0,currentLevel=1;
 const fcanvas=$("#fallCanvas"),fctx=fcanvas.getContext("2d");
 
+// Livelli boss: l'ultimo livello di ogni stazione (5, 10, 15 ... 100) è più difficile
+// e "impersona" un piccolo antagonista ricorrente della vita di Mimmo, a rotazione;
+// il livello 100 è il gran finale, il più duro di tutti.
+const BOSSES=[
+ {id:'capo',name:'Il Capo del Deposito',icon:'👔',line:'"Mimmo, quella tratta non si libera da sola!" Il capo controlla ogni mossa: oggi bisogna dimostrargli di che pasta è fatto.'},
+ {id:'giampy',name:'Giampy, il vicino di casa',icon:'😤',line:'Giampy bussa ancora per lamentarsi del cancello. Stavolta Mimmo non si lascia distrarre da niente.'},
+ {id:'guasto',name:'Guasto sui binari',icon:'⚠️',line:'Un guasto improvviso rischia di far accumulare ritardo su tutta la linea: va risolto subito, senza perdere la calma.'}
+];
+function isBossLevel(level){ return level%5===0; }
+function bossForLevel(level){
+ if(level===100) return {id:'finale',name:'La Grande Sfida Finale',icon:'🏆',line:'Tutto il viaggio di Mimmo Express, da Ardore fino a qui, porta a questo ultimo grande traguardo.'};
+ const stationIndex=Math.floor((level-1)/5);
+ return BOSSES[stationIndex%BOSSES.length];
+}
+function bossDifficultyMult(level){ return level===100?1.35:1.22; }
+function showBossIntro(mode,level,onStart){
+ const boss=bossForLevel(level), isFinale=level===100;
+ let el=document.getElementById('bossOverlay');
+ if(!el){ el=document.createElement('div'); el.id='bossOverlay'; el.className='life-overlay boss-overlay'; document.body.appendChild(el); }
+ el.innerHTML=`<div class="life-overlay-card boss-overlay-card${isFinale?' boss-finale':''}">
+   <div class="boss-overlay-icon">${boss.icon}</div>
+   <div class="boss-overlay-tag">${isFinale?'🏆 GRAN FINALE':'⚡ LIVELLO BOSS'}</div>
+   <h2>${boss.name}</h2>
+   <p>${boss.line}</p>
+   <p class="boss-overlay-note">Livello più impegnativo del solito: circa +${Math.round((bossDifficultyMult(level)-1)*100)}% di difficoltà.</p>
+   <div class="life-overlay-actions"><button type="button" class="big-btn" id="bossStartBtn">${isFinale?'Affrontala! 🏆':'Sfida accettata ▶'}</button></div>
+ </div>`;
+ el.classList.add('show');
+ document.getElementById('bossStartBtn').onclick=()=>{ el.classList.remove('show'); el.innerHTML=''; onStart(); };
+}
 function startLevel(mode,level){
  if(window.MimmoLives && window.MimmoLives.getLives()<=0 && !window.MimmoLives.isRelax()){
    window.MimmoLives.showLockedOverlay({onResume:()=>startLevel(mode,level),onExit:()=>{selectedMode=mode;buildMap(mode);show('mapScreen')}});
    return;
  }
+ if(isBossLevel(level)){ showBossIntro(mode,level,()=>startLevelCore(mode,level)); return; }
+ startLevelCore(mode,level);
+}
+function startLevelCore(mode,level){
  selectedMode=mode;
  currentLevel=level;
  localStorage.setItem("mimmo_last_mode",mode);
@@ -781,14 +817,22 @@ const MATCH_THEMES=[
 function getMatchWorldConfig(level){
  const world=Math.floor((level-1)/5),step=(level-1)%5,theme=MATCH_THEMES[Math.min(MATCH_THEMES.length-1,world%MATCH_THEMES.length)];
  const pool=MATCH_POOLS[Math.min(MATCH_POOLS.length-1,world)];
- const blockers=world===0?0:(world===1?2+Math.floor((step+1)/2):Math.min(10,2+Math.floor(world*.55)+Math.floor(step/2)));
+ let blockers=world===0?0:(world===1?2+Math.floor((step+1)/2):Math.min(10,2+Math.floor(world*.55)+Math.floor(step/2)));
  const hp=world<3?1:(world<8?(step>=3?2:1):2);
- const floorCells=world<2?0:(world===2?3+step:Math.min(9,2+Math.floor((world-2)*.55)+Math.floor(step/2)));
+ let floorCells=world<2?0:(world===2?3+step:Math.min(9,2+Math.floor((world-2)*.55)+Math.floor(step/2)));
  const floorHp=world<5?1:(world<11?2:3);
  const eventEvery=world<2?0:Math.max(4,6-Math.floor(world/6));
- const moves=Math.max(20,34-Math.floor(world/2)-Math.floor(step/2));
- const target=Math.round((1250+level*135)*(1+Math.min(.20,world*.012)));
- return {world,step,pool,blockers,hp,floorCells,floorHp,eventEvery,moves,target,...theme};
+ let moves=Math.max(20,34-Math.floor(world/2)-Math.floor(step/2));
+ let target=Math.round((1250+level*135)*(1+Math.min(.20,world*.012)));
+ const isBoss=isBossLevel(level);
+ if(isBoss){
+   const mult=bossDifficultyMult(level);
+   blockers=Math.min(14,Math.ceil((blockers||1)*mult));
+   floorCells=Math.min(14,Math.ceil((floorCells||1)*mult*.8));
+   moves=Math.max(14,Math.round(moves/ (1+(mult-1)*.6) ));
+   target=Math.round(target*mult);
+ }
+ return {world,step,pool,blockers,hp,floorCells,floorHp,eventEvery,moves,target,isBoss,...theme};
 }
 function getMissionForLevel(level,cfg){
  const w=cfg.world,s=cfg.step,scale=1+Math.floor(w/4);
