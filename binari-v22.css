@@ -1,4 +1,9 @@
 /* Mimmo Express V2.2 — Binari Puzzle rebuilt mobile-first */
+/* Il vecchio canvas/HUD del motore precedente resta nel DOM (game.js li usa ancora
+   internamente) ma non deve mai occupare spazio nel nuovo layout a griglia: le regole
+   legacy in styles.css lo forzano a display:block con altezza enorme, schiacciando il
+   vero tabellone di gioco in basso a poche decine di pixel su schermo da telefono. */
+#fallGame #fallCanvas,#fallGame #nextPreview,#fallGame #fSpeed{display:none!important;width:0!important;height:0!important}
 #fallGame.bp-screen{position:relative;overflow:hidden;background:#071a35;color:#fff;touch-action:none;user-select:none;-webkit-user-select:none}
 #fallGame .bp-world-bg{position:absolute;inset:0;background-size:cover;background-position:center;filter:saturate(1.05) brightness(.78);transform:scale(1.03)}
 #fallGame .bp-world-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(5,24,52,.42),rgba(4,18,39,.82))}

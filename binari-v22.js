@@ -15,7 +15,7 @@ const WORLD_BG=['assets/stations/st01_ardore.jpg','assets/stations/st02_bovalino
 const $=s=>document.querySelector(s), sleep=ms=>new Promise(r=>setTimeout(r,ms));
 const canvas=$('#binariCanvas'), ctx=canvas.getContext('2d');
 const nextCanvas=$('#bpNext'), nctx=nextCanvas.getContext('2d');
-const state={board:[],active:null,next:null,score:0,locked:0,obstacles:0,breakables:0,pieces:0,comboMax:0,running:false,resolving:false,paused:false,lastDrop:0,dropMs:780,baseDropMs:780,slowPieces:0,fastPieces:0,fogTurns:0,flash:new Set(),shake:new Set(),level:1,cfg:null,tutorialStep:0,inputStart:null};
+const state={board:Array.from({length:ROWS},()=>Array(COLS).fill(null)),active:null,next:null,score:0,locked:0,obstacles:0,breakables:0,pieces:0,comboMax:0,running:false,resolving:false,paused:false,lastDrop:0,dropMs:780,baseDropMs:780,slowPieces:0,fastPieces:0,fogTurns:0,flash:new Set(),shake:new Set(),level:1,cfg:null,tutorialStep:0,inputStart:null};
 let idSeq=1,raf=0;
 function rng(seed){let s=seed>>>0;return()=>((s=(s*1664525+1013904223)>>>0)/4294967296)}
 function levelCfg(level){
@@ -102,7 +102,7 @@ function drawFog(){ctx.save();ctx.fillStyle='rgba(220,235,245,.17)';for(let i=0;
 function drawNext(){nctx.clearRect(0,0,nextCanvas.width,nextCanvas.height);if(!state.next)return;const tmp={...state.next,r:0,c:0,o:0};const cells=posCells(tmp);for(const [i,p] of cells.entries())drawMiniWagon(nctx,8+i*52,8,p.u)}
 function drawMiniWagon(c,x,y,u){let col=COLORS[u.color];let g=c.createLinearGradient(x,y,x,y+35);g.addColorStop(0,col.a);g.addColorStop(1,col.b);c.fillStyle=g;c.strokeStyle='#fff';c.lineWidth=2;roundRect(c,x,y,44,34,8);c.fill();c.stroke();drawSymbol(c,u.symbol,x+22,y+18,8)}
 function roundRect(c,x,y,w,h,r){c.beginPath();c.roundRect(x,y,w,h,r)}
-function loop(t){if(state.running&&!state.paused&&!state.resolving&&state.active&&t-state.lastDrop>state.dropMs){if(!move(0,1))lockPiece();state.lastDrop=t}render();raf=requestAnimationFrame(loop)}
+function loop(t){try{if(state.running&&!state.paused&&!state.resolving&&state.active&&t-state.lastDrop>state.dropMs){if(!move(0,1))lockPiece();state.lastDrop=t}render();}catch(e){console.warn('[Mimmo Express] binari render error:',e);}raf=requestAnimationFrame(loop)}
 function resize(){/* canvas uses fixed logical pixels and CSS scaling */}
 function onPointerDown(e){if(!state.running||state.paused||state.resolving)return;state.inputStart={x:e.clientX,y:e.clientY,t:performance.now(),lx:e.clientX,ly:e.clientY,moved:false};canvas.setPointerCapture?.(e.pointerId);e.preventDefault()}
 function onPointerMove(e){let s=state.inputStart;if(!s||!state.running||state.resolving)return;let dx=e.clientX-s.lx,dy=e.clientY-s.ly;if(Math.abs(dx)>28&&Math.abs(dx)>Math.abs(dy)){if(move(dx>0?1:-1,0)){s.lx=e.clientX;s.moved=true}}else if(dy>34&&Math.abs(dy)>Math.abs(dx)){if(move(0,1)){s.ly=e.clientY;s.moved=true}}e.preventDefault()}
