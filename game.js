@@ -3,86 +3,226 @@ const $ = s=>document.querySelector(s);
 const $$ = s=>[...document.querySelectorAll(s)];
 const ROUTE_TRAIN_SVG=`<svg viewBox="0 0 180 90" aria-hidden="true"><g stroke="#17365c" stroke-width="5" stroke-linejoin="round"><rect x="25" y="35" width="92" height="34" rx="9" fill="#e64545"/><rect x="105" y="20" width="43" height="49" rx="8" fill="#e64545"/><rect x="116" y="29" width="22" height="16" rx="3" fill="#c9f2ff"/><rect x="37" y="44" width="22" height="12" rx="3" fill="#c9f2ff"/><rect x="65" y="44" width="18" height="12" rx="3" fill="#c9f2ff"/><rect x="88" y="44" width="15" height="12" rx="3" fill="#ffd457"/><path d="M148 49l24 13-24 10z" fill="#ffd457"/><path d="M42 35V20h18v15M37 20h28" fill="#17365c" stroke-linecap="round"/><circle cx="51" cy="73" r="13" fill="#27384f"/><circle cx="51" cy="73" r="5" fill="#aebdce" stroke="none"/><circle cx="111" cy="73" r="13" fill="#27384f"/><circle cx="111" cy="73" r="5" fill="#aebdce" stroke="none"/><circle cx="143" cy="73" r="11" fill="#27384f"/><circle cx="143" cy="73" r="4" fill="#aebdce" stroke="none"/></g><circle cx="151" cy="52" r="6" fill="#fff09b"/></svg>`;
 
+// Ogni tappa importante ha DUE narrazioni distinte per lo stesso evento:
+// "beats" (Locomotive Match) racconta il lato emotivo/familiare, "beatsFalling"
+// (Binari Puzzle) racconta il lato pratico/organizzativo dello stesso momento.
+// Così chi gioca a entrambe le modalità non rivede mai la stessa scena due volte.
 const SCENES = [
- {name:"Ardore",area:"Locride",year:1987,img:"assets/stations/st01_ardore.jpg",cine:"assets/cinematics/cine_ardore.png",type:"railway",summary:"Nel 1987 nasce il sogno ferroviario di Mimmo.",beats:[
+ {name:"Ardore",area:"Locride",year:1987,img:"assets/stations/st01_ardore.jpg",cine:"assets/cinematics/cine_ardore.png",type:"railway",summary:"Nel 1987 nasce il sogno ferroviario di Mimmo.",
+ beats:[
    "1987 • Ad Ardore tutto comincia: Mimmo scopre il fascino dei treni e dei binari.",
    "Tra mare e rotaie, ogni passaggio di locomotiva accende la sua immaginazione.",
    "Una piccola stazione e un grande sogno: la ferrovia entra nel suo cuore.",
    "Le giornate ad Ardore hanno già il rumore del suo futuro.",
    "Da Ardore parte il viaggio che cambierà tutta la famiglia."
+ ],
+ beatsFalling:[
+   "1987 • Ad Ardore Mimmo impara a riconoscere ogni segnale e ogni scambio della piccola stazione.",
+   "Osserva i capistazione al lavoro e memorizza orari e manovre come fossero un gioco.",
+   "Ogni vagone allineato sui binari è una piccola vittoria che lo avvicina al suo sogno.",
+   "Impara che in ferrovia ogni pezzo deve trovare il suo posto esatto, al momento giusto.",
+   "Da Ardore parte anche il suo primo, vero apprendistato da ferroviere."
  ]},
- {name:"Bovalino",area:"Locride",year:1987,img:"assets/stations/st02_bovalino.jpg",cine:"assets/stations/st02_bovalino.jpg",summary:"I primi sogni sui binari diventano sempre più reali."},
- {name:"Locri",area:"Locride",year:1987,img:"assets/stations/st03_locri.jpg",cine:"assets/stations/st03_locri.jpg",type:"love",summary:"A Locri Mimmo conosce la donna che diventerà sua moglie.",beats:[
+ {name:"Bovalino",area:"Locride",year:1987,img:"assets/stations/st02_bovalino.jpg",cine:"assets/stations/st02_bovalino.jpg",summary:"I primi sogni sui binari diventano sempre più reali.",
+ summaryMatch:"Tappa dopo tappa, il cuore di Mimmo si affeziona sempre di più alla ferrovia.",
+ summaryFalling:"Mimmo impara a memorizzare orari e coincidenze come un vero professionista."},
+ {name:"Locri",area:"Locride",year:1987,img:"assets/stations/st03_locri.jpg",cine:"assets/stations/st03_locri.jpg",type:"love",summary:"A Locri Mimmo conosce la donna che diventerà sua moglie.",
+ beats:[
    "1987 • A Locri Mimmo incontra la ragazza che gli cambia il viaggio e il cuore.",
    "Tra uno sguardo e un sorriso nasce una simpatia che sa già di destino.",
    "Un caffè vicino alla stazione diventa il loro piccolo rituale.",
    "Le passeggiate trasformano la tappa di Locri in una storia d'amore.",
    "Locri resta per sempre la stazione in cui Mimmo non viaggia più da solo."
+ ],
+ beatsFalling:[
+   "1987 • Il turno di Mimmo fa tappa a Locri, tra orari da rispettare e treni da far correre puntuali.",
+   "Tra una manovra e l'altra, nota sempre la stessa ragazza vicino ai binari.",
+   "Organizza i suoi turni per passare, ogni volta che può, proprio da quella stazione.",
+   "Il lavoro lo porta a Locri quasi ogni giorno: non è più solo un caso.",
+   "Locri diventa la tappa fissa del suo percorso, per lavoro e per il cuore."
  ]},
- {name:"Gioiosa Ionica",area:"Locride",year:1988,img:"assets/stations/st04_gioiosa.jpg",cine:"assets/stations/st04_gioiosa.jpg",summary:"Nel 1988 l'amore cresce e prende coraggio."},
- {name:"Siderno",area:"Locride",year:1988,img:"assets/stations/st05_siderno.jpg",cine:"assets/stations/st05_siderno.jpg",summary:"Le promesse diventano progetto di vita."},
- {name:"Firenze S.M.N.",area:"Firenze",year:1988,img:"assets/stations/st06_firenze_matrimonio.jpg",cine:"assets/cinematics/cine_matrimonio_1988.png",type:"wedding",summary:"Nel 1988 Mimmo si sposa a Firenze.",beats:[
+ {name:"Gioiosa Ionica",area:"Locride",year:1988,img:"assets/stations/st04_gioiosa.jpg",cine:"assets/stations/st04_gioiosa.jpg",summary:"Nel 1988 l'amore cresce e prende coraggio.",
+ summaryMatch:"L'amore tra Mimmo e la sua ragazza cresce ad ogni incontro.",
+ summaryFalling:"Mimmo organizza i turni per ritagliarsi sempre più tempo per lei."},
+ {name:"Siderno",area:"Locride",year:1988,img:"assets/stations/st05_siderno.jpg",cine:"assets/stations/st05_siderno.jpg",summary:"Le promesse diventano progetto di vita.",
+ summaryMatch:"Le promesse fatte piano piano diventano un progetto di vita insieme.",
+ summaryFalling:"Comincia a pianificare il futuro con la stessa precisione di un orario ferroviario."},
+ {name:"Firenze S.M.N.",area:"Firenze",year:1988,img:"assets/stations/st06_firenze_matrimonio.jpg",cine:"assets/cinematics/cine_matrimonio_1988.png",type:"wedding",summary:"Nel 1988 Mimmo si sposa a Firenze.",
+ beats:[
    "1988 • Firenze accoglie Mimmo e la donna della sua vita per il grande giorno.",
    "Il matrimonio rende questa stazione il simbolo della loro unione.",
    "Tra sorrisi, promesse e binari, il viaggio prende una rotta nuova.",
    "Da questo momento ogni partenza ha un ritorno speciale da vivere insieme.",
    "Santa Maria Novella custodisce il ricordo del loro sì."
+ ],
+ beatsFalling:[
+   "1988 • Mimmo organizza il viaggio verso Firenze: biglietti, orari, coincidenze, tutto calcolato al minuto.",
+   "Il giorno del matrimonio anche i binari sembrano allinearsi apposta per lui.",
+   "Tra parenti, valigie e un treno da non perdere, la giornata corre a mille.",
+   "Nessun ritardo, nessun imprevisto: solo la tratta più importante della sua vita.",
+   "Da Santa Maria Novella riparte un uomo sposato, pronto per la prossima destinazione insieme a lei."
  ]},
- {name:"Figline Valdarno",area:"Toscana",year:1989,img:"assets/stations/st07_figline.jpg",cine:"assets/cinematics/cine_figline_1989.png",summary:"La famiglia si trasferisce a Figline e mette radici."},
- {name:"Valdarno",area:"Toscana",year:1990,img:"assets/stations/st08_valdarno.jpg",cine:"assets/cinematics/cine_figline_1989.png",summary:"Nuova casa, nuove abitudini, nuova rotta di vita."},
- {name:"Figline Valdarno",area:"Toscana",year:1991,img:"assets/stations/st09_giuseppe.jpg",cine:"assets/cinematics/cine_giuseppe_1991_correct.png",type:"baby",summary:"Nel 1991 nasce Giuseppe.",beats:[
+ {name:"Figline Valdarno",area:"Toscana",year:1989,img:"assets/stations/st07_figline.jpg",cine:"assets/cinematics/cine_figline_1989.png",summary:"La famiglia si trasferisce a Figline e mette radici.",
+ summaryMatch:"La nuova casa a Figline diventa il nido della famiglia appena nata.",
+ summaryFalling:"Mimmo organizza il trasloco e i nuovi turni nella tratta toscana."},
+ {name:"Valdarno",area:"Toscana",year:1990,img:"assets/stations/st08_valdarno.jpg",cine:"assets/cinematics/cine_figline_1989.png",summary:"Nuova casa, nuove abitudini, nuova rotta di vita.",
+ summaryMatch:"Nuove abitudini, nuovi vicini, una vita che pian piano si costruisce insieme.",
+ summaryFalling:"Mimmo studia le nuove tratte toscane come fossero un livello da completare."},
+ {name:"Figline Valdarno",area:"Toscana",year:1991,img:"assets/stations/st09_giuseppe.jpg",cine:"assets/cinematics/cine_giuseppe_1991_correct.png",type:"baby",summary:"Nel 1991 nasce Giuseppe.",
+ beats:[
    "1991 • Una grande notizia corre più veloce di un espresso: nasce Giuseppe.",
    "La casa si riempie di gioia, stanchezza e meraviglia.",
    "Mimmo capisce che questo è il viaggio più bello di tutti.",
    "Tra lavoro e famiglia, ogni giornata prende un senso nuovo.",
    "Figline custodisce il primo grande capitolo dei figli."
+ ],
+ beatsFalling:[
+   "1991 • Mimmo studia i turni con più attenzione che mai: adesso c'è un figlio ad aspettarlo a casa.",
+   "Ogni cambio di orario viene incastrato per non perdere un solo momento con Giuseppe.",
+   "Il lavoro in ferrovia diventa un mezzo, non più un fine: tutto è per la famiglia.",
+   "Impara a fare le valigie in fretta, per tornare a casa un minuto prima.",
+   "Figline custodisce i primi passi di Giuseppe e i turni più organizzati di Mimmo."
  ]},
- {name:"Firenze S.M.N.",area:"Firenze",year:1993,img:"assets/stations/st10_turni.jpg",summary:"I turni in ferrovia diventano il cuore della sua vita lavorativa."},
- {name:"Valdarno",area:"Toscana",year:1997,img:"assets/stations/st11_duccio.jpg",cine:"assets/cinematics/cine_duccio_1997_correct.png",type:"baby",summary:"Nel 1997 nasce Duccio.",beats:[
+ {name:"Firenze S.M.N.",area:"Firenze",year:1993,img:"assets/stations/st10_turni.jpg",summary:"I turni in ferrovia diventano il cuore della sua vita lavorativa.",
+ summaryMatch:"Anche nei turni più duri, il pensiero di Mimmo torna sempre alla sua famiglia.",
+ summaryFalling:"I turni diventano il cuore della sua vita lavorativa: notturni, festivi, sempre puntuale."},
+ {name:"Valdarno",area:"Toscana",year:1997,img:"assets/stations/st11_duccio.jpg",cine:"assets/cinematics/cine_duccio_1997_correct.png",type:"baby",summary:"Nel 1997 nasce Duccio.",
+ beats:[
    "1997 • Arriva anche Duccio e la famiglia si allarga ancora.",
    "Due figli significano doppia gioia e mille ricordi da costruire.",
    "Mimmo divide il suo tempo tra turni, casa e sogni per il futuro.",
    "Ogni ritorno a casa è più bello con i bambini ad aspettarlo.",
    "Il Valdarno diventa il paesaggio della crescita della famiglia."
+ ],
+ beatsFalling:[
+   "1997 • Con due figli, Mimmo diventa un maestro nell'incastrare turni, ferie e permessi.",
+   "Ogni orario di lavoro viene ora pensato in funzione della famiglia che cresce.",
+   "Impara a organizzare tutto al minuto: in casa come in stazione.",
+   "Le sue giornate diventano un vero e proprio orario ferroviario, preciso al minuto.",
+   "Il Valdarno diventa la tratta fissa tra il lavoro e i suoi due ragazzi."
  ]},
- {name:"Toscana",area:"Toscana",year:2000,img:"assets/stations/st12_toscana.jpg",summary:"Anni di crescita, lavoro e avventure romanzate tra binari e famiglia."},
- {name:"Figline Valdarno",area:"Toscana",year:2008,img:"assets/stations/st13_lucky.jpg",cine:"assets/cinematics/cine_lucky_2008.png",type:"pet",summary:"Nel 2008 arriva Lucky, il primo Yorkshire.",beats:[
+ {name:"Toscana",area:"Toscana",year:2000,img:"assets/stations/st12_toscana.jpg",summary:"Anni di crescita, lavoro e avventure romanzate tra binari e famiglia.",
+ summaryMatch:"Anni di crescita in famiglia, tra risate, compiti e cene tutti insieme.",
+ summaryFalling:"Anni di lavoro e di esperienza: Mimmo conosce ormai ogni scambio a memoria."},
+ {name:"Figline Valdarno",area:"Toscana",year:2008,img:"assets/stations/st13_lucky.jpg",cine:"assets/cinematics/cine_lucky_2008.png",type:"pet",summary:"Nel 2008 arriva Lucky, il primo Yorkshire.",
+ beats:[
    "2008 • In casa arriva Lucky e porta allegria a tutta la famiglia.",
    "Piccolo, vivace e sempre presente: Lucky diventa subito uno di casa.",
    "Tra giochi e corse, la casa guadagna un nuovo compagno di viaggio.",
    "Ogni ritorno di Mimmo dai turni ha adesso anche quattro zampette ad aspettarlo.",
    "Lucky entra a pieno titolo nella storia della famiglia."
+ ],
+ beatsFalling:[
+   "2008 • Un nuovo membro sale a bordo della famiglia: Lucky, piccolo e pieno di energia.",
+   "Mimmo aggiunge una nuova tappa fissa ai suoi giri: la passeggiata prima e dopo il turno.",
+   "Organizza gli orari anche per lui, tra una manovra in stazione e una in giardino.",
+   "Lucky impara ad aspettarlo puntuale come un treno, ogni sera alla stessa ora.",
+   "Anche i più piccoli hanno bisogno di orari precisi: Mimmo lo sa bene."
  ]},
- {name:"Figline Valdarno",area:"Toscana",year:2018,img:"assets/stations/st15_boris.jpg",cine:"assets/cinematics/cine_boris_2018.png",type:"pet",summary:"Nel 2018 arriva Boris; Lucky resta un ricordo speciale.",beats:[
+ {name:"Figline Valdarno",area:"Toscana",year:2018,img:"assets/stations/st15_boris.jpg",cine:"assets/cinematics/cine_boris_2018.png",type:"pet",summary:"Nel 2018 arriva Boris; Lucky resta un ricordo speciale.",
+ beats:[
    "2018 • Boris entra in famiglia e porta una nuova energia in casa.",
    "Il ricordo di Lucky resta vivo, ma il viaggio continua anche con Boris.",
    "Un altro piccolo Yorkshire si unisce alle giornate della famiglia.",
    "Le passeggiate e i momenti semplici diventano ancora più pieni.",
    "Anche Boris conquista un posto speciale nel grande viaggio di Mimmo."
+ ],
+ beatsFalling:[
+   "2018 • Un altro Yorkshire sale a bordo: Boris porta con sé una nuova routine di casa.",
+   "Mimmo ritrova gli stessi gesti di anni prima: cibo, passeggiate, orari da rispettare.",
+   "Il ricordo di Lucky resta un binario parallelo, mai davvero lasciato.",
+   "Organizzare la giornata con un cane in casa è un po' come gestire una piccola stazione.",
+   "Boris si aggiunge alla lista delle piccole grandi responsabilità quotidiane di Mimmo."
  ]},
- {name:"Figline Valdarno",area:"Toscana",year:2020,img:"assets/stations/st14_ferrovia.jpg",type:"love",summary:"Nel 2020 Kiki entra nella vita di Giuseppe: è la sua compagna e futura moglie.",beats:[
+ {name:"Figline Valdarno",area:"Toscana",year:2020,img:"assets/stations/st14_ferrovia.jpg",type:"love",summary:"Nel 2020 Kiki entra nella vita di Giuseppe: è la sua compagna e futura moglie.",
+ beats:[
    "2020 • Giuseppe incontra Kiki, la sua compagna e futura moglie: nasce una nuova storia d'amore in famiglia.",
    "Tra giornate semplici e nuovi progetti, Mimmo osserva tutto con orgoglio.",
    "Anche questa tappa diventa una stazione importante del grande viaggio.",
    "Kiki porta una ventata di gioia e futuro nella famiglia.",
    "Il viaggio di Mimmo adesso guarda anche alla nuova generazione."
+ ],
+ beatsFalling:[
+   "2020 • Giuseppe porta a casa nuove abitudini: adesso c'è Kiki nei suoi programmi settimanali.",
+   "Mimmo osserva suo figlio organizzarsi la vita esattamente come faceva lui alla sua età.",
+   "Le cene di famiglia si allungano di un posto a tavola, con calma e naturalezza.",
+   "Ogni weekend diventa un piccolo orario condiviso tra lavoro, famiglia e la nuova arrivata.",
+   "Kiki si inserisce nei ritmi della famiglia come una tappa che ormai sembrava scritta."
  ]},
- {name:"Firenze",area:"Firenze",year:2021,img:"assets/stations/st16_laurea.jpg",cine:"assets/cinematics/cine_duccio_2021_photo.jpg",summary:"Nel 2021 Duccio si laurea: un grande traguardo di famiglia."},
- {name:"Firenze S.M.N.",area:"Firenze",year:2023,img:"assets/stations/st17_pensione.jpg",cine:"assets/cinematics/cine_pensione_2023.png",type:"retire",summary:"Nel 2023 arriva la pensione del babbo.",beats:[
+ {name:"Firenze",area:"Firenze",year:2021,img:"assets/stations/st16_laurea.jpg",cine:"assets/cinematics/cine_duccio_2021_photo.jpg",type:"graduation",summary:"Nel 2021 Duccio si laurea: un grande traguardo di famiglia.",
+ beats:[
+   "2021 • Duccio si laurea: l'emozione in famiglia è impossibile da nascondere.",
+   "Anni di studio, sacrifici e piccoli grandi traguardi arrivano a compimento.",
+   "Mimmo guarda suo figlio con gli occhi lucidi, orgoglioso oltre le parole.",
+   "Firenze, la stessa città del matrimonio, festeggia un altro capitolo importante.",
+   "Un altro sogno di famiglia, coltivato insieme, taglia il traguardo."
+ ],
+ beatsFalling:[
+   "2021 • Duccio organizza l'ultimo esame con la stessa precisione di un orario ferroviario.",
+   "Mimmo lo aiuta a fare i conti tra impegni, viaggi e sessioni di studio.",
+   "Ogni corso completato è una tappa raggiunta, esattamente come una stazione sulla mappa.",
+   "Il giorno della laurea, tutta la famiglia organizza insieme il viaggio verso Firenze.",
+   "Un altro traguardo raggiunto puntuale, proprio come piace a Mimmo."
+ ]},
+ {name:"Firenze S.M.N.",area:"Firenze",year:2023,img:"assets/stations/st17_pensione.jpg",cine:"assets/cinematics/cine_pensione_2023.png",type:"retire",summary:"Nel 2023 arriva la pensione del babbo.",
+ beats:[
    "2023 • Dopo una lunga vita sui binari, arriva la pensione di Mimmo.",
    "Si chiude un capitolo enorme fatto di turni, partenze e responsabilità.",
    "Santa Maria Novella resta il simbolo di una carriera vissuta con orgoglio.",
    "La stazione saluta il suo ferroviere, ma la storia continua in famiglia.",
    "La pensione non è una fine: è una nuova tratta da vivere."
+ ],
+ beatsFalling:[
+   "2023 • L'ultimo turno di Mimmo viene segnato sul calendario come una tratta speciale.",
+   "Consegna divisa, orari e consegne di servizio dopo una vita passata sui binari.",
+   "Il capostazione lo saluta con una stretta di mano che vale quanto una medaglia.",
+   "Per la prima volta, Mimmo può scegliere lui stesso i propri orari.",
+   "La pensione è la sua ultima, meritata manovra: cambiare binario, non fermarsi."
  ]},
- {name:"Figline Valdarno",area:"Toscana",year:2024,img:"assets/stations/st18_caty.jpg",cine:"assets/cinematics/cine_caty_2024_photo.jpg",summary:"Nel 2024 nasce Caty, la prima nipote."},
- {name:"Toscana",area:"Toscana",year:2025,img:"assets/stations/st19_matrimonio_giuseppe.jpg",cine:"assets/cinematics/cine_matrimonio_2025_photo.jpg",summary:"Nel 2025 arriva il matrimonio di Giuseppe."},
- {name:"Figline Valdarno",area:"Toscana",year:2026,img:"assets/stations/st20_kiko.jpg",cine:"assets/cinematics/cine_kiko_2026_photo.jpg",type:"family",summary:"Nel 2026 nasce Kiko e il viaggio arriva ai due nipoti.",beats:[
+ {name:"Figline Valdarno",area:"Toscana",year:2024,img:"assets/stations/st18_caty.jpg",cine:"assets/cinematics/cine_caty_2024_photo.jpg",type:"grandchild",summary:"Nel 2024 nasce Caty, la prima nipote.",
+ beats:[
+   "2024 • Nasce Caty: Mimmo diventa nonno e il cuore trova spazio per un amore nuovo.",
+   "La prima nipote porta in casa un'euforia che nessuno sapeva di aspettare così tanto.",
+   "Ogni sorriso di Caty ripaga anni di turni e sacrifici.",
+   "Mimmo la tiene in braccio con la stessa emozione di quando nacquero Giuseppe e Duccio.",
+   "Con Caty, il viaggio di famiglia si allunga di una generazione."
+ ],
+ beatsFalling:[
+   "2024 • Con l'arrivo di Caty, anche i nonni imparano nuovi orari da rispettare.",
+   "Mimmo si organizza per esserci ad ogni visita, incastrando impegni come tessere di un puzzle.",
+   "Passeggini, biberon, pisolini: una nuova logistica entra nella vita di tutti.",
+   "Ogni weekend diventa una tratta dedicata a stare vicino alla piccola di casa.",
+   "Caty aggiunge una fermata bellissima e imprevista al percorso della famiglia."
+ ]},
+ {name:"Toscana",area:"Toscana",year:2025,img:"assets/stations/st19_matrimonio_giuseppe.jpg",cine:"assets/cinematics/cine_matrimonio_2025_photo.jpg",type:"wedding",summary:"Nel 2025 arriva il matrimonio di Giuseppe.",
+ beats:[
+   "2025 • Giuseppe sposa Kiki: il cerchio si chiude, la storia d'amore di famiglia continua.",
+   "Mimmo rivede se stesso, giovane sposo a Firenze, negli occhi di suo figlio.",
+   "La stessa gioia del 1988 torna a riempire la famiglia, ancora più grande ora.",
+   "Tra abbracci e brindisi, un'altra pagina bellissima si scrive nella storia di Mimmo Express.",
+   "Il viaggio che iniziò ad Ardore arriva fin qui: a un altro grande sì di famiglia."
+ ],
+ beatsFalling:[
+   "2025 • Giuseppe organizza il matrimonio con la stessa cura con cui Mimmo organizzava i suoi turni.",
+   "Liste, orari, invitati da coordinare: un'altra giornata da far correre alla perfezione.",
+   "Mimmo dà una mano con l'esperienza di chi ha già affrontato la sua, di giornata importante.",
+   "Nessun imprevisto ferma la festa: tutto arriva puntuale, proprio come piace in famiglia.",
+   "Da questa tappa in poi, il viaggio di famiglia prosegue in due coppie, non più una sola."
+ ]},
+ {name:"Figline Valdarno",area:"Toscana",year:2026,img:"assets/stations/st20_kiko.jpg",cine:"assets/cinematics/cine_kiko_2026_photo.jpg",type:"family",summary:"Nel 2026 nasce Kiko e il viaggio arriva ai due nipoti.",
+ beats:[
    "2026 • Con la nascita di Kiko, Mimmo diventa ancora più nonno nel cuore.",
    "Caty e Kiko riempiono la famiglia di nuove storie, sorrisi e futuro.",
    "Il viaggio partito da Ardore arriva fino ai nipoti e continua oltre.",
    "Ogni tappa precedente trova qui un significato ancora più grande.",
    "Da Ardore al 2026, Mimmo Express racconta una vita piena d'amore."
+ ],
+ beatsFalling:[
+   "2026 • Con l'arrivo di Kiko, la famiglia ha bisogno di orari nuovi, tutti da reinventare.",
+   "Mimmo osserva Giuseppe organizzare notti e turni proprio come faceva lui anni prima.",
+   "Ogni tratta percorsa in questi anni sembra aver preparato proprio questo momento.",
+   "Caty e Kiko diventano i nuovi passeggeri più importanti del viaggio di famiglia.",
+   "Da Ardore fino a qui: un'unica, lunga tratta piena di fermate che valeva la pena fare."
  ]},
 ];
 const MODES = {
@@ -129,23 +269,27 @@ function stationFor(level){return SCENES[Math.floor((level-1)/5)]}
 function within(level){return (level-1)%5+1}
 function stationTitle(level){ const st = stationFor(level); return st.year ? `${st.name} • ${st.year}` : st.name; }
 function stationTag(st){ return st.year ? `${st.area} • ${st.year}` : st.area; }
-function storyFor(level){
+// mode: 'falling' (Binari Puzzle, angolo pratico/organizzativo) o 'match'
+// (Locomotive Match, angolo emotivo/familiare). Senza mode, torna il testo
+// generico (usato ad es. nei tooltip della mappa).
+function storyFor(level,mode){
  const st=stationFor(level);
  const w=within(level)-1;
- if(st.beats && st.beats[w]) return st.beats[w];
+ const arr = mode==='falling' ? (st.beatsFalling||st.beats) : mode==='match' ? (st.beats||st.beatsFalling) : (st.beats||st.beatsFalling);
+ if(arr && arr[w]) return arr[w];
+ const base = mode==='falling' ? (st.summaryFalling||st.summary) : mode==='match' ? (st.summaryMatch||st.summary) : st.summary;
  const generic=[
-   `Arrivo a ${st.name}: ${st.summary}`,
-   `La corsa continua a ${st.name}: ${st.summary.toLowerCase()}`,
-   `Tra piccoli imprevisti e grandi sogni, ${st.summary.toLowerCase()}`,
-   `Mimmo tiene la rotta a ${st.name}: ${st.summary.toLowerCase()}`,
-   `Tappa conclusiva a ${st.name}: ${st.summary}`
+   `Arrivo a ${st.name}: ${base}`,
+   `La corsa continua a ${st.name}: ${base.toLowerCase()}`,
+   `Tra piccoli imprevisti e grandi sogni, ${base.toLowerCase()}`,
+   `Mimmo tiene la rotta a ${st.name}: ${base.toLowerCase()}`,
+   `Tappa conclusiva a ${st.name}: ${base}`
  ];
- return generic[w] || st.summary;
+ return generic[w] || base;
 }
-function updateStoryBoxes(level){
- const text=storyFor(level);
- const f=document.getElementById('fStory'); if(f) f.textContent=text;
- const m=document.getElementById('mStory'); if(m) m.textContent=text;
+function updateStoryBoxes(level,mode){
+ const f=document.getElementById('fStory'); if(f) f.textContent=storyFor(level,'falling');
+ const m=document.getElementById('mStory'); if(m) m.textContent=storyFor(level,'match');
  const cap=document.getElementById('routeMilestone'); if(cap) cap.textContent=stationFor(level).summary;
 }
 
@@ -157,7 +301,9 @@ const ACT_ICONS = {
  baby:{emoji:'👶',cls:'act-bounce'},
  pet:{emoji:'🐾',cls:'act-wiggle'},
  retire:{emoji:'🎖️',cls:'act-rise'},
- family:{emoji:'👨‍👩‍👧‍👦',cls:'act-pulse'}
+ family:{emoji:'👨‍👩‍👧‍👦',cls:'act-pulse'},
+ graduation:{emoji:'🎓',cls:'act-rise'},
+ grandchild:{emoji:'🍼',cls:'act-bounce'}
 };
 function genericToast(text,ms=1900){
  let el=document.getElementById('genericToast');
@@ -175,7 +321,10 @@ function playStationCinematic(mode, stationIndex, done){
  const st = SCENES[Math.max(0,Math.min(SCENES.length-1,stationIndex))];
  const isFinale = currentLevel===100;
  const isMilestone = !!(st.beats && st.type);
- const acts = isMilestone ? [st.beats[0], st.beats[2], st.beats[4]] : [st.summary];
+ // Stessa tappa, due racconti diversi: Binari Puzzle vede il lato pratico/organizzativo
+ // (beatsFalling), Locomotive Match il lato emotivo/familiare (beats) — mai la stessa scena due volte.
+ const beatsForMode = mode==='falling' ? (st.beatsFalling||st.beats) : (st.beats||st.beatsFalling);
+ const acts = isMilestone ? [beatsForMode[0], beatsForMode[2], beatsForMode[4]] : [mode==='falling' ? (st.summaryFalling||st.summary) : (st.summaryMatch||st.summary)];
  const icon = ACT_ICONS[st.type] || ACT_ICONS.railway;
 
  const root = document.getElementById('cinematicScreen');
@@ -390,7 +539,7 @@ function buildMap(mode, requestedWorld=null){
    node.className='level-node-v2 '+(lv<unlocked?'done':lv===unlocked?'current':'locked');
    node.style.left=V2_NODE_POS[i][0]+'%'; node.style.top=V2_NODE_POS[i][1]+'%';
    node.innerHTML=isUnlocked?`<span>${lv}</span>${lv<unlocked?'<i>✓</i>':''}`:'<span>?</span>';
-   node.disabled=!isUnlocked; node.title=isUnlocked?storyFor(lv):'Livello bloccato';
+   node.disabled=!isUnlocked; node.title=isUnlocked?storyFor(lv,mode):'Livello bloccato';
    if(isUnlocked){const go=(ev)=>{ev.preventDefault();ev.stopPropagation();startLevel(mode,lv)};node.addEventListener('click',go);node.addEventListener('touchend',go,{passive:false});}
    sec.appendChild(node);
  }
@@ -530,7 +679,7 @@ function updateFHud(){
  $("#fScore").textContent=String(fscore).padStart(7,"0");$("#fLevel").textContent=currentLevel;$("#fSignals").textContent=fobstacles;
  const sp=Math.min(4,1+Math.floor((840-fdrop)/150));$$("#fSpeed i").forEach((x,i)=>x.classList.toggle("on",i<sp));
  $("#fMessage").textContent=fobstacles>0?`Libera ${fobstacles} vagoni bloccati abbinando stesso colore e simbolo`:"Tratta libera!";
- const fStory=document.getElementById("fStory"); if(fStory && !fStory.textContent) fStory.textContent=storyFor(currentLevel);
+ const fStory=document.getElementById("fStory"); if(fStory && !fStory.textContent) fStory.textContent=storyFor(currentLevel,'falling');
 }
 function wagon(r,c,obj,ghost=false,active=false){
  const x=c*FCELL,y=r*FCELL; fctx.save(); fctx.globalAlpha=ghost?0.27:1;
@@ -863,7 +1012,7 @@ function updateMHud(){
  const detail=document.getElementById('mMissionDetail'); if(detail)detail.textContent=progress;
  const bar=document.getElementById('mMissionBar'); if(bar)bar.style.width=Math.min(100,ratio*100)+'%';
  const mobile=document.getElementById('mMissionMobile'); if(mobile)mobile.textContent=`🎯 ${mMission?.title||'Missione'} • ${progress}`;
- const mStory=document.getElementById('mStory');if(mStory)mStory.textContent=storyFor(currentLevel);
+ const mStory=document.getElementById('mStory');if(mStory)mStory.textContent=storyFor(currentLevel,'match');
 }
 $("#matchMap").onclick=()=>{clearTimeout(mHintTimer);selectedMode='match';buildMap('match');show('mapScreen')}
 
