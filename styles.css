@@ -307,7 +307,8 @@ canvas#fallCanvas{
 .cine-victory{display:none;background:linear-gradient(180deg,#ffe9a8,#ffd457);color:#5a2f00;font-weight:1000;border-radius:999px;padding:9px 20px;font-size:clamp(14px,2vw,19px);letter-spacing:.3px;margin-bottom:10px;box-shadow:0 8px 18px rgba(0,0,0,.28)}
 .cine-victory.show{display:inline-block;animation:cineVictoryPop .4s ease}
 @keyframes cineVictoryPop{0%{transform:scale(.6);opacity:0}70%{transform:scale(1.08)}100%{transform:scale(1);opacity:1}}
-.cine-act-icon{position:absolute;right:14px;bottom:14px;font-size:44px;filter:drop-shadow(0 6px 10px rgba(0,0,0,.4));z-index:2}
+.cine-act-icon{position:absolute;right:14px;bottom:14px;width:52px;height:52px;filter:drop-shadow(0 6px 10px rgba(0,0,0,.4));z-index:2}
+.cine-act-icon svg{width:100%;height:100%;display:block}
 .act-pulse{animation:actPulse 1.6s ease-in-out infinite}
 .act-pulse-gold{animation:actPulse 1.4s ease-in-out infinite;filter:drop-shadow(0 0 10px rgba(255,212,87,.8))}
 .act-bounce{animation:actBounce 1.3s ease-in-out infinite}
@@ -334,14 +335,15 @@ canvas#fallCanvas{
 
 /* Livelli boss: schermata di sfida prima del livello + tocco visivo sul gioco. */
 .boss-overlay-card{border-color:#c9302c!important}
-.boss-overlay-icon{font-size:52px;line-height:1;margin-bottom:4px;filter:drop-shadow(0 4px 6px rgba(0,0,0,.3))}
+.boss-overlay-icon{width:64px;height:64px;margin:0 auto 4px;filter:drop-shadow(0 4px 6px rgba(0,0,0,.3))}
+.boss-overlay-icon svg{width:100%;height:100%;display:block}
 .boss-overlay-tag{display:inline-block;background:linear-gradient(180deg,#ff7a6b,#c9302c);color:#fff;font-weight:1000;border-radius:999px;padding:5px 14px;font-size:12px;letter-spacing:.4px;margin-bottom:8px;box-shadow:0 6px 14px rgba(0,0,0,.25)}
 .boss-overlay-card.boss-finale .boss-overlay-tag{background:linear-gradient(180deg,#ffe9a8,#ffd457);color:#5a2f00}
 .boss-overlay-note{font-size:12px!important;color:#7a4a1e!important;font-weight:800!important}
 body.boss-level-active #fallGame .bp-board-frame,body.boss-level-active #matchGame .match-board{box-shadow:0 0 0 3px #c9302c,0 14px 28px rgba(0,0,0,.3);animation:bossFramePulse 2.4s ease-in-out infinite}
 @keyframes bossFramePulse{0%,100%{box-shadow:0 0 0 3px #c9302c,0 14px 28px rgba(0,0,0,.3)}50%{box-shadow:0 0 0 6px rgba(201,48,44,.55),0 14px 28px rgba(0,0,0,.3)}}
 @keyframes cinetrain{0%{transform:translateX(-2%)}100%{transform:translateX(calc(100% - 76px))}}
-@media (max-width:800px){.cine-scene-wrap{margin-top:10px}.cine-mimmo{height:110px;left:14px}.cine-anim{height:150px}.cine-track{left:120px}.cine-train-wrap{left:120px}.cine-train{font-size:42px}.cine-mini-route{left:124px;right:16px;bottom:78px}.cine-dot{width:13px;height:13px}.cine-act-icon{font-size:32px;right:8px;bottom:8px}.cine-victory{padding:7px 14px}}
+@media (max-width:800px){.cine-scene-wrap{margin-top:10px}.cine-mimmo{height:110px;left:14px}.cine-anim{height:150px}.cine-track{left:120px}.cine-train-wrap{left:120px}.cine-train{font-size:42px}.cine-mini-route{left:124px;right:16px;bottom:78px}.cine-dot{width:13px;height:13px}.cine-act-icon{width:38px;height:38px;right:8px;bottom:8px}.cine-victory{padding:7px 14px}}
 
 
 

@@ -8,7 +8,7 @@ const ROUTE_TRAIN_SVG=`<svg viewBox="0 0 180 90" aria-hidden="true"><g stroke="#
 // (Binari Puzzle) racconta il lato pratico/organizzativo dello stesso momento.
 // Così chi gioca a entrambe le modalità non rivede mai la stessa scena due volte.
 const SCENES = [
- {name:"Ardore",area:"Locride",year:1987,img:"assets/stations/st01_ardore.jpg",cine:"assets/cinematics/cine_ardore.png",type:"railway",summary:"Nel 1987 nasce il sogno ferroviario di Mimmo.",
+ {name:"Ardore",area:"Locride",year:1987,img:"assets/stations/clean/st01_ardore.jpg",cine:"assets/cinematics/cine_ardore.png",type:"railway",summary:"Nel 1987 nasce il sogno ferroviario di Mimmo.",
  beats:[
    "1987 • Ad Ardore tutto comincia: Mimmo scopre il fascino dei treni e dei binari.",
    "Tra mare e rotaie, ogni passaggio di locomotiva accende la sua immaginazione.",
@@ -23,31 +23,31 @@ const SCENES = [
    "Impara che in ferrovia ogni pezzo deve trovare il suo posto esatto, al momento giusto.",
    "Da Ardore parte anche il suo primo, vero apprendistato da ferroviere."
  ]},
- {name:"Bovalino",area:"Locride",year:1987,img:"assets/stations/st02_bovalino.jpg",cine:"assets/stations/st02_bovalino.jpg",summary:"I primi sogni sui binari diventano sempre più reali.",
+ {name:"Bovalino",area:"Locride",year:1987,img:"assets/stations/clean/st02_bovalino.jpg",cine:"assets/stations/clean/st02_bovalino.jpg",summary:"I primi sogni sui binari diventano sempre più reali.",
  summaryMatch:"Tappa dopo tappa, il cuore di Mimmo si affeziona sempre di più alla ferrovia.",
  summaryFalling:"Mimmo impara a memorizzare orari e coincidenze come un vero professionista."},
- {name:"Locri",area:"Locride",year:1987,img:"assets/stations/st03_locri.jpg",cine:"assets/stations/st03_locri.jpg",type:"love",summary:"A Locri Mimmo conosce la donna che diventerà sua moglie.",
+ {name:"Locri",area:"Locride",year:1987,img:"assets/stations/clean/st03_locri.jpg",cine:"assets/cinematics/cine_locri_1987.png",type:"love",summary:"A Locri Mimmo conosce Ada, la donna che diventerà sua moglie.",
  beats:[
-   "1987 • A Locri Mimmo incontra la ragazza che gli cambia il viaggio e il cuore.",
+   "1987 • A Locri Mimmo incontra Ada, la ragazza che gli cambia il viaggio e il cuore.",
    "Tra uno sguardo e un sorriso nasce una simpatia che sa già di destino.",
-   "Un caffè vicino alla stazione diventa il loro piccolo rituale.",
+   "\"Scusi, che treno c'è per Roccella?\" chiede Ada vicino alla banchina. \"Il prossimo passa tra due minuti, gliel'accompagno io\" risponde Mimmo — e da lì non le toglie più gli occhi di dosso.",
    "Le passeggiate trasformano la tappa di Locri in una storia d'amore.",
-   "Locri resta per sempre la stazione in cui Mimmo non viaggia più da solo."
+   "Locri resta per sempre la stazione in cui Mimmo non viaggia più da solo, accanto ad Ada."
  ],
  beatsFalling:[
    "1987 • Il turno di Mimmo fa tappa a Locri, tra orari da rispettare e treni da far correre puntuali.",
-   "Tra una manovra e l'altra, nota sempre la stessa ragazza vicino ai binari.",
-   "Organizza i suoi turni per passare, ogni volta che può, proprio da quella stazione.",
+   "Tra una manovra e l'altra nota sempre la stessa ragazza vicino ai binari: si chiama Ada, gliel'ha detto il capostazione.",
+   "\"Fa sempre questo turno?\" chiede Ada un giorno, quasi per caso. \"Da oggi sì\" risponde Mimmo, e da quel giorno i suoi turni a Locri non sono più un caso.",
    "Il lavoro lo porta a Locri quasi ogni giorno: non è più solo un caso.",
-   "Locri diventa la tappa fissa del suo percorso, per lavoro e per il cuore."
+   "Locri diventa la tappa fissa del suo percorso, per lavoro e per il cuore — con Ada che lo aspetta in banchina."
  ]},
- {name:"Gioiosa Ionica",area:"Locride",year:1988,img:"assets/stations/st04_gioiosa.jpg",cine:"assets/stations/st04_gioiosa.jpg",summary:"Nel 1988 l'amore cresce e prende coraggio.",
+ {name:"Gioiosa Ionica",area:"Locride",year:1988,img:"assets/stations/clean/st04_gioiosa.jpg",cine:"assets/stations/clean/st04_gioiosa.jpg",summary:"Nel 1988 l'amore cresce e prende coraggio.",
  summaryMatch:"L'amore tra Mimmo e la sua ragazza cresce ad ogni incontro.",
  summaryFalling:"Mimmo organizza i turni per ritagliarsi sempre più tempo per lei."},
- {name:"Siderno",area:"Locride",year:1988,img:"assets/stations/st05_siderno.jpg",cine:"assets/stations/st05_siderno.jpg",summary:"Le promesse diventano progetto di vita.",
+ {name:"Siderno",area:"Locride",year:1988,img:"assets/stations/clean/st05_siderno.jpg",cine:"assets/cinematics/cine_siderno_1988.png",summary:"Le promesse diventano progetto di vita.",
  summaryMatch:"Le promesse fatte piano piano diventano un progetto di vita insieme.",
  summaryFalling:"Comincia a pianificare il futuro con la stessa precisione di un orario ferroviario."},
- {name:"Firenze S.M.N.",area:"Firenze",year:1988,img:"assets/stations/st06_firenze_matrimonio.jpg",cine:"assets/cinematics/cine_matrimonio_1988.png",type:"wedding",summary:"Nel 1988 Mimmo si sposa a Firenze.",
+ {name:"Firenze S.M.N.",area:"Firenze",year:1988,img:"assets/stations/clean/st06_firenze_matrimonio.jpg",cine:"assets/cinematics/cine_matrimonio_1988.png",type:"wedding",summary:"Nel 1988 Mimmo si sposa a Firenze.",
  beats:[
    "1988 • Firenze accoglie Mimmo e la donna della sua vita per il grande giorno.",
    "Il matrimonio rende questa stazione il simbolo della loro unione.",
@@ -62,13 +62,13 @@ const SCENES = [
    "Nessun ritardo, nessun imprevisto: solo la tratta più importante della sua vita.",
    "Da Santa Maria Novella riparte un uomo sposato, pronto per la prossima destinazione insieme a lei."
  ]},
- {name:"Figline Valdarno",area:"Toscana",year:1989,img:"assets/stations/st07_figline.jpg",cine:"assets/cinematics/cine_figline_1989.png",summary:"La famiglia si trasferisce a Figline e mette radici.",
+ {name:"Figline Valdarno",area:"Toscana",year:1989,img:"assets/stations/clean/st07_figline.jpg",cine:"assets/cinematics/cine_figline_1989.png",summary:"La famiglia si trasferisce a Figline e mette radici.",
  summaryMatch:"La nuova casa a Figline diventa il nido della famiglia appena nata.",
  summaryFalling:"Mimmo organizza il trasloco e i nuovi turni nella tratta toscana."},
- {name:"Valdarno",area:"Toscana",year:1990,img:"assets/stations/st08_valdarno.jpg",cine:"assets/cinematics/cine_figline_1989.png",summary:"Nuova casa, nuove abitudini, nuova rotta di vita.",
+ {name:"Valdarno",area:"Toscana",year:1990,img:"assets/stations/clean/st08_valdarno.jpg",cine:"assets/cinematics/cine_figline_1989.png",summary:"Nuova casa, nuove abitudini, nuova rotta di vita.",
  summaryMatch:"Nuove abitudini, nuovi vicini, una vita che pian piano si costruisce insieme.",
  summaryFalling:"Mimmo studia le nuove tratte toscane come fossero un livello da completare."},
- {name:"Figline Valdarno",area:"Toscana",year:1991,img:"assets/stations/st09_giuseppe.jpg",cine:"assets/cinematics/cine_giuseppe_1991_correct.png",type:"baby",summary:"Nel 1991 nasce Giuseppe.",
+ {name:"Figline Valdarno",area:"Toscana",year:1991,img:"assets/stations/clean/st09_giuseppe.jpg",cine:"assets/cinematics/cine_giuseppe_1991_correct.png",type:"baby",summary:"Nel 1991 nasce Giuseppe.",
  beats:[
    "1991 • Una grande notizia corre più veloce di un espresso: nasce Giuseppe.",
    "La casa si riempie di gioia, stanchezza e meraviglia.",
@@ -83,10 +83,10 @@ const SCENES = [
    "Impara a fare le valigie in fretta, per tornare a casa un minuto prima.",
    "Figline custodisce i primi passi di Giuseppe e i turni più organizzati di Mimmo."
  ]},
- {name:"Firenze S.M.N.",area:"Firenze",year:1993,img:"assets/stations/st10_turni.jpg",summary:"I turni in ferrovia diventano il cuore della sua vita lavorativa.",
+ {name:"Firenze S.M.N.",area:"Firenze",year:1993,img:"assets/stations/clean/st10_turni.jpg",summary:"I turni in ferrovia diventano il cuore della sua vita lavorativa.",
  summaryMatch:"Anche nei turni più duri, il pensiero di Mimmo torna sempre alla sua famiglia.",
  summaryFalling:"I turni diventano il cuore della sua vita lavorativa: notturni, festivi, sempre puntuale."},
- {name:"Valdarno",area:"Toscana",year:1997,img:"assets/stations/st11_duccio.jpg",cine:"assets/cinematics/cine_duccio_1997_correct.png",type:"baby",summary:"Nel 1997 nasce Duccio.",
+ {name:"Valdarno",area:"Toscana",year:1997,img:"assets/stations/clean/st11_duccio.jpg",cine:"assets/cinematics/cine_duccio_1997_correct.png",type:"baby",summary:"Nel 1997 nasce Duccio.",
  beats:[
    "1997 • Arriva anche Duccio e la famiglia si allarga ancora.",
    "Due figli significano doppia gioia e mille ricordi da costruire.",
@@ -101,10 +101,10 @@ const SCENES = [
    "Le sue giornate diventano un vero e proprio orario ferroviario, preciso al minuto.",
    "Il Valdarno diventa la tratta fissa tra il lavoro e i suoi due ragazzi."
  ]},
- {name:"Toscana",area:"Toscana",year:2000,img:"assets/stations/st12_toscana.jpg",summary:"Anni di crescita, lavoro e avventure romanzate tra binari e famiglia.",
+ {name:"Toscana",area:"Toscana",year:2000,img:"assets/stations/clean/st12_toscana.jpg",cine:"assets/cinematics/cine_toscana_2000.png",summary:"Anni di crescita, lavoro e avventure romanzate tra binari e famiglia.",
  summaryMatch:"Anni di crescita in famiglia, tra risate, compiti e cene tutti insieme.",
  summaryFalling:"Anni di lavoro e di esperienza: Mimmo conosce ormai ogni scambio a memoria."},
- {name:"Figline Valdarno",area:"Toscana",year:2008,img:"assets/stations/st13_lucky.jpg",cine:"assets/cinematics/cine_lucky_2008.png",type:"pet",summary:"Nel 2008 arriva Lucky, il primo Yorkshire.",
+ {name:"Figline Valdarno",area:"Toscana",year:2008,img:"assets/stations/clean/st13_lucky.jpg",cine:"assets/cinematics/cine_lucky_2008.png",type:"pet",summary:"Nel 2008 arriva Lucky, il primo Yorkshire.",
  beats:[
    "2008 • In casa arriva Lucky e porta allegria a tutta la famiglia.",
    "Piccolo, vivace e sempre presente: Lucky diventa subito uno di casa.",
@@ -119,7 +119,7 @@ const SCENES = [
    "Lucky impara ad aspettarlo puntuale come un treno, ogni sera alla stessa ora.",
    "Anche i più piccoli hanno bisogno di orari precisi: Mimmo lo sa bene."
  ]},
- {name:"Figline Valdarno",area:"Toscana",year:2018,img:"assets/stations/st15_boris.jpg",cine:"assets/cinematics/cine_boris_2018.png",type:"pet",summary:"Nel 2018 arriva Boris; Lucky resta un ricordo speciale.",
+ {name:"Figline Valdarno",area:"Toscana",year:2018,img:"assets/stations/clean/st15_boris.jpg",cine:"assets/cinematics/cine_boris_2018.png",type:"pet",summary:"Nel 2018 arriva Boris; Lucky resta un ricordo speciale.",
  beats:[
    "2018 • Boris entra in famiglia e porta una nuova energia in casa.",
    "Il ricordo di Lucky resta vivo, ma il viaggio continua anche con Boris.",
@@ -134,7 +134,7 @@ const SCENES = [
    "Organizzare la giornata con un cane in casa è un po' come gestire una piccola stazione.",
    "Boris si aggiunge alla lista delle piccole grandi responsabilità quotidiane di Mimmo."
  ]},
- {name:"Figline Valdarno",area:"Toscana",year:2020,img:"assets/stations/st14_ferrovia.jpg",type:"love",summary:"Nel 2020 Kiki entra nella vita di Giuseppe: è la sua compagna e futura moglie.",
+ {name:"Figline Valdarno",area:"Toscana",year:2020,img:"assets/stations/clean/st14_ferrovia.jpg",cine:"assets/cinematics/cine_kiki_2020.png",type:"love",summary:"Nel 2020 Kiki entra nella vita di Giuseppe: è la sua compagna e futura moglie.",
  beats:[
    "2020 • Giuseppe incontra Kiki, la sua compagna e futura moglie: nasce una nuova storia d'amore in famiglia.",
    "Tra giornate semplici e nuovi progetti, Mimmo osserva tutto con orgoglio.",
@@ -149,7 +149,7 @@ const SCENES = [
    "Ogni weekend diventa un piccolo orario condiviso tra lavoro, famiglia e la nuova arrivata.",
    "Kiki si inserisce nei ritmi della famiglia come una tappa che ormai sembrava scritta."
  ]},
- {name:"Firenze",area:"Firenze",year:2021,img:"assets/stations/st16_laurea.jpg",cine:"assets/cinematics/cine_duccio_2021_photo.jpg",type:"graduation",summary:"Nel 2021 Duccio si laurea: un grande traguardo di famiglia.",
+ {name:"Firenze",area:"Firenze",year:2021,img:"assets/stations/clean/st16_laurea.jpg",cine:"assets/cinematics/cine_duccio_2021_photo.jpg",type:"graduation",summary:"Nel 2021 Duccio si laurea: un grande traguardo di famiglia.",
  beats:[
    "2021 • Duccio si laurea: l'emozione in famiglia è impossibile da nascondere.",
    "Anni di studio, sacrifici e piccoli grandi traguardi arrivano a compimento.",
@@ -164,7 +164,7 @@ const SCENES = [
    "Il giorno della laurea, tutta la famiglia organizza insieme il viaggio verso Firenze.",
    "Un altro traguardo raggiunto puntuale, proprio come piace a Mimmo."
  ]},
- {name:"Firenze S.M.N.",area:"Firenze",year:2023,img:"assets/stations/st17_pensione.jpg",cine:"assets/cinematics/cine_pensione_2023.png",type:"retire",summary:"Nel 2023 arriva la pensione del babbo.",
+ {name:"Firenze S.M.N.",area:"Firenze",year:2023,img:"assets/stations/clean/st17_pensione.jpg",cine:"assets/cinematics/cine_pensione_2023.png",type:"retire",summary:"Nel 2023 arriva la pensione del babbo.",
  beats:[
    "2023 • Dopo una lunga vita sui binari, arriva la pensione di Mimmo.",
    "Si chiude un capitolo enorme fatto di turni, partenze e responsabilità.",
@@ -179,7 +179,7 @@ const SCENES = [
    "Per la prima volta, Mimmo può scegliere lui stesso i propri orari.",
    "La pensione è la sua ultima, meritata manovra: cambiare binario, non fermarsi."
  ]},
- {name:"Figline Valdarno",area:"Toscana",year:2024,img:"assets/stations/st18_caty.jpg",cine:"assets/cinematics/cine_caty_2024_photo.jpg",type:"grandchild",summary:"Nel 2024 nasce Caty, la prima nipote.",
+ {name:"Figline Valdarno",area:"Toscana",year:2024,img:"assets/stations/clean/st18_caty.jpg",cine:"assets/cinematics/cine_caty_2024_photo.jpg",type:"grandchild",summary:"Nel 2024 nasce Caty, la prima nipote.",
  beats:[
    "2024 • Nasce Caty: Mimmo diventa nonno e il cuore trova spazio per un amore nuovo.",
    "La prima nipote porta in casa un'euforia che nessuno sapeva di aspettare così tanto.",
@@ -194,7 +194,7 @@ const SCENES = [
    "Ogni weekend diventa una tratta dedicata a stare vicino alla piccola di casa.",
    "Caty aggiunge una fermata bellissima e imprevista al percorso della famiglia."
  ]},
- {name:"Toscana",area:"Toscana",year:2025,img:"assets/stations/st19_matrimonio_giuseppe.jpg",cine:"assets/cinematics/cine_matrimonio_2025_photo.jpg",type:"wedding",summary:"Nel 2025 arriva il matrimonio di Giuseppe.",
+ {name:"Toscana",area:"Toscana",year:2025,img:"assets/stations/clean/st19_matrimonio_giuseppe.jpg",cine:"assets/cinematics/cine_matrimonio_2025_photo.jpg",type:"wedding",summary:"Nel 2025 arriva il matrimonio di Giuseppe.",
  beats:[
    "2025 • Giuseppe sposa Kiki: il cerchio si chiude, la storia d'amore di famiglia continua.",
    "Mimmo rivede se stesso, giovane sposo a Firenze, negli occhi di suo figlio.",
@@ -209,7 +209,7 @@ const SCENES = [
    "Nessun imprevisto ferma la festa: tutto arriva puntuale, proprio come piace in famiglia.",
    "Da questa tappa in poi, il viaggio di famiglia prosegue in due coppie, non più una sola."
  ]},
- {name:"Figline Valdarno",area:"Toscana",year:2026,img:"assets/stations/st20_kiko.jpg",cine:"assets/cinematics/cine_kiko_2026_photo.jpg",type:"family",summary:"Nel 2026 nasce Kiko e il viaggio arriva ai due nipoti.",
+ {name:"Figline Valdarno",area:"Toscana",year:2026,img:"assets/stations/clean/st20_kiko.jpg",cine:"assets/cinematics/cine_kiko_2026_photo.jpg",type:"family",summary:"Nel 2026 nasce Kiko e il viaggio arriva ai due nipoti.",
  beats:[
    "2026 • Con la nascita di Kiko, Mimmo diventa ancora più nonno nel cuore.",
    "Caty e Kiko riempiono la famiglia di nuove storie, sorrisi e futuro.",
@@ -295,16 +295,37 @@ function updateStoryBoxes(level,mode){
 }
 
 
+// Icone disegnate nello stesso stile "flat, contorno spesso" del resto del gioco
+// (stessi colori e stessa grafia dei treni/simboli in ROUTE_TRAIN_SVG e drawSymbol),
+// al posto delle emoji generiche: un badge circolare colorato con un piccolo glifo bianco.
+function svgBadge(bg, glyph){
+ return `<svg viewBox="0 0 44 44" aria-hidden="true"><circle cx="22" cy="22" r="20" fill="${bg}" stroke="#17365c" stroke-width="3"/>${glyph}</svg>`;
+}
+const ICON_GLYPH = {
+ train:'<g fill="none" stroke="#fff" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"><rect x="12" y="16" width="20" height="11" rx="3"/><rect x="16" y="11" width="8" height="7" rx="1.5"/><circle cx="17" cy="30" r="2.4" fill="#fff" stroke="none"/><circle cx="27" cy="30" r="2.4" fill="#fff" stroke="none"/><path d="M32 21h4l-4 3z" fill="#fff" stroke="none"/></g>',
+ heart:'<path d="M22 32c-6-4.4-11-8.6-11-14a6 6 0 0 1 11-3.3A6 6 0 0 1 33 18c0 5.4-5 9.6-11 14z" fill="#fff" stroke="#17365c" stroke-width="1.6"/>',
+ rings:'<g fill="none" stroke="#fff" stroke-width="3"><circle cx="17" cy="24" r="7"/><circle cx="27" cy="24" r="7"/></g>',
+ bottle:'<g fill="#fff" stroke="none"><rect x="18" y="10" width="8" height="5" rx="1.5"/><path d="M16 15h12l-1.5 17a3 3 0 0 1-3 2.6h-3a3 3 0 0 1-3-2.6z"/></g>',
+ paw:'<g fill="#fff"><ellipse cx="22" cy="27" rx="7" ry="6"/><ellipse cx="13" cy="18" rx="3" ry="3.6"/><ellipse cx="20" cy="13" rx="3" ry="3.6"/><ellipse cx="28" cy="13" rx="3" ry="3.6"/><ellipse cx="31" cy="18" rx="3" ry="3.6"/></g>',
+ medal:'<g fill="none" stroke="#fff" stroke-width="2.6"><path d="M16 10l6 9 6-9" stroke-linejoin="round"/><circle cx="22" cy="27" r="8" fill="#fff" stroke="#17365c"/></g><path d="M22 22l1.8 3.6 4 .5-2.9 2.8.7 4-3.6-1.9-3.6 1.9.7-4-2.9-2.8 4-.5z" fill="#ffd457" stroke="none"/>',
+ family:'<g fill="#fff"><circle cx="15" cy="16" r="3.2"/><circle cx="29" cy="16" r="3.2"/><circle cx="22" cy="22" r="2.6"/><path d="M9 32c0-5 4-8 6-8s6 3 6 8zM23 32c0-4.4 3.6-7 5.6-7s5.4 2.6 5.4 7z" opacity=".92"/></g>',
+ cap:'<g fill="#fff"><path d="M22 11 8 17l14 6 14-6z"/><path d="M14 20v6c0 2.6 3.6 4.6 8 4.6s8-2 8-4.6v-6l-8 3.4z" opacity=".92"/></g><circle cx="34" cy="18" r="1.6" fill="#fff"/><path d="M34 18v8" stroke="#fff" stroke-width="1.6"/>',
+ rattle:'<g fill="#fff" stroke="none"><circle cx="24" cy="16" r="7"/><circle cx="21" cy="13" r="1.4" fill="#17365c"/><circle cx="27" cy="13" r="1.4" fill="#17365c"/><circle cx="24" cy="18" r="1.4" fill="#17365c"/><rect x="16" y="24" width="5" height="12" rx="2.4" transform="rotate(-28 16 24)"/></g>',
+ cap_boss:'<g fill="#fff"><path d="M9 26c0-8 6-13 13-13s13 5 13 13z"/><rect x="8" y="26" width="28" height="5" rx="2.4"/></g><circle cx="22" cy="19" r="2.6" fill="#ffd457"/>',
+ grump:'<g fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round"><path d="M13 19l6 2M31 19l-6 2"/><path d="M14 29q8-5 16 0"/></g><circle cx="16" cy="24" r="2" fill="#fff"/><circle cx="28" cy="24" r="2" fill="#fff"/>',
+ warn:'<path d="M22 9l14 24H8z" fill="#fff" stroke="#17365c" stroke-width="1.6" stroke-linejoin="round"/><rect x="20.4" y="19" width="3.2" height="8" rx="1.4" fill="#17365c"/><circle cx="22" cy="30.5" r="1.7" fill="#17365c"/>',
+ trophy:'<g fill="#fff"><path d="M15 12h14v7a7 7 0 0 1-14 0z"/><rect x="20" y="26" width="4" height="5"/><rect x="16" y="31" width="12" height="3" rx="1.3"/></g><path d="M15 14h-3a4 4 0 0 0 4 5M29 14h3a4 4 0 0 1-4 5" fill="none" stroke="#fff" stroke-width="2"/>'
+};
 const ACT_ICONS = {
- railway:{emoji:'🚂',cls:'act-move'},
- love:{emoji:'💞',cls:'act-pulse'},
- wedding:{emoji:'💍',cls:'act-pulse-gold'},
- baby:{emoji:'👶',cls:'act-bounce'},
- pet:{emoji:'🐾',cls:'act-wiggle'},
- retire:{emoji:'🎖️',cls:'act-rise'},
- family:{emoji:'👨‍👩‍👧‍👦',cls:'act-pulse'},
- graduation:{emoji:'🎓',cls:'act-rise'},
- grandchild:{emoji:'🍼',cls:'act-bounce'}
+ railway:{svg:svgBadge('#2f9fe8',ICON_GLYPH.train),cls:'act-move'},
+ love:{svg:svgBadge('#e45778',ICON_GLYPH.heart),cls:'act-pulse'},
+ wedding:{svg:svgBadge('#d54883',ICON_GLYPH.rings),cls:'act-pulse-gold'},
+ baby:{svg:svgBadge('#42a562',ICON_GLYPH.bottle),cls:'act-bounce'},
+ pet:{svg:svgBadge('#dc922d',ICON_GLYPH.paw),cls:'act-wiggle'},
+ retire:{svg:svgBadge('#2676b8',ICON_GLYPH.medal),cls:'act-rise'},
+ family:{svg:svgBadge('#7b5fd3',ICON_GLYPH.family),cls:'act-pulse'},
+ graduation:{svg:svgBadge('#9a4fab',ICON_GLYPH.cap),cls:'act-rise'},
+ grandchild:{svg:svgBadge('#e64545',ICON_GLYPH.rattle),cls:'act-bounce'}
 };
 function genericToast(text,ms=1900){
  let el=document.getElementById('genericToast');
@@ -342,12 +363,15 @@ function playStationCinematic(mode, stationIndex, done){
  const iconEl = document.getElementById('cineActIcon');
 
  if(bg) bg.style.backgroundImage = `url("${st.img}")`;
- if(scene){ scene.src = st.cine || st.img; scene.alt = `Scena di ${st.name}`; }
+ if(scene){
+   scene.onerror = ()=>{ scene.onerror=null; scene.src = st.img; };
+   scene.src = st.cine || st.img; scene.alt = `Scena di ${st.name}`;
+ }
  if(y) y.textContent = st.year || 'Mimmo Express';
  if(s) s.textContent = st.name;
  if(badge) badge.classList.remove('show');
  if(dots){ dots.innerHTML = acts.map((_,i)=>`<span class="cine-dot-act" data-i="${i}"></span>`).join(''); }
- if(iconEl){ iconEl.textContent = icon.emoji; iconEl.className = 'cine-act-icon '+icon.cls; }
+ if(iconEl){ iconEl.innerHTML = icon.svg; iconEl.className = 'cine-act-icon '+icon.cls; }
  root.classList.toggle('cine-milestone', isMilestone);
  show('cinematicScreen');
  playSfx('whistle');
@@ -571,13 +595,13 @@ const fcanvas=$("#fallCanvas"),fctx=fcanvas.getContext("2d");
 // e "impersona" un piccolo antagonista ricorrente della vita di Mimmo, a rotazione;
 // il livello 100 è il gran finale, il più duro di tutti.
 const BOSSES=[
- {id:'capo',name:'Il Capo del Deposito',icon:'👔',line:'"Mimmo, quella tratta non si libera da sola!" Il capo controlla ogni mossa: oggi bisogna dimostrargli di che pasta è fatto.'},
- {id:'giampy',name:'Giampy, il vicino di casa',icon:'😤',line:'Giampy bussa ancora per lamentarsi del cancello. Stavolta Mimmo non si lascia distrarre da niente.'},
- {id:'guasto',name:'Guasto sui binari',icon:'⚠️',line:'Un guasto improvviso rischia di far accumulare ritardo su tutta la linea: va risolto subito, senza perdere la calma.'}
+ {id:'capo',name:'Il Capo del Deposito',icon:svgBadge('#0b448d',ICON_GLYPH.cap_boss),line:'"Mimmo, quella tratta non si libera da sola!" Il capo controlla ogni mossa: oggi bisogna dimostrargli di che pasta è fatto.'},
+ {id:'giampy',name:'Giampy, il vicino di casa',icon:svgBadge('#dc922d',ICON_GLYPH.grump),line:'Giampy bussa ancora per lamentarsi del cancello. Stavolta Mimmo non si lascia distrarre da niente.'},
+ {id:'guasto',name:'Guasto sui binari',icon:svgBadge('#e45757',ICON_GLYPH.warn),line:'Un guasto improvviso rischia di far accumulare ritardo su tutta la linea: va risolto subito, senza perdere la calma.'}
 ];
 function isBossLevel(level){ return level%5===0; }
 function bossForLevel(level){
- if(level===100) return {id:'finale',name:'La Grande Sfida Finale',icon:'🏆',line:'Tutto il viaggio di Mimmo Express, da Ardore fino a qui, porta a questo ultimo grande traguardo.'};
+ if(level===100) return {id:'finale',name:'La Grande Sfida Finale',icon:svgBadge('#ffd457',ICON_GLYPH.trophy),line:'Tutto il viaggio di Mimmo Express, da Ardore fino a qui, porta a questo ultimo grande traguardo.'};
  const stationIndex=Math.floor((level-1)/5);
  return BOSSES[stationIndex%BOSSES.length];
 }
@@ -588,7 +612,7 @@ function showBossIntro(mode,level,onStart){
  if(!el){ el=document.createElement('div'); el.id='bossOverlay'; el.className='life-overlay boss-overlay'; document.body.appendChild(el); }
  el.innerHTML=`<div class="life-overlay-card boss-overlay-card${isFinale?' boss-finale':''}">
    <div class="boss-overlay-icon">${boss.icon}</div>
-   <div class="boss-overlay-tag">${isFinale?'🏆 GRAN FINALE':'⚡ LIVELLO BOSS'}</div>
+   <div class="boss-overlay-tag">${isFinale?'GRAN FINALE':'LIVELLO BOSS'}</div>
    <h2>${boss.name}</h2>
    <p>${boss.line}</p>
    <p class="boss-overlay-note">Livello più impegnativo del solito: circa +${Math.round((bossDifficultyMult(level)-1)*100)}% di difficoltà.</p>
