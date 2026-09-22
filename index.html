@@ -17,6 +17,7 @@
 <meta name="apple-mobile-web-app-title" content="Mimmo Express">
 <meta name="format-detection" content="telephone=no">
 <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="css/binari-v22.css?v=22">
 </head>
 <body>
 <div id="app">
@@ -61,47 +62,41 @@
     <div class="map-scroll"><main id="route" class="route"></main></div>
   </section>
 
-  <section id="fallGame" class="screen game-screen fall-screen">
-    <div class="fall-portrait-shell">
-      <header class="fall-header">
-        <div class="fall-station"><span>🚉</span><b id="gameStation">Ardore</b></div>
-        <div class="fall-header-actions"><button id="fallHelp" class="fall-help-btn" type="button">?</button><button id="fallMap" class="fall-map-btn">Percorso</button></div>
-      </header>
-      <div class="fall-stats">
-        <div class="fall-stat"><small>🏅 PUNTI</small><b id="fScore">0000000</b></div>
-        <div class="fall-stat"><small>🚉 LIVELLO</small><b id="fLevel">1</b></div>
-        <div class="fall-stat"><small>🔒 BLOCCATI</small><b id="fSignals">0</b></div>
-        <div class="fall-stat fall-next"><small>🧩 PROSSIMO</small><div id="nextPreview"></div></div>
-      </div>
-      <div class="fall-speed"><span>⚡ VELOCITÀ</span><div id="fSpeed" class="speedbar"><i class="on"></i><i></i><i></i><i></i></div></div>
-      <div class="fall-match-rule"><b>REGOLA:</b> abbina <span>stesso colore + stesso simbolo</span> • i vagoni con 🔒 sono gli stessi pezzi, ma bloccati.</div>
-      <div class="fall-board-wrap"><canvas id="fallCanvas" width="480" height="720"></canvas></div>
-      <div class="fall-controls" aria-label="Controlli Binari Puzzle">
-        <button data-f="left">◀<small>SINISTRA</small></button>
-        <button data-f="rot">↻<small>RUOTA</small></button>
-        <button data-f="right">▶<small>DESTRA</small></button>
-        <button data-f="drop">▼<small>GIÙ</small></button>
-      </div>
-      <div class="fall-info"><div id="fMessage">Pronto alla partenza</div><div id="fStory" class="story-text">Ad Ardore nasce il sogno ferroviario di Mimmo.</div></div>
-      <div class="fall-touch-help">Sul telefono: <b>tocca</b> il campo per ruotare • <b>swipe</b> a sinistra/destra per spostare • swipe in basso per far cadere.</div>
-      <div id="fallTutorial" class="fall-tutorial" aria-hidden="true">
-        <div class="fall-tutorial-card">
-          <button id="fallTutorialClose" class="fall-tutorial-close" type="button">×</button>
-          <div class="fall-tutorial-title">Come si liberano i vagoni</div>
-          <div class="fall-tutorial-pair">
-            <div class="tutorial-item"><div class="tutorial-sprite"><img src="assets/sprites/dr_piece_0.svg" alt="Vagone rosso"></div><b>Vagone che cade</b></div>
-            <div class="tutorial-equals">=</div>
-            <div class="tutorial-item"><div class="tutorial-sprite locked-demo"><img src="assets/sprites/dr_piece_0.svg" alt="Vagone rosso bloccato"><img class="tutorial-lock" src="assets/sprites/dr_lock_overlay.svg" alt=""></div><b>Stesso vagone bloccato</b></div>
-          </div>
-          <p><b>Colore e simbolo devono essere uguali.</b> Crea una fila o colonna di almeno <b>3 pezzi uguali</b> per liberarli.</p>
-          <div class="tutorial-symbols">
-            <span><img src="assets/sprites/dr_piece_0.svg" alt=""> ●</span>
-            <span><img src="assets/sprites/dr_piece_1.svg" alt=""> ◆</span>
-            <span><img src="assets/sprites/dr_piece_2.svg" alt=""> ▲</span>
-          </div>
-          <button id="fallTutorialOk" class="big-btn" type="button">Ho capito, partiamo!</button>
+  <section id="fallGame" class="screen bp-screen">
+    <div class="bp-world-bg" id="bpWorldBg"></div>
+    <div class="bp-shell">
+      <header class="fall-header bp-topbar">
+        <div class="bp-station"><span class="bp-station-dot"></span><div><small id="bpWorldLabel">MONDO 1</small><b id="gameStation">Ardore</b></div></div>
+        <div class="bp-actions">
+          <button id="bpPause" class="bp-icon-btn" type="button" aria-label="Pausa">Ⅱ</button>
+          <button id="fallMap" class="bp-icon-btn bp-map-btn" type="button" aria-label="Percorso">↩</button>
         </div>
+      </header>
+
+      <div class="bp-hud">
+        <div class="bp-hud-card"><small>PUNTI</small><b id="fScore">0000000</b></div>
+        <div class="bp-hud-card"><small>LIVELLO</small><b id="fLevel">1</b></div>
+        <div class="bp-hud-card"><small>BLOCCATI</small><b id="fSignals">0</b></div>
+        <div class="bp-hud-card bp-next-card"><small>PROSSIMO</small><canvas id="bpNext" width="116" height="58"></canvas></div>
       </div>
+
+      <main class="bp-stage">
+        <div class="bp-board-frame">
+          <div class="bp-board-title"><span id="bpLevelName">Partenza da Ardore</span><span id="bpGoalMini">Libera i vagoni</span></div>
+          <canvas id="binariCanvas" width="480" height="720" aria-label="Campo Binari Puzzle"></canvas>
+          <div id="bpCombo" class="bp-combo"></div>
+          <div id="bpHint" class="bp-hint"></div>
+        </div>
+      </main>
+
+      <footer class="bp-footer">
+        <div class="bp-objective"><span class="bp-objective-icon">🚦</span><div><small>OBIETTIVO</small><b id="fMessage">Libera tutti i vagoni bloccati</b></div></div>
+        <div class="bp-story" id="fStory">Ad Ardore nasce il sogno ferroviario di Mimmo.</div>
+      </footer>
+
+      <div id="bpOverlay" class="bp-overlay" aria-hidden="true"></div>
+      <canvas id="fallCanvas" width="1" height="1" hidden></canvas>
+      <div id="nextPreview" hidden></div><div id="fSpeed" hidden></div>
     </div>
   </section>
 
@@ -162,6 +157,7 @@
     </div>
   </section>
 </div>
-<script src="game.js"></script>
+<script src="game.js?v=22"></script>
+<script src="js/binari-v22.js?v=22"></script>
 </body>
 </html>

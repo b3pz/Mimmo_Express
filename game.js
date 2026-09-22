@@ -186,30 +186,30 @@ function locomotiveSvg(color="#e43d3d", type=0){
  </svg>`
 }
 
-const FALL_SPRITES = Array.from({length:5}, (_,i)=>`assets/sprites_v2/fall_piece_${i}.png?v=21`);
+const FALL_SPRITES = Array.from({length:5}, (_,i)=>`assets/fall_piece_${i}.png?v=22`);
 const FALL_FAULT_SPRITES = Array.from({length:5}, (_,i)=>`assets/sprites/dr_fault_${i}.svg`);
 const FALL_LOCK_OVERLAY = 'assets/sprites/dr_lock_overlay.svg';
 const MATCH_SPRITES = [
- "assets/sprites_v2/piece_locomotive.png?v=21",
- "assets/sprites_v2/piece_carriage.png?v=21",
- "assets/sprites_v2/piece_signal.png?v=21",
- "assets/sprites_v2/piece_ticket.png?v=21",
- "assets/sprites_v2/piece_clock.png?v=21",
- "assets/sprites_v2/piece_suitcase.png?v=21",
- "assets/sprites_v2/piece_cap.png?v=21"
+ "assets/piece_locomotive.png?v=22",
+ "assets/piece_carriage.png?v=22",
+ "assets/piece_signal.png?v=22",
+ "assets/piece_ticket.png?v=22",
+ "assets/piece_clock.png?v=22",
+ "assets/piece_suitcase.png?v=22",
+ "assets/piece_cap.png?v=22"
 ];
 const SPECIAL_SPRITES = {
- area:"assets/sprites_v2/special_bomb.png?v=21",
- row:"assets/sprites_v2/special_arrow_row.png?v=21",
- col:"assets/sprites_v2/special_arrow_col.png?v=21",
- colorbomb:"assets/sprites_v2/special_colorbomb.png?v=21"
+ area:"assets/special_bomb.png?v=22",
+ row:"assets/special_arrow_row.png?v=22",
+ col:"assets/special_arrow_col.png?v=22",
+ colorbomb:"assets/special_colorbomb.png?v=22"
 };
-const FLOOR_SPRITES={1:'assets/sprites_v2/floor_crack_1.png?v=21',2:'assets/sprites_v2/floor_crack_2.png?v=21',3:'assets/sprites_v2/floor_crack_3.png?v=21'};
-const EVENT_SPRITES={bonusMove:'assets/sprites_v2/bonus_move.png?v=21',bonusRepair:'assets/sprites_v2/bonus_repair.png?v=21',malusDelay:'assets/sprites_v2/malus_delay.png?v=21',malusDamage:'assets/sprites_v2/malus_damage.png?v=21'};
+const FLOOR_SPRITES={1:'assets/floor_crack_1.png?v=22',2:'assets/floor_crack_2.png?v=22',3:'assets/floor_crack_3.png?v=22'};
+const EVENT_SPRITES={bonusMove:'assets/bonus_move.png?v=22',bonusRepair:'assets/bonus_repair.png?v=22',malusDelay:'assets/malus_delay.png?v=22',malusDamage:'assets/malus_damage.png?v=22'};
 function blockerSpriteFor(hp){
  const world=mWorldConfig?.world||0;
  const crate=(world%3===2 || world>=6);
- return crate ? `assets/sprites_v2/obstacle_crate_${hp>1?2:1}.png` : `assets/sprites_v2/obstacle_barrier_${hp>1?2:1}.png`;
+ return crate ? `assets/obstacle_crate_${hp>1?2:1}.png` : `assets/obstacle_barrier_${hp>1?2:1}.png`;
 }
 
 function svgData(mark,bg='#e94e55',fg='#ffffff'){
@@ -231,7 +231,7 @@ function loadSprite(src){
  }
  return IMG_CACHE[src];
 }
-[FALL_SPRITES,FALL_FAULT_SPRITES,[FALL_LOCK_OVERLAY],MATCH_SPRITES,Object.values(SPECIAL_SPRITES),Object.values(FLOOR_SPRITES),Object.values(EVENT_SPRITES),["assets/sprites_v2/obstacle_barrier_1.png?v=21","assets/sprites_v2/obstacle_barrier_2.png?v=21","assets/sprites_v2/obstacle_crate_1.png?v=21","assets/sprites_v2/obstacle_crate_2.png?v=21"]].flat().forEach(loadSprite);
+[FALL_SPRITES,FALL_FAULT_SPRITES,[FALL_LOCK_OVERLAY],MATCH_SPRITES,Object.values(SPECIAL_SPRITES),Object.values(FLOOR_SPRITES),Object.values(EVENT_SPRITES),["assets/obstacle_barrier_1.png?v=22","assets/obstacle_barrier_2.png?v=22","assets/obstacle_crate_1.png?v=22","assets/obstacle_crate_2.png?v=22"]].flat().forEach(loadSprite);
 
 
 let soundEnabled = JSON.parse(localStorage.getItem('mimmo_sound_enabled') || 'true');
@@ -481,7 +481,7 @@ function drawF(){
    fpiece.cells.forEach(p=>wagon(fpiece.r+p.dr,fpiece.c+p.dc,{color:p.color},false,true));
  }
 }
-function ftick(t){if(frun&&!flock&&t-flast>fdrop){if(!fmove(1,0))flockPiece();flast=t}drawF();requestAnimationFrame(ftick)}
+function ftick(t){if(window.MIMMO_BINARI_V22){requestAnimationFrame(ftick);return;}if(frun&&!flock&&t-flast>fdrop){if(!fmove(1,0))flockPiece();flast=t}drawF();requestAnimationFrame(ftick)}
 requestAnimationFrame(ftick);
 
 function showFallTutorial(show=true){
@@ -495,7 +495,7 @@ const fallTutorialOk=document.getElementById('fallTutorialOk'); if(fallTutorialO
 
 /* Falling controls */
 document.addEventListener("keydown",e=>{
- if(!$("#fallGame").classList.contains("active"))return;
+ if(!$("#fallGame").classList.contains("active")||window.MIMMO_BINARI_V22)return;
  if(["ArrowLeft","ArrowRight","ArrowDown","ArrowUp"," "].includes(e.key))e.preventDefault();
  if(e.key==="ArrowLeft"){fmove(0,-1);playSfx("move")}else if(e.key==="ArrowRight"){fmove(0,1);playSfx("move")}else if(e.key==="ArrowDown"){if(!fmove(1,0))flockPiece()}else if(e.key==="ArrowUp"){frotate();playSfx("click")}else if(e.key===" "){fhard();playSfx("move")}
 })

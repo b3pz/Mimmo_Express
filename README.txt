@@ -106,3 +106,15 @@ V1.5 - Binari Puzzle rework:
 - regola sempre visibile: stesso colore + stesso simbolo
 - connettore grafico tra i due vagoni della coppia che cade
 - HUD rinominato da GUASTI a BLOCCATI
+
+
+MIMMO EXPRESS V2.2 — BINARI PUZZLE REBUILD
+- Nuovo motore Binari Puzzle mobile-first
+- 8x12, match di 4 identici: stesso colore + stesso simbolo
+- coppie collegate, rotazione con wall-kick, ghost piece
+- touch: swipe sinistra/destra, tap ruota, swipe giù, hard drop rapido
+- desktop: frecce, spazio, Z/X
+- vagoni bloccati, ostacoli, blocchi distruttibili, bonus e malus
+- 100 livelli con progressione per fasce e 10 mondi visuali
+- HUD minimale, niente grandi controlli touch
+- game over e pausa in stile gioco
