@@ -1,0 +1,42 @@
+/* Mimmo Express — sistema vite: widget, pannello, overlay, toast */
+.life-widget{position:fixed;top:max(10px,env(safe-area-inset-top));left:max(10px,env(safe-area-inset-left));z-index:120;font-family:Inter,system-ui,Arial,sans-serif}
+.life-widget.life-inline{position:relative;top:auto;left:auto;right:auto;flex:0 0 auto;min-width:0}
+.life-widget.life-inline .life-pill{padding:4px 7px;gap:3px;border-color:rgba(255,255,255,.28)}
+.life-widget.life-inline .life-hearts{font-size:13px;gap:3px;align-items:center}
+.life-widget.life-inline .life-count{font-size:13px;color:#fff}
+.life-widget.life-inline .life-ticket-chip{font-size:9px;padding:1px 4px}
+#fallGame .life-widget.life-inline .life-panel,#matchGame .life-widget.life-inline .life-panel{left:auto;right:0}
+#matchGame .hud-col.left .life-widget.life-inline{margin-bottom:4px;width:100%}
+#matchGame .hud-col.left .life-widget.life-inline .life-pill{width:100%;justify-content:center}
+.life-pill{display:flex;align-items:center;gap:8px;border:2px solid rgba(255,255,255,.4);border-radius:999px;background:linear-gradient(180deg,rgba(14,69,134,.96),rgba(8,42,90,.96));padding:6px 10px;color:#fff;cursor:pointer;box-shadow:0 6px 16px rgba(0,0,0,.28);touch-action:manipulation}
+.life-hearts{display:flex;gap:1px;font-size:13px;line-height:1}
+.life-hearts .heart{filter:drop-shadow(0 1px 1px rgba(0,0,0,.3))}
+.life-hearts .heart:not(.on){opacity:.35;filter:grayscale(1)}
+.life-infinite{font-weight:1000;color:#ffd457;margin-left:2px}
+.life-ticket-chip{font-size:11px;font-weight:1000;background:rgba(255,212,87,.18);border:1px solid rgba(255,212,87,.55);border-radius:999px;padding:2px 7px;color:#ffe9a8}
+.life-panel{position:absolute;top:calc(100% + 8px);left:0;width:min(84vw,270px);background:linear-gradient(180deg,#fff9e5,#f0e0ad);border:3px solid #2b79c8;border-radius:20px;padding:14px;color:#123f76;box-shadow:0 16px 36px rgba(0,0,0,.35);opacity:0;transform:translateY(-6px);pointer-events:none;transition:opacity .15s ease,transform .15s ease}
+.life-panel.open{opacity:1;transform:translateY(0);pointer-events:auto}
+.life-panel-hearts{font-size:19px;display:flex;gap:3px;margin-bottom:8px}
+.life-infinite-big{font-size:14px;font-weight:1000}
+.life-panel-row{font-size:12px;font-weight:800;margin-bottom:10px}
+.life-ticket-btn{width:100%;border:0;border-radius:12px;padding:9px 10px;background:#1e65bd;color:#fff;font-weight:1000;font-size:12px;cursor:pointer;margin-bottom:10px}
+.life-ticket-btn:disabled{opacity:.45;cursor:not-allowed}
+.life-relax-row{display:flex;align-items:center;gap:7px;font-size:11px;font-weight:800;margin-bottom:8px}
+.life-panel-note{font-size:9.5px;line-height:1.35;color:#3a5c8a;font-weight:700}
+
+.life-toast{position:fixed;top:max(56px,calc(env(safe-area-inset-top) + 56px));left:50%;transform:translateX(-50%) translateY(-8px);z-index:130;background:rgba(6,29,62,.94);border:2px solid #ffd457;border-radius:999px;padding:8px 16px;font-size:12.5px;font-weight:1000;color:#fff4d6;opacity:0;pointer-events:none;transition:opacity .2s ease,transform .2s ease;white-space:nowrap;box-shadow:0 10px 24px rgba(0,0,0,.3)}
+.life-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+.life-overlay{position:fixed;inset:0;z-index:140;display:none;align-items:center;justify-content:center;background:rgba(2,12,28,.74);backdrop-filter:blur(4px);padding:20px}
+.life-overlay.show{display:flex}
+.life-overlay-card{width:min(90vw,420px);background:linear-gradient(180deg,#fff9e5,#f0e0ad);border:4px solid #2b79c8;border-radius:28px;color:#123f76;padding:22px;text-align:center;box-shadow:0 18px 48px rgba(0,0,0,.4)}
+.life-overlay-hearts{font-size:24px;margin-bottom:8px;display:flex;justify-content:center;gap:3px}
+.life-overlay-card h2{margin:0 0 8px;font-size:22px;line-height:1.15}
+.life-overlay-card p{margin:7px 0 16px;font-weight:800}
+.life-overlay-actions{display:flex;flex-direction:column;gap:10px;align-items:stretch}
+.life-overlay-actions .big-btn,.life-overlay-actions .small-btn{width:100%}
+
+@media (min-width:900px){
+  .life-widget{left:auto;right:max(14px,env(safe-area-inset-right))}
+  .life-panel{left:auto;right:0}
+}

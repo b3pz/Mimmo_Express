@@ -123,6 +123,7 @@ function show(id){
  $("#"+id).classList.add("active");
  document.body.dataset.screen=id;
  placeSoundToggle(id);
+ if(window.MimmoLives) window.MimmoLives.placeWidget(id);
 }
 function stationFor(level){return SCENES[Math.floor((level-1)/5)]}
 function within(level){return (level-1)%5+1}
@@ -348,6 +349,10 @@ let fboard=[],fpiece=null,frun=false,flock=false,fscore=0,fobstacles=0,fcombo=1,
 const fcanvas=$("#fallCanvas"),fctx=fcanvas.getContext("2d");
 
 function startLevel(mode,level){
+ if(window.MimmoLives && window.MimmoLives.getLives()<=0 && !window.MimmoLives.isRelax()){
+   window.MimmoLives.showLockedOverlay({onResume:()=>startLevel(mode,level),onExit:()=>{selectedMode=mode;buildMap(mode);show('mapScreen')}});
+   return;
+ }
  selectedMode=mode;
  currentLevel=level;
  localStorage.setItem("mimmo_last_mode",mode);
@@ -432,6 +437,15 @@ function completeLevel(mode){
  const scores=getScores(mode),old=scores[currentLevel]||0,newScore=mode==="falling"?fscore:mscore;
  if(newScore>old){scores[currentLevel]=newScore;setScores(mode,scores)}
  setUnlocked(mode,Math.max(getUnlocked(mode),Math.min(100,currentLevel+1)));
+ if(window.MimmoLives){
+   if(within(currentLevel)===5){
+     const stationIndex=Math.floor((currentLevel-1)/5);
+     window.MimmoLives.stationToast(window.MimmoLives.awardStationBonusOnce(mode,stationIndex));
+   }
+   const nextStationIndex=Math.floor((Math.min(100,currentLevel+1)-1)/5);
+   const nextSt=SCENES[nextStationIndex];
+   if(within(currentLevel)===5 && nextSt && nextSt.beats) window.MimmoLives.awardNarrativeBonusOnce(nextStationIndex);
+ }
  const msg=mode==="falling"?$("#fMessage"):$("#mMessage");
  const nextLevel=Math.min(100,currentLevel+1);
  msg.textContent=currentLevel===100?"GRAN FINALE COMPLETATO!":"Tratta completata! Prossima tappa: "+stationFor(nextLevel).name+".";
@@ -714,6 +728,7 @@ async function handleSwap(a,b){
 }
 function maybeTriggerRailEvent(){
  const cfg=mWorldConfig||getMatchWorldConfig(currentLevel);if(!cfg.eventEvery||mTurns===0||mTurns%cfg.eventEvery!==0)return;
+ if(window.MimmoLives && Math.random()<.07){window.MimmoLives.addTicket(1);playSfx('super');return;}
  const roll=Math.random();
  if(roll<.34){mmoves++;flashMatchFx('BONUS • +1 MOSSA');playSfx('combo');return;}
  if(roll<.60){
@@ -726,7 +741,16 @@ function maybeTriggerRailEvent(){
  const free=[];for(let r=1;r<MR-1;r++)for(let c=1;c<MC-1;c++)if(!mboard[r][c]?.blocker&&(mFloor[r]?.[c]||0)===0)free.push([r,c]);
  if(free.length){const[r,c]=free[Math.floor(Math.random()*free.length)];mFloor[r][c]=1;flashMatchFx('MALUS • BINARIO DANNEGGIATO');playSfx('click');renderM();}
 }
-function finishMove(){mbusy=false;mTurns++;maybeTriggerRailEvent();updateMHud();if(matchObjectiveMet()){completeLevel('match');return}if(mmoves<=0){mrun=false;clearTimeout(mHintTimer);$("#mMessage").textContent='Mosse finite — riprova il livello';return}if(!findHintMove())shuffleMatchBoard();else resetHintTimer()}
+function finishMove(){mbusy=false;mTurns++;maybeTriggerRailEvent();updateMHud();if(matchObjectiveMet()){completeLevel('match');return}if(mmoves<=0){mrun=false;clearTimeout(mHintTimer);$("#mMessage").textContent='Mosse finite — riprova il livello';matchDefeat();return}if(!findHintMove())shuffleMatchBoard();else resetHintTimer()}
+function matchDefeat(){
+ if(!window.MimmoLives){return}
+ const result=window.MimmoLives.loseLife();
+ if(result.lives<=0 && !window.MimmoLives.isRelax()){
+   window.MimmoLives.showLockedOverlay({onResume:()=>startMatch(currentLevel),onExit:()=>{selectedMode='match';buildMap('match');show('mapScreen')}});
+ } else {
+   window.MimmoLives.showDefeatOverlay({title:'Mosse finite',text:'La missione non è stata completata in tempo. Riprova questa tratta.',onRetry:()=>startMatch(currentLevel),onExit:()=>{selectedMode='match';buildMap('match');show('mapScreen')}});
+ }
+}
 function specialQueue(pos,sp,targetType=null){const q=new Set();if(sp==='area'){for(let rr=Math.max(0,pos.r-1);rr<=Math.min(MR-1,pos.r+1);rr++)for(let cc=Math.max(0,pos.c-1);cc<=Math.min(MC-1,pos.c+1);cc++)q.add(tileKey(rr,cc));spawnBurstAt(pos.r,pos.c);playSfx('bomb')}else if(sp==='row'){for(let cc=0;cc<MC;cc++)q.add(tileKey(pos.r,cc));spawnBeam(pos.r,pos.c,'row');playSfx('arrow')}else if(sp==='col'){for(let rr=0;rr<MR;rr++)q.add(tileKey(rr,pos.c));spawnBeam(pos.r,pos.c,'col');playSfx('arrow')}else if(sp==='colorbomb'){for(let rr=0;rr<MR;rr++)for(let cc=0;cc<MC;cc++)if(mboard[rr][cc]&&!mboard[rr][cc].blocker&&(targetType===null||mboard[rr][cc].type===targetType))q.add(tileKey(rr,cc));playSfx('super')}return q}
 async function resolveSpecialNormal(a,b,ta,tb){const spTile=ta.special?ta:tb,spPos=ta.special?b:a,other=ta.special?tb:ta,sp=spTile.special,target=other.type;let q=specialQueue(spPos,sp,sp==='colorbomb'?target:null);flashMatchFx(sp==='colorbomb'?'BOMBA COLORE!':sp==='area'?'BOMBA 3×3!':'FRECCIA!');await clearQueueAndCascade(q)}
 async function resolveSpecialCombo(a,b,ta,tb){

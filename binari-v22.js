@@ -73,8 +73,18 @@ function gravityStep(){let moved=false;const seen=new Set();for(let r=ROWS-2;r>=
  if(r+1<ROWS&&!state.board[r+1][c]){state.board[r+1][c]=x;state.board[r][c]=null;moved=true}}
  return moved}
 function checkWin(){return state.locked<=0&&(state.cfg.level<11||state.obstacles<=0)&&(state.cfg.level<16||state.breakables<=0)}
-function win(){state.running=false;state.resolving=false;frun=false;fscore=state.score;const stars=state.comboMax>=3?3:state.comboMax>=2?2:1;showOverlay('Tratta completata!',`Hai liberato tutti i vagoni. ${'★'.repeat(stars)}${'☆'.repeat(3-stars)}`,[['Continua',()=>{hideOverlay();completeLevel('falling')}],['Rigioca',()=>{hideOverlay();buildLevel(state.level)},'secondary']]);sfx('whistle')}
-function gameOver(){state.running=false;state.resolving=false;showOverlay('Fine corsa','Non c’è più spazio per far entrare una nuova coppia di vagoni.',[['Riprova',()=>{hideOverlay();buildLevel(state.level)}],['Percorso',()=>{hideOverlay();selectedMode='falling';buildMap('falling');show('mapScreen')},'secondary']]);sfx('boom')}
+function win(){state.running=false;state.resolving=false;frun=false;fscore=state.score;const stars=state.comboMax>=3?3:state.comboMax>=2?2:1;if(window.MimmoLives)window.MimmoLives.awardStarsBonus(stars);showOverlay('Tratta completata!',`Hai liberato tutti i vagoni. ${'★'.repeat(stars)}${'☆'.repeat(3-stars)}`,[['Continua',()=>{hideOverlay();completeLevel('falling')}],['Rigioca',()=>{hideOverlay();buildLevel(state.level)},'secondary']]);sfx('whistle')}
+function gameOver(){
+ state.running=false;state.resolving=false;sfx('boom');
+ if(!window.MimmoLives){showOverlay('Fine corsa','Non c’è più spazio per far entrare una nuova coppia di vagoni.',[['Riprova',()=>{hideOverlay();buildLevel(state.level)}],['Percorso',()=>{hideOverlay();selectedMode='falling';buildMap('falling');show('mapScreen')},'secondary']]);return}
+ const result=window.MimmoLives.loseLife();
+ const exitToMap=()=>{selectedMode='falling';buildMap('falling');show('mapScreen')};
+ if(result.lives<=0 && !window.MimmoLives.isRelax()){
+   window.MimmoLives.showLockedOverlay({onResume:()=>buildLevel(state.level),onExit:exitToMap});
+ } else {
+   window.MimmoLives.showDefeatOverlay({title:'Fine corsa',text:'Non c’è più spazio per far entrare una nuova coppia di vagoni.',onRetry:()=>buildLevel(state.level),onExit:exitToMap});
+ }
+}
 function showOverlay(title,text,buttons){const o=$('#bpOverlay');o.innerHTML=`<div class="bp-overlay-card"><h2>${title}</h2><p>${text}</p><div class="bp-overlay-actions"></div></div>`;const a=o.querySelector('.bp-overlay-actions');for(const [label,fn,cl] of buttons){const b=document.createElement('button');b.textContent=label;if(cl)b.className=cl;b.onclick=fn;a.appendChild(b)}o.classList.add('show');o.setAttribute('aria-hidden','false')}
 function hideOverlay(){const o=$('#bpOverlay');o.classList.remove('show');o.setAttribute('aria-hidden','true')}
 function togglePause(){if(!state.running)return;state.paused=!state.paused;if(state.paused)showOverlay('Pausa','Il treno aspetta.',['Riprendi',()=>{state.paused=false;hideOverlay();state.lastDrop=performance.now()}],['Percorso',()=>{state.paused=false;hideOverlay();selectedMode='falling';buildMap('falling');show('mapScreen')},'secondary']);else hideOverlay()}
