@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<title>Mimmo Express V2.1</title>
+<link rel="icon" href="favicon-v163.ico?v=163" sizes="any">
+<link rel="shortcut icon" href="favicon-v163.ico?v=163">
+<link rel="icon" type="image/png" sizes="64x64" href="assets/icons/favicon-v163-64.png?v=163">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon-v163.png?v=163">
+<link rel="manifest" href="manifest-v163.webmanifest?v=163">
+
+<meta name="theme-color" content="#082957">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Mimmo Express">
+<meta name="format-detection" content="telephone=no">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div id="app">
+  <section id="homeScreen" class="screen active home home-refresh">
+    <div class="game-bg" style="background-image:url('assets/locride.jpg')"></div>
+    <div class="content home-refresh-content">
+      <div class="home-keyart-shell integrated-menu">
+        <img class="home-keyart" src="assets/home_keyart_v141.png" alt="Menu illustrato di Mimmo Express">
+
+        <!-- Le aree cliccabili sono direttamente sopra i pulsanti disegnati nella key art -->
+        <button id="fallMode" class="art-hotspot hotspot-fall" type="button" aria-label="Gioca a Binari Puzzle"></button>
+        <button id="matchMode" class="art-hotspot hotspot-match" type="button" aria-label="Gioca a Locomotive Match"></button>
+        <button id="continueBtn" class="art-hotspot hotspot-continue" type="button" aria-label="Continua l'ultima modalità giocata"></button>
+        <button id="aboutBtn" class="art-hotspot hotspot-info" type="button" aria-label="Informazioni sulla versione"></button>
+      </div>
+      <div class="home-integrated-note">Clicca direttamente sui pannelli illustrati per giocare.</div>
+
+      <div class="mobile-home-menu" aria-label="Menu mobile Mimmo Express">
+        <div class="mobile-home-brand">
+          <img src="assets/mimmo_full.png" alt="Mimmo" class="mobile-home-mimmo">
+          <div><div class="mobile-home-logo">Mimmo <span>Express</span></div><p>Da Ardore a Firenze, una vita sui binari.</p></div>
+        </div>
+        <button class="mobile-mode-button mobile-mode-fall" data-home-mode="falling" type="button">
+          <span class="mobile-mode-icon">🧩</span><span><b>Binari Puzzle</b><small>Verticale • stile Dr. Mario ferroviario</small></span>
+        </button>
+        <button class="mobile-mode-button mobile-mode-match" data-home-mode="match" type="button">
+          <span class="mobile-mode-icon">🚂</span><span><b>Locomotive Match</b><small>Ruota il telefono • match-3 ferroviario</small></span>
+        </button>
+        <div class="mobile-home-actions">
+          <button class="big-btn" data-home-action="continue" type="button">▶ Continua</button>
+          <button class="small-btn" data-home-action="info" type="button">ⓘ Info</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="mapScreen" class="screen map-screen">
+    <header class="map-head">
+      <div><h2 id="mapModeTitle">Binari Puzzle</h2><div id="mapModeSub" class="sub"></div></div>
+      <div><button id="resetMap" class="small-btn">Azzera</button> <button id="backHome" class="small-btn">Menu</button></div>
+    </header>
+    <div class="map-scroll"><main id="route" class="route"></main></div>
+  </section>
+
+  <section id="fallGame" class="screen game-screen fall-screen">
+    <div class="fall-portrait-shell">
+      <header class="fall-header">
+        <div class="fall-station"><span>🚉</span><b id="gameStation">Ardore</b></div>
+        <div class="fall-header-actions"><button id="fallHelp" class="fall-help-btn" type="button">?</button><button id="fallMap" class="fall-map-btn">Percorso</button></div>
+      </header>
+      <div class="fall-stats">
+        <div class="fall-stat"><small>🏅 PUNTI</small><b id="fScore">0000000</b></div>
+        <div class="fall-stat"><small>🚉 LIVELLO</small><b id="fLevel">1</b></div>
+        <div class="fall-stat"><small>🔒 BLOCCATI</small><b id="fSignals">0</b></div>
+        <div class="fall-stat fall-next"><small>🧩 PROSSIMO</small><div id="nextPreview"></div></div>
+      </div>
+      <div class="fall-speed"><span>⚡ VELOCITÀ</span><div id="fSpeed" class="speedbar"><i class="on"></i><i></i><i></i><i></i></div></div>
+      <div class="fall-match-rule"><b>REGOLA:</b> abbina <span>stesso colore + stesso simbolo</span> • i vagoni con 🔒 sono gli stessi pezzi, ma bloccati.</div>
+      <div class="fall-board-wrap"><canvas id="fallCanvas" width="480" height="720"></canvas></div>
+      <div class="fall-controls" aria-label="Controlli Binari Puzzle">
+        <button data-f="left">◀<small>SINISTRA</small></button>
+        <button data-f="rot">↻<small>RUOTA</small></button>
+        <button data-f="right">▶<small>DESTRA</small></button>
+        <button data-f="drop">▼<small>GIÙ</small></button>
+      </div>
+      <div class="fall-info"><div id="fMessage">Pronto alla partenza</div><div id="fStory" class="story-text">Ad Ardore nasce il sogno ferroviario di Mimmo.</div></div>
+      <div class="fall-touch-help">Sul telefono: <b>tocca</b> il campo per ruotare • <b>swipe</b> a sinistra/destra per spostare • swipe in basso per far cadere.</div>
+      <div id="fallTutorial" class="fall-tutorial" aria-hidden="true">
+        <div class="fall-tutorial-card">
+          <button id="fallTutorialClose" class="fall-tutorial-close" type="button">×</button>
+          <div class="fall-tutorial-title">Come si liberano i vagoni</div>
+          <div class="fall-tutorial-pair">
+            <div class="tutorial-item"><div class="tutorial-sprite"><img src="assets/sprites/dr_piece_0.svg" alt="Vagone rosso"></div><b>Vagone che cade</b></div>
+            <div class="tutorial-equals">=</div>
+            <div class="tutorial-item"><div class="tutorial-sprite locked-demo"><img src="assets/sprites/dr_piece_0.svg" alt="Vagone rosso bloccato"><img class="tutorial-lock" src="assets/sprites/dr_lock_overlay.svg" alt=""></div><b>Stesso vagone bloccato</b></div>
+          </div>
+          <p><b>Colore e simbolo devono essere uguali.</b> Crea una fila o colonna di almeno <b>3 pezzi uguali</b> per liberarli.</p>
+          <div class="tutorial-symbols">
+            <span><img src="assets/sprites/dr_piece_0.svg" alt=""> ●</span>
+            <span><img src="assets/sprites/dr_piece_1.svg" alt=""> ◆</span>
+            <span><img src="assets/sprites/dr_piece_2.svg" alt=""> ▲</span>
+          </div>
+          <button id="fallTutorialOk" class="big-btn" type="button">Ho capito, partiamo!</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="matchGame" class="screen game-screen match-screen">
+    <div class="match-rotate-hint">↻<b>Ruota il telefono</b><span>Locomotive Match è pensato in orizzontale.</span></div>
+    <div class="game-layout match-layout">
+      <aside class="hud-col left">
+        <div class="hud-card"><h3>🏅 Punteggio</h3><div id="mScore" class="value">0000000</div></div>
+        <div class="hud-card"><h3>🚉 Livello</h3><div id="mLevel" class="value">1</div></div>
+        <div class="hud-card"><h3>👆 Mosse</h3><div id="mMoves" class="value">25</div></div>
+        <div class="hud-card"><h3>🎯 Missione</h3><div id="mTarget" class="value">0%</div><div class="hud-progress"><div id="mProgress"></div></div></div>
+      </aside>
+      <main class="center-game">
+        <div class="match-title-row">
+          <div class="game-title">LOCOMOTIVE MATCH</div>
+          <div id="matchWorldChip" class="match-world-chip">MONDO 1 • Ardore</div>
+        </div>
+        <div id="mMissionMobile" class="match-mobile-mission">🎯 Missione</div>
+        <div class="match-wrap match-wrap-clean">
+          <div id="matchFxText" class="match-fx-text"></div>
+          <div id="matchFxLayer" class="match-fx-layer"></div>
+          <div id="matchBoard" class="match-board"></div>
+        </div>
+        <div class="match-combo-strip" aria-label="Regole combo">
+          <span>➡️ 4 = freccia</span><span>💥 L/T = bomba 3×3</span><span>🌈 5 = bomba colore</span>
+        </div>
+      </main>
+      <aside class="hud-col right match-right-clean">
+        <div class="hud-card mimmo-card match-mimmo-clean"><img src="assets/mimmo_chibi.png" alt="Mimmo"></div>
+        <div class="hud-card match-story-card"><h3>📍 <span id="gameStation2">Ardore</span></h3><div id="mStory" class="story-text">Ad Ardore nasce il sogno ferroviario di Mimmo.</div></div>
+        <div class="hud-card match-mission-card"><h3>🎯 Missione</h3><div id="mMessage">Pronto alla partenza</div><div class="mission-progress"><div id="mMissionBar"></div></div><small id="mMissionDetail">Completa l'obiettivo del livello</small></div>
+        <button id="matchMap" class="small-btn exit-btn">Torna al percorso</button>
+      </aside>
+    </div>
+  </section>
+  <button id="soundToggle" class="sound-toggle" aria-label="Attiva o disattiva suoni">🔊</button>
+
+  <section id="cinematicScreen" class="screen cinematic-screen">
+    <div id="cineBg" class="cine-bg"></div>
+    <div class="cine-overlay">
+      <div class="cine-card">
+        <div id="cineYear" class="cine-year">1987</div>
+        <div id="cineStation" class="cine-station">Ardore</div>
+        <div id="cineTitle" class="cine-title">Il viaggio continua</div>
+        <div class="cine-scene-wrap"><img id="cineScene" class="cine-scene" src="assets/stations/st01_ardore.jpg" alt="Scena del viaggio"></div>
+        <div id="cineText" class="cine-text">Tra una stazione e l'altra, la storia di Mimmo prende vita.</div>
+        <div class="cine-anim">
+          <img src="assets/mimmo_bust.png" alt="Mimmo" class="cine-mimmo">
+          <div class="cine-mini-route">
+            <div class="cine-dot"></div><div class="cine-dot"></div><div class="cine-dot"></div><div class="cine-dot"></div><div class="cine-dot"></div>
+          </div>
+          <div class="cine-track"></div>
+          <div class="cine-train-wrap"><div class="cine-train" aria-label="Locomotiva verso destra"><svg viewBox="0 0 180 90" role="img"><g stroke="#17365c" stroke-width="5" stroke-linejoin="round"><rect x="25" y="35" width="92" height="34" rx="9" fill="#e64545"/><rect x="105" y="20" width="43" height="49" rx="8" fill="#e64545"/><rect x="116" y="29" width="22" height="16" rx="3" fill="#c9f2ff"/><rect x="37" y="44" width="22" height="12" rx="3" fill="#c9f2ff"/><rect x="65" y="44" width="18" height="12" rx="3" fill="#c9f2ff"/><rect x="88" y="44" width="15" height="12" rx="3" fill="#ffd457"/><path d="M148 49l24 13-24 10z" fill="#ffd457"/><path d="M42 35V20h18v15M37 20h28" fill="#17365c" stroke-linecap="round"/><circle cx="51" cy="73" r="13" fill="#27384f"/><circle cx="51" cy="73" r="5" fill="#aebdce" stroke="none"/><circle cx="111" cy="73" r="13" fill="#27384f"/><circle cx="111" cy="73" r="5" fill="#aebdce" stroke="none"/><circle cx="143" cy="73" r="11" fill="#27384f"/><circle cx="143" cy="73" r="4" fill="#aebdce" stroke="none"/></g><circle cx="151" cy="52" r="6" fill="#fff09b"/></svg></div></div>
+        </div>
+        <button id="cineContinue" class="big-btn cine-btn">Continua</button>
+        <div class="cine-note">piccola cinemetica di passaggio • tocca per continuare</div>
+      </div>
+    </div>
+  </section>
+</div>
+<script src="game.js"></script>
+</body>
+</html>

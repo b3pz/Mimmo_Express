@@ -1,0 +1,1011 @@
+
+:root{
+  --navy:#082957; --blue:#0f59b5; --light:#eaf6ff; --cream:#fff6df;
+  --gold:#ffd457; --red:#e63946; --green:#36b94a; --pink:#ff6eb4;
+  --shadow:0 14px 36px rgba(0,0,0,.25);
+}
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;font-family:Inter,system-ui,Arial,sans-serif;background:#06172d;color:white;overflow:hidden}
+button{font:inherit}
+#app{height:100%;width:100%;position:relative;overflow:hidden}
+.screen{position:absolute;inset:0;display:none}
+.screen.active{display:flex}
+.game-bg{
+  position:absolute;inset:0;background-size:cover;background-position:center;filter:saturate(1.08);
+}
+.game-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(3,17,41,.72),rgba(3,17,41,.30),rgba(3,17,41,.62))}
+.content{position:relative;z-index:2;width:100%;height:100%}
+
+/* HOME */
+.home .content{display:grid;grid-template-columns:minmax(260px,34%) 1fr;gap:min(3vw,34px);align-items:center;padding:clamp(12px,2vw,28px)}
+.hero{align-self:end;display:flex;align-items:flex-end;justify-content:center;height:100%}
+.hero img{max-height:86vh;max-width:100%;object-fit:contain;filter:drop-shadow(0 18px 22px rgba(0,0,0,.35))}
+.home-panel{
+  background:linear-gradient(180deg,rgba(7,41,90,.93),rgba(6,23,52,.94));
+  border:3px solid rgba(255,255,255,.28);border-radius:28px;padding:clamp(16px,2vw,28px);
+  box-shadow:var(--shadow);backdrop-filter:blur(8px)
+}
+.logo{font-size:clamp(34px,5vw,74px);font-weight:1000;line-height:.84;color:#fff1d0;letter-spacing:-2px;text-shadow:4px 5px 0 #d51e33,7px 8px 0 #052e68;margin-bottom:10px}
+.logo span{color:#ffd14d}
+.tag{font-size:clamp(13px,1.3vw,20px);color:#d7ebff;margin-bottom:18px}
+.mode-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.mode-card{
+  border:3px solid white;border-radius:22px;padding:16px;cursor:pointer;color:white;
+  min-height:210px;display:flex;flex-direction:column;justify-content:space-between;
+  transform:translateY(0);transition:.18s ease;box-shadow:0 10px 24px rgba(0,0,0,.22)
+}
+.mode-card:hover{transform:translateY(-4px)}
+.mode-card.blue{background:linear-gradient(160deg,#0d75d8,#07356f)}
+.mode-card.pink{background:linear-gradient(160deg,#ff73b7,#c63279)}
+.mode-title{font-size:clamp(25px,3vw,43px);font-weight:1000;line-height:.95;text-shadow:0 3px 0 rgba(0,0,0,.28)}
+.mode-sub{font-weight:800;margin-top:5px}
+.preview{
+  height:100px;margin:10px 0;border-radius:14px;background:rgba(0,0,0,.22);
+  position:relative;overflow:hidden;border:2px solid rgba(255,255,255,.24)
+}
+.preview.fall::before{content:"";position:absolute;left:10%;right:10%;bottom:8px;height:46px;background:linear-gradient(90deg,#ff4054 0 20%,#27b4ff 20% 40%,#48c85e 40% 60%,#ffd23f 60% 80%,#9c54e8 80%);border-radius:6px}
+.preview.fall::after{content:"🚃";position:absolute;top:10px;left:47%;font-size:40px}
+.preview.match{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;padding:10px}
+.preview.match span{border-radius:8px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.17);font-size:25px}
+.home-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+.big-btn,.small-btn{
+  border:0;border-radius:15px;color:white;font-weight:1000;cursor:pointer;box-shadow:inset 0 -4px 0 rgba(0,0,0,.22);
+}
+.big-btn{padding:14px 25px;font-size:19px;background:#2fb850}
+.small-btn{padding:10px 14px;background:#1e65bd}
+.note{color:#bcd9ff;font-size:12px;margin-top:12px}
+
+/* MAP */
+.map-screen{flex-direction:column;background:#0b305f}
+.map-head{
+ height:72px;flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;
+ padding:10px 18px;background:linear-gradient(#0c4388,#082b5a);border-bottom:3px solid #e8c462;z-index:4
+}
+.map-head h2{margin:0;font-size:clamp(22px,3vw,38px)}
+.map-head .sub{color:#cdeaff;font-size:12px}
+.map-scroll{flex:1;overflow:auto;scroll-behavior:smooth;background:#d7efff}
+.route{
+  min-height:100%;position:relative;padding:30px max(18px,6vw) 80px;
+  background-size:cover;background-position:center;background-attachment:local
+}
+.route::before{content:"";position:absolute;inset:0;background:rgba(255,255,255,.08);pointer-events:none}
+.station-section{
+  position:relative;min-height:520px;margin:0 auto 24px;max-width:1100px;border-radius:34px;overflow:hidden;
+  background-size:cover;background-position:center;box-shadow:0 12px 30px rgba(0,0,0,.25);border:4px solid rgba(255,255,255,.84)
+}
+.station-section::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(4,34,71,.1),rgba(255,255,255,.02))}
+.station-label{
+ position:absolute;z-index:4;top:18px;left:22px;background:#0750a2;color:#fff;border:4px solid white;border-radius:14px;
+ padding:8px 14px;box-shadow:0 4px 10px rgba(0,0,0,.22)
+}
+.station-label b{display:block;font-size:24px}.station-label span{font-size:12px}
+.track-line{position:absolute;z-index:2;inset:90px 40px 40px}
+.track-line svg{width:100%;height:100%;overflow:visible}
+.level-node{
+ position:absolute;z-index:5;width:62px;height:62px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+ color:white;font-weight:1000;font-size:22px;border:5px solid white;box-shadow:0 5px 12px rgba(0,0,0,.25);cursor:pointer;
+ background:#1268cc;transition:.15s
+}
+.level-node.locked{background:#69788e;filter:grayscale(.6);cursor:not-allowed}
+.level-node.done{background:#34ad4c}
+.level-node.current{background:#f1493f;transform:scale(1.11)}
+.level-node:hover:not(.locked){transform:scale(1.1)}
+.train-marker{
+ position:absolute;z-index:7;font-size:58px;filter:drop-shadow(0 5px 4px rgba(0,0,0,.4));transition:all .65s ease;
+ transform:translate(-50%,-50%)
+}
+.station-caption{
+ position:absolute;z-index:4;right:18px;bottom:16px;background:rgba(255,248,226,.95);color:#16365d;border-radius:14px;padding:8px 12px;
+ font-weight:800;box-shadow:0 4px 12px rgba(0,0,0,.18)
+}
+
+/* GAME COMMON */
+.game-screen{background:#06162b}
+.game-layout{
+ display:grid;grid-template-columns:minmax(180px,260px) minmax(300px,1fr) minmax(180px,280px);height:100%;
+ gap:12px;padding:12px;background-size:cover;background-position:center
+}
+.game-layout::before{content:"";position:absolute;inset:0;background:rgba(4,20,43,.28);pointer-events:none}
+.hud-col,.center-game{position:relative;z-index:2;min-height:0}
+.hud-col{display:flex;flex-direction:column;gap:10px}
+.hud-card{
+ background:linear-gradient(#fff8e6,#f0e2bf);color:#0b3264;border:4px solid #084b98;border-radius:18px;padding:10px;box-shadow:var(--shadow)
+}
+.hud-card h3{margin:0 0 4px;font-size:12px;text-transform:uppercase;color:#315784}
+.value{font-size:clamp(23px,3vw,43px);font-weight:1000;line-height:1}
+.mimmo-card{overflow:hidden;padding:0;display:flex;align-items:center;justify-content:center;background:#d8edff}
+.mimmo-card img{max-width:100%;max-height:190px;object-fit:contain}
+.center-game{
+ display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;
+ background:rgba(5,20,42,.77);border:4px solid #2e79ce;border-radius:24px;padding:10px;box-shadow:var(--shadow)
+}
+.game-title{font-weight:1000;font-size:clamp(16px,2vw,27px)}
+.board-shell{min-height:0;display:flex;align-items:center;justify-content:center;flex:1;width:100%}
+canvas#fallCanvas{
+ height:min(75vh,720px);max-width:100%;aspect-ratio:2/3;border:5px solid #0c67c8;border-radius:17px;background:#07152b;box-shadow:inset 0 0 25px #000
+}
+.controls{display:flex;gap:7px}
+.controls button{width:58px;height:48px;border:none;border-radius:12px;background:#1765bb;color:white;font-size:22px;font-weight:900}
+.game-top-actions{display:flex;gap:8px}
+.exit-btn{background:#bb3041!important}
+.hud-progress{height:13px;background:#c1d3e9;border-radius:99px;overflow:hidden;margin-top:7px}
+.hud-progress div{height:100%;background:#3fb852;width:20%}
+.speedbar{display:flex;gap:4px}.speedbar i{height:10px;flex:1;background:#c6c7c8;border-radius:4px}.speedbar i.on{background:#ffd02f}
+.station-mini{background-size:cover;background-position:center;min-height:100px;color:white;text-shadow:0 2px 3px #000;padding:10px;display:flex;align-items:flex-end;border-radius:12px}
+
+/* MATCH */
+.match-wrap{
+ display:grid;grid-template-columns:minmax(300px,620px) minmax(170px,240px);gap:12px;max-width:900px;width:100%;height:min(78vh,760px)
+}
+.match-board{
+ display:grid;grid-template-columns:repeat(8,1fr);grid-template-rows:repeat(8,1fr);
+ background:rgba(226,244,255,.95);gap:4px;padding:7px;border-radius:18px;border:5px solid #e24a91;box-shadow:inset 0 0 16px rgba(0,0,0,.15)
+}
+.match-tile{
+ border-radius:10px;display:flex;align-items:center;justify-content:center;cursor:pointer;
+ background:linear-gradient(#fff,#dcecff);border:2px solid rgba(30,70,120,.18);transition:.14s;min-width:0;min-height:0
+}
+.match-tile.selected{outline:4px solid #ffd24a;transform:scale(.92)}
+.match-tile svg{width:90%;height:90%;filter:drop-shadow(0 2px 1px rgba(0,0,0,.22))}
+.match-side{display:flex;flex-direction:column;gap:9px}
+.goalbox{background:#fff4fc;border:4px solid #e34991;color:#7c2554;border-radius:16px;padding:10px}
+.goalbox b{font-size:23px}
+.icon-row{display:flex;gap:5px;flex-wrap:wrap}
+.icon-pill{background:white;border-radius:10px;padding:5px;color:#16365d;font-weight:800;font-size:11px}
+
+/* Responsive */
+@media(max-width:930px){
+ .home .content{grid-template-columns:30% 1fr}
+ .game-layout{grid-template-columns:160px minmax(260px,1fr) 170px;gap:6px;padding:6px}
+ .hud-card{padding:7px;border-width:3px}
+ .mimmo-card img{max-height:130px}
+ .match-wrap{grid-template-columns:1fr 160px;height:min(74vh,650px)}
+}
+@media(orientation:portrait), (max-width:680px){
+ html,body{overflow:auto}
+ #app{min-height:100vh;height:auto;overflow:visible}
+ .screen{position:relative;min-height:100vh}
+ .home .content{grid-template-columns:1fr;padding:12px}
+ .hero{display:none}
+ .mode-grid{grid-template-columns:1fr}
+ .mode-card{min-height:180px}
+ .map-screen{height:100vh}
+ .game-screen{min-height:100vh}
+ .game-layout{grid-template-columns:1fr;grid-template-rows:auto 1fr auto;height:auto;min-height:100vh;overflow:auto}
+ .hud-col.left{display:grid;grid-template-columns:repeat(3,1fr)}
+ .hud-col.right{display:grid;grid-template-columns:1fr 1fr}
+ .mimmo-card{display:none}
+ .center-game{min-height:660px}
+ canvas#fallCanvas{height:min(62vh,650px)}
+ .match-wrap{grid-template-columns:1fr;height:auto}
+ .match-board{height:min(74vw,600px)}
+ .station-section{min-height:430px}
+ .level-node{width:54px;height:54px}
+}
+
+/* V0.7.1 click/touch reliability fixes */
+.station-section::after,.track-line,.station-caption{pointer-events:none}
+.level-node{appearance:none;-webkit-appearance:none;padding:0;border-style:solid;font-family:inherit}
+.level-node:disabled{pointer-events:none}
+
+.story-text{display:block;line-height:1.35;font-weight:800;font-size:14px}
+
+
+/* V0.9 animated match readability */
+.preview.match{align-items:center;justify-items:center}
+.preview.match img{width:36px;height:36px;object-fit:contain}
+#nextPreview img{width:54px;height:54px;object-fit:contain}
+.match-wrap{position:relative}
+.match-board{
+  position:relative;
+  background:linear-gradient(180deg,rgba(250,252,255,.98),rgba(206,232,255,.96));
+  box-shadow:inset 0 0 24px rgba(255,255,255,.55), 0 12px 30px rgba(0,0,0,.18);
+}
+.match-tile{
+  position:relative;overflow:hidden;
+  transition:transform .18s ease, opacity .18s ease, box-shadow .18s ease, filter .18s ease;
+  box-shadow:inset 0 2px 0 rgba(255,255,255,.6), 0 4px 8px rgba(18,42,75,.08);
+}
+.match-tile::before{
+  content:"";position:absolute;inset:3px;border-radius:8px;
+  background:linear-gradient(180deg,rgba(255,255,255,.35),rgba(255,255,255,0));pointer-events:none;
+}
+.match-tile img{width:92%;height:92%;object-fit:contain;pointer-events:none;display:block;position:relative;z-index:2;filter:drop-shadow(0 2px 2px rgba(0,0,0,.18))}
+.match-tile.selected{outline:4px solid #ffd24a;transform:scale(.92);box-shadow:0 0 0 4px rgba(255,210,74,.25), 0 8px 16px rgba(255,161,50,.25)}
+.match-tile.clearing{animation: matchPop .24s ease forwards; filter:brightness(1.25) saturate(1.2)}
+.match-tile.swapping{z-index:5;transition:transform .16s ease}
+.match-tile.special-born{animation: specialPulse .45s ease}
+.match-tile.swipe-preview{z-index:5;box-shadow:0 0 0 4px rgba(122,216,255,.25), 0 10px 22px rgba(54,156,255,.25)}
+.match-tile .special-overlay{position:absolute;right:2px;top:2px;width:32%;height:32%;pointer-events:none;z-index:3}
+.match-tile.blocked{filter:saturate(.92) brightness(.96)}
+.match-tile .blocker-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;z-index:4;background:linear-gradient(180deg,rgba(44,62,95,.15),rgba(15,20,31,.25))}
+.match-tile .blocker-overlay img{width:58%;height:58%;object-fit:contain;filter:drop-shadow(0 2px 2px rgba(0,0,0,.22))}
+.match-tile .blocker-hp{position:absolute;right:4px;bottom:4px;min-width:20px;height:20px;padding:0 5px;border-radius:999px;background:#ffcf45;color:#5d2c00;border:2px solid #fff;font-size:11px;font-weight:1000;display:flex;align-items:center;justify-content:center;z-index:5;box-shadow:0 2px 6px rgba(0,0,0,.18)}
+
+.match-fx-text{
+  position:absolute;left:50%;top:12px;transform:translateX(-50%) scale(.8);z-index:15;
+  padding:10px 18px;border-radius:999px;background:linear-gradient(180deg,#fff7d1,#ffd04a);
+  color:#7c2b00;font-weight:1000;letter-spacing:.5px;border:3px solid #fff;box-shadow:0 10px 24px rgba(0,0,0,.22);
+  opacity:0;pointer-events:none;transition:.18s ease;white-space:nowrap
+}
+.match-fx-text.show{opacity:1;transform:translateX(-50%) scale(1)}
+@keyframes matchPop{0%{transform:scale(1);opacity:1}45%{transform:scale(1.18);opacity:1}100%{transform:scale(.15);opacity:0}}
+@keyframes specialPulse{0%{transform:scale(.6);filter:brightness(1.4)}50%{transform:scale(1.15);filter:brightness(1.2)}100%{transform:scale(1);filter:brightness(1)}}
+
+
+/* V1.0 polish */
+.sound-toggle{position:fixed;right:14px;top:14px;z-index:2000;width:56px;height:56px;border:0;border-radius:50%;background:linear-gradient(180deg,#ffd75d,#ffb100);color:#5b2c00;font-size:24px;font-weight:900;box-shadow:0 10px 26px rgba(0,0,0,.28), inset 0 -4px 0 rgba(0,0,0,.15)}
+.sound-toggle.off{background:linear-gradient(180deg,#c7d4e8,#8aa0c7);color:#17365c}
+.match-wrap{position:relative}
+.match-board{position:relative;overflow:hidden;background:linear-gradient(180deg,rgba(250,252,255,.98),rgba(208,232,255,.98));box-shadow:inset 0 0 24px rgba(255,255,255,.6), 0 12px 28px rgba(0,0,0,.18)}
+.match-fx-layer{position:absolute;inset:0;pointer-events:none;z-index:11}
+.match-tile{position:relative;overflow:hidden;box-shadow:inset 0 2px 0 rgba(255,255,255,.65),0 5px 12px rgba(18,42,75,.10);transition:transform .18s ease, opacity .18s ease, filter .18s ease, box-shadow .18s ease}
+.match-tile::before{content:"";position:absolute;inset:2px;border-radius:8px;background:linear-gradient(180deg,rgba(255,255,255,.38),rgba(255,255,255,0));pointer-events:none;z-index:1}
+.match-tile img{width:92%;height:92%;object-fit:contain;pointer-events:none;display:block;position:relative;z-index:2;filter:drop-shadow(0 2px 2px rgba(0,0,0,.18))}
+.match-tile.selected{outline:4px solid #ffd24a;transform:scale(.92);box-shadow:0 0 0 4px rgba(255,210,74,.25),0 8px 16px rgba(255,161,50,.25)}
+.match-tile.swipe-preview{z-index:9;box-shadow:0 0 0 4px rgba(122,216,255,.25),0 10px 22px rgba(54,156,255,.25)}
+.match-tile.swapping{z-index:8}
+.match-tile.clearing{animation:matchPop .28s ease forwards;filter:brightness(1.25) saturate(1.2)}
+.match-tile.special-born{animation:specialPulse .5s ease}
+.match-tile.falling-in{transition:transform .25s ease, opacity .25s ease; opacity:.94}
+.match-tile .special-overlay{position:absolute;right:2px;top:2px;width:32%;height:32%;pointer-events:none;z-index:3}
+.match-fx-text{position:absolute;left:50%;top:10px;transform:translateX(-50%) scale(.8);z-index:20;padding:10px 18px;border-radius:999px;background:linear-gradient(180deg,#fff7d1,#ffd04a);color:#7c2b00;font-weight:1000;letter-spacing:.5px;border:3px solid #fff;box-shadow:0 10px 24px rgba(0,0,0,.22);opacity:0;pointer-events:none;transition:.18s ease;white-space:nowrap}
+.match-fx-text.show{opacity:1;transform:translateX(-50%) scale(1)}
+.fx-burst,.fx-beam{position:absolute;pointer-events:none;z-index:18}
+.fx-burst{width:24px;height:24px;border-radius:50%;left:0;top:0;transform:translate(-50%,-50%);background:radial-gradient(circle,#fff6b8 0%,#ffd84a 35%,rgba(255,103,24,.9) 58%,rgba(255,50,50,0) 72%);animation:burstGrow .5s ease-out forwards}
+.fx-beam.row,.fx-beam.col{background:linear-gradient(90deg,rgba(255,64,64,0),rgba(255,64,64,.95),rgba(255,240,190,.95),rgba(255,64,64,.95),rgba(255,64,64,0));box-shadow:0 0 18px rgba(255,84,84,.55)}
+.fx-beam.row{height:14px;border-radius:999px;animation:beamFlash .42s ease-out forwards}
+.fx-beam.col{width:14px;border-radius:999px;background:linear-gradient(180deg,rgba(255,64,64,0),rgba(255,64,64,.95),rgba(255,240,190,.95),rgba(255,64,64,.95),rgba(255,64,64,0));animation:beamFlash .42s ease-out forwards}
+@keyframes matchPop{0%{transform:scale(1);opacity:1}45%{transform:scale(1.18);opacity:1}100%{transform:scale(.15);opacity:0}}
+@keyframes specialPulse{0%{transform:scale(.55);filter:brightness(1.45)}50%{transform:scale(1.15);filter:brightness(1.2)}100%{transform:scale(1);filter:brightness(1)}}
+@keyframes burstGrow{0%{opacity:0;transform:translate(-50%,-50%) scale(.2)}35%{opacity:1}100%{opacity:0;transform:translate(-50%,-50%) scale(8)}}
+@keyframes beamFlash{0%{opacity:0;transform:scale(.2)}25%{opacity:1}100%{opacity:0;transform:scale(1)}}
+.goalbox small{display:block;margin-top:6px;color:#9f3c74;font-weight:800;line-height:1.3}
+
+
+/* V1.1 route secrecy + cinematics */
+.station-section.future .station-label b{filter:blur(3px); letter-spacing:2px}
+.station-section.future .station-label span{opacity:.92}
+.station-section.future .station-caption{font-style:italic}
+.station-section.future{background-size:cover; background-position:center}
+.cinematic-screen{display:none;align-items:center;justify-content:center;background:#081a32}
+.cinematic-screen.active{display:flex}
+
+.cine-bg{position:absolute;inset:0;background-size:cover;background-position:center;filter:saturate(1.08)}
+.cine-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(4,18,37,.34),rgba(4,18,37,.74))}
+.cine-overlay{position:relative;z-index:2;width:100%;display:flex;justify-content:center;padding:18px}
+.cine-card{width:min(980px,94vw);background:linear-gradient(180deg,rgba(7,41,90,.92),rgba(5,23,50,.94));border:3px solid rgba(255,255,255,.25);border-radius:28px;box-shadow:0 20px 44px rgba(0,0,0,.35);padding:20px 22px 18px;text-align:center}
+.cine-year{display:inline-block;background:#ffd457;color:#5a2f00;font-weight:1000;border-radius:999px;padding:8px 16px;font-size:18px;margin-bottom:10px}
+.cine-station{font-size:clamp(26px,4vw,48px);font-weight:1000;color:#fff0d1;line-height:1}
+.cine-title{font-size:clamp(18px,2.6vw,30px);font-weight:900;color:#ffd457;margin-top:6px}
+.cine-scene-wrap{margin:14px auto 10px;max-width:860px;border-radius:22px;overflow:hidden;border:2px solid rgba(255,255,255,.18);box-shadow:0 14px 28px rgba(0,0,0,.24)}
+.cine-scene{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;background:#0c1f3b}
+.cine-text{max-width:820px;margin:12px auto 16px;color:#d8ebff;font-size:clamp(14px,1.7vw,20px);line-height:1.35}
+.cine-anim{position:relative;height:170px;border-radius:22px;background:linear-gradient(180deg,rgba(255,255,255,.12),rgba(255,255,255,.04));overflow:hidden;border:2px solid rgba(255,255,255,.16)}
+.cine-mimmo{position:absolute;left:24px;bottom:0;height:150px;filter:drop-shadow(0 10px 10px rgba(0,0,0,.35))}
+.cine-mini-route{position:absolute;left:170px;right:28px;bottom:88px;display:flex;justify-content:space-between;align-items:center;gap:10px;z-index:2}
+.cine-dot{width:16px;height:16px;border-radius:50%;background:#ffd457;border:3px solid #fff;box-shadow:0 2px 0 rgba(0,0,0,.18)}
+.cine-track{position:absolute;left:160px;right:26px;bottom:54px;height:12px;background:linear-gradient(90deg,#cfd9e7,#95a7c2);box-shadow:0 6px 0 #65411f}
+.cine-track::before{content:"";position:absolute;left:0;right:0;top:14px;height:8px;background:repeating-linear-gradient(90deg,transparent 0 30px,#6d4426 30px 42px)}
+.cine-train-wrap{position:absolute;left:160px;right:18px;bottom:58px;height:60px;animation:cinetrain 2.2s ease-in-out forwards;z-index:3}
+.cine-train{position:absolute;font-size:50px;left:-8px;filter:drop-shadow(0 6px 10px rgba(0,0,0,.25))}
+.cine-btn{margin-top:14px}
+.cine-note{font-size:12px;color:#bcd9ff;margin-top:8px}
+@keyframes cinetrain{0%{transform:translateX(-2%)}100%{transform:translateX(calc(100% - 76px))}}
+@media (max-width:800px){.cine-scene-wrap{margin-top:10px}.cine-mimmo{height:110px;left:14px}.cine-anim{height:150px}.cine-track{left:120px}.cine-train-wrap{left:120px}.cine-train{font-size:42px}.cine-mini-route{left:124px;right:16px;bottom:78px}.cine-dot{width:13px;height:13px}}
+
+
+
+/* V1.4 GAMEPLAY: Match landscape + Binari Puzzle portrait */
+.match-rotate-hint{display:none}
+.match-tile.hinted{animation:hintPulse .75s ease-in-out infinite alternate;outline:4px solid #ffdc58;z-index:12}
+@keyframes hintPulse{from{transform:scale(.91);box-shadow:0 0 0 2px rgba(255,220,88,.25)}to{transform:scale(1.05);box-shadow:0 0 22px rgba(255,220,88,.85)}}
+.match-tile .special-overlay{width:48%;height:48%;right:-2px;top:-2px;filter:drop-shadow(0 3px 3px rgba(0,0,0,.38))}
+
+/* Falling mode is a vertical cabinet on every device */
+#fallGame{background:radial-gradient(circle at top,#174a7d,#06162b 66%);overflow:auto}
+.fall-portrait-shell{position:relative;margin:0 auto;width:min(100%,540px);min-height:100%;padding:8px 10px 14px;display:flex;flex-direction:column;gap:7px;color:white}
+.fall-header{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:48px;background:linear-gradient(180deg,#174f91,#0a3264);border:2px solid rgba(255,255,255,.22);border-radius:15px;padding:7px 10px;box-shadow:0 8px 18px rgba(0,0,0,.2)}
+.fall-station{display:flex;align-items:center;gap:7px;min-width:0}.fall-station b{font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fall-map-btn{border:0;border-radius:10px;padding:8px 11px;background:#ffd457;color:#572e00;font-weight:1000}
+.fall-stats{display:grid;grid-template-columns:1.2fr .8fr .8fr 1.25fr;gap:6px}
+.fall-stat{min-height:52px;background:linear-gradient(180deg,#fff8e6,#eadcb8);color:#0a376d;border:3px solid #0b5aa9;border-radius:12px;padding:5px 7px;text-align:center;box-shadow:0 5px 10px rgba(0,0,0,.14)}
+.fall-stat small{display:block;font-size:9px;font-weight:1000;color:#426184}.fall-stat b{display:block;font-size:18px;line-height:1.15}
+.fall-next #nextPreview{display:flex!important;gap:1px!important;justify-content:center!important;height:31px}.fall-next #nextPreview img{width:31px!important;height:31px!important}
+.fall-speed{display:flex;align-items:center;gap:8px;padding:0 7px;font-size:10px;font-weight:1000}.fall-speed .speedbar{flex:1}
+.fall-board-wrap{align-self:center;width:min(100%,460px);min-height:0;display:flex;justify-content:center;flex:1}
+#fallCanvas{display:block;width:auto!important;height:min(61vh,650px)!important;max-width:100%;aspect-ratio:2/3;border:5px solid #0d69c8;border-radius:22px;background:#07152b;box-shadow:inset 0 0 25px #000,0 12px 28px rgba(0,0,0,.28);touch-action:none}
+.fall-controls{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}
+.fall-controls button{min-height:58px;border:0;border-radius:14px;background:linear-gradient(180deg,#2979d3,#0f4e9e);color:white;font-size:25px;font-weight:1000;box-shadow:inset 0 -4px 0 rgba(0,0,0,.2),0 4px 8px rgba(0,0,0,.14);touch-action:manipulation}
+.fall-controls button small{display:block;font-size:8px;letter-spacing:.5px;margin-top:1px}
+.fall-controls button:active{transform:translateY(2px);filter:brightness(1.12)}
+.fall-info{background:rgba(7,33,70,.92);border:2px solid rgba(255,255,255,.15);border-radius:12px;padding:7px 10px;text-align:center;font-size:11px;line-height:1.25}.fall-info #fMessage{font-weight:1000;color:#ffd85e}.fall-info .story-text{font-size:10px;color:#cfe5ff;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fall-touch-help{text-align:center;color:#9fc9f7;font-size:9px;line-height:1.2}
+
+@media (max-width:600px){
+  #fallGame{overflow:hidden}
+  .fall-portrait-shell{height:100dvh;min-height:0;padding:max(5px,env(safe-area-inset-top)) 6px max(6px,env(safe-area-inset-bottom));gap:5px}
+  .fall-header{min-height:42px;padding:5px 8px}.fall-stats{gap:4px}.fall-stat{min-height:44px;padding:3px 4px;border-width:2px}.fall-stat small{font-size:8px}.fall-stat b{font-size:15px}
+  .fall-board-wrap{flex:1;overflow:hidden}.fall-controls{gap:5px}.fall-controls button{min-height:52px;font-size:23px}.fall-info{padding:5px 8px}.fall-touch-help{display:none}
+  #fallCanvas{height:min(62vh,590px)!important}
+}
+
+/* Locomotive Match is explicitly landscape */
+@media (orientation:portrait) and (max-width:900px){
+  #matchGame .match-layout{filter:blur(4px) brightness(.45);pointer-events:none;user-select:none}
+  #matchGame .match-rotate-hint{display:flex;position:absolute;inset:0;z-index:80;align-items:center;justify-content:center;flex-direction:column;gap:7px;text-align:center;background:rgba(4,18,38,.58);font-size:64px}
+  #matchGame .match-rotate-hint b{font-size:24px}#matchGame .match-rotate-hint span{font-size:14px;color:#cfe6ff}
+}
+
+
+/* Home refresh V1.4.1 */
+.home-refresh .game-bg::after{background:linear-gradient(180deg,rgba(3,17,41,.58),rgba(3,17,41,.42),rgba(3,17,41,.72))}
+.home-refresh-content{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:20px 18px 18px;max-width:min(1320px,96vw);margin:0 auto}
+.home-keyart-shell{width:min(1220px,94vw);background:rgba(9,31,65,.34);border:4px solid rgba(255,255,255,.18);border-radius:28px;padding:10px;backdrop-filter:blur(4px);box-shadow:0 18px 40px rgba(0,0,0,.22)}
+.home-keyart{display:block;width:100%;height:auto;border-radius:20px;box-shadow:0 16px 30px rgba(0,0,0,.24)}
+.home-refresh-panel{width:min(980px,94vw);display:flex;flex-direction:column;align-items:center;gap:14px}
+.home-refresh-tag{font-size:18px;font-weight:800;color:#fff8da;text-shadow:0 2px 6px rgba(0,0,0,.35);text-align:center}
+.home-pick-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;width:100%}
+.home-pick{appearance:none;border:4px solid rgba(255,255,255,.9);border-radius:22px;padding:14px 18px;text-align:left;color:#fff;cursor:pointer;box-shadow:0 10px 22px rgba(0,0,0,.18);transition:transform .15s ease, box-shadow .15s ease;display:flex;flex-direction:column;gap:4px}
+.home-pick:hover,.home-pick:focus{transform:translateY(-2px);box-shadow:0 14px 28px rgba(0,0,0,.24)}
+.home-pick.blue{background:linear-gradient(160deg,#187be8,#0a3f80)}
+.home-pick.pink{background:linear-gradient(160deg,#ff73b7,#cc397f)}
+.home-pick-kicker{font-size:12px;font-weight:1000;letter-spacing:1px;opacity:.9}
+.home-pick b{font-size:34px;line-height:.95}
+.home-pick small{font-size:18px;font-weight:700;opacity:.96}
+.home-refresh-panel .home-actions{justify-content:center}
+.home-refresh-panel .note{text-align:center;font-size:16px;color:#d7e7ff;text-shadow:0 2px 5px rgba(0,0,0,.35)}
+@media (max-width: 900px){
+  .home-refresh-content{padding:14px 12px 16px;gap:12px}
+  .home-pick-grid{grid-template-columns:1fr}
+  .home-pick b{font-size:28px}
+  .home-pick small{font-size:16px}
+  .home-refresh-tag,.home-refresh-panel .note{font-size:14px}
+}
+
+
+/* V1.4.2 - key art realmente integrata e cliccabile */
+.home-refresh-content{justify-content:center;gap:10px}
+.integrated-menu{position:relative;isolation:isolate}
+.integrated-menu .home-keyart{position:relative;z-index:1}
+.art-hotspot{
+  position:absolute;z-index:5;border:0;background:transparent;cursor:pointer;border-radius:22px;
+  padding:0;margin:0;appearance:none;-webkit-appearance:none;touch-action:manipulation;
+  transition:box-shadow .15s ease, background .15s ease, transform .15s ease;
+}
+.art-hotspot:hover,.art-hotspot:focus-visible{
+  outline:none;background:rgba(255,255,255,.07);
+  box-shadow:0 0 0 5px rgba(255,255,255,.82),0 0 28px rgba(96,204,255,.75);
+  transform:scale(1.012)
+}
+.art-hotspot:active{transform:scale(.992);background:rgba(255,255,255,.12)}
+/* Coordinate percentuali riferite alla key art 1648x928 */
+.hotspot-fall{left:30.2%;top:29.6%;width:24.8%;height:47.3%}
+.hotspot-match{left:55.7%;top:29.5%;width:28.3%;height:47.4%}
+.hotspot-continue{left:35.2%;top:78.1%;width:22.3%;height:11.3%;border-radius:28px}
+.hotspot-info{left:58.3%;top:78.8%;width:15.7%;height:9.7%;border-radius:24px}
+.home-integrated-note{font-size:14px;font-weight:800;color:#e8f4ff;text-shadow:0 2px 6px rgba(0,0,0,.45);text-align:center}
+@media(max-width:900px){
+  .home-keyart-shell{padding:6px;border-radius:18px}
+  .home-keyart{border-radius:14px}
+  .home-integrated-note{font-size:12px}
+}
+
+
+/* V1.5 Binari Puzzle rework: matching visivo coerente */
+.fall-header-actions{display:flex;align-items:center;gap:6px}
+.fall-help-btn{width:36px;height:36px;border:0;border-radius:50%;background:#fff3c6;color:#0a427d;font-size:20px;font-weight:1000;box-shadow:inset 0 -3px 0 rgba(0,0,0,.12)}
+.fall-match-rule{background:linear-gradient(180deg,#fff8de,#f0dfae);color:#123d6a;border:3px solid #0d65ba;border-radius:11px;padding:5px 8px;text-align:center;font-size:10px;line-height:1.25;box-shadow:0 4px 8px rgba(0,0,0,.13)}
+.fall-match-rule span{color:#d3263d;font-weight:1000}
+.fall-tutorial{position:absolute;inset:0;z-index:100;display:none;align-items:center;justify-content:center;background:rgba(3,15,33,.82);backdrop-filter:blur(4px);padding:12px}
+.fall-tutorial.show{display:flex}
+.fall-tutorial-card{position:relative;width:min(440px,96%);background:linear-gradient(180deg,#fff9e8,#e8f4ff);color:#103968;border:5px solid #166ac1;border-radius:24px;padding:18px 16px 16px;text-align:center;box-shadow:0 18px 42px rgba(0,0,0,.35)}
+.fall-tutorial-close{position:absolute;right:8px;top:8px;width:34px;height:34px;border:0;border-radius:50%;background:#d9eaff;color:#0e4d91;font-size:24px;font-weight:1000}
+.fall-tutorial-title{font-size:24px;font-weight:1000;margin:4px 0 14px;color:#0a4c96}
+.fall-tutorial-pair{display:grid;grid-template-columns:1fr 36px 1fr;align-items:center;gap:8px;margin:6px 0 10px}
+.tutorial-item{font-size:12px;display:flex;flex-direction:column;align-items:center;gap:5px}
+.tutorial-sprite{position:relative;width:92px;height:92px}.tutorial-sprite>img:first-child{width:100%;height:100%;object-fit:contain}.tutorial-lock{position:absolute!important;inset:0;width:100%!important;height:100%!important;object-fit:contain;z-index:3}
+.tutorial-equals{font-size:30px;font-weight:1000;color:#e33a4f}
+.fall-tutorial-card p{font-size:14px;line-height:1.35;margin:8px auto 10px;max-width:390px}
+.tutorial-symbols{display:flex;justify-content:center;gap:8px;margin:8px 0 14px;flex-wrap:wrap}.tutorial-symbols span{display:flex;align-items:center;gap:3px;background:#dbeeff;border:2px solid #82b8eb;border-radius:10px;padding:3px 7px;font-weight:1000}.tutorial-symbols img{width:30px;height:30px}
+@media (max-width:600px){
+  .fall-match-rule{font-size:9px;padding:4px 6px}
+  .fall-tutorial-title{font-size:20px}
+  .tutorial-sprite{width:76px;height:76px}
+  .fall-tutorial-card{padding:14px 10px 12px}
+}
+
+
+/* =====================================================================
+   V1.5.1 RESPONSIVE PATCH — screenshot driven
+   Match = landscape / Binari = portrait / Home + Map = dedicated mobile UI
+   ===================================================================== */
+.mobile-home-menu{display:none}
+
+/* Binari Puzzle always behaves as a vertical cabinet, even on wide desktop. */
+#fallGame .fall-portrait-shell{width:min(520px,100%);max-width:520px}
+#fallGame .fall-board-wrap,#fallGame .fall-controls,#fallGame .fall-info,#fallGame .fall-touch-help,#fallGame .fall-match-rule{width:100%}
+#fallGame .fall-controls{max-width:520px;margin-inline:auto}
+#fallGame .fall-board-wrap{max-width:480px;margin-inline:auto}
+
+/* Active falling pair must visually detach from pieces already landed. */
+@keyframes activePieceGlow{0%{filter:brightness(1.05)}100%{filter:brightness(1.25)}}
+
+/* Match: slightly denser cells and larger readable sprites. */
+.match-board{gap:3px;padding:5px}
+.match-tile img{width:98%;height:98%}
+
+/* Mobile portrait HOME: don't shrink a landscape poster into a postage stamp. */
+@media (orientation:portrait) and (max-width:900px){
+  html,body,#app{height:100%;min-height:100%;overflow:hidden}
+  #homeScreen{min-height:100dvh;overflow:hidden}
+  #homeScreen .home-refresh-content{display:flex!important;max-width:none;width:100%;height:100%;padding:max(10px,env(safe-area-inset-top)) 12px max(12px,env(safe-area-inset-bottom));justify-content:center}
+  #homeScreen .home-keyart-shell,#homeScreen .home-integrated-note{display:none!important}
+  .mobile-home-menu{display:flex;width:min(100%,500px);margin:auto;flex-direction:column;gap:12px;background:linear-gradient(180deg,rgba(7,41,90,.94),rgba(5,22,49,.96));border:3px solid rgba(255,255,255,.25);border-radius:24px;padding:14px;box-shadow:0 18px 38px rgba(0,0,0,.3)}
+  .mobile-home-brand{display:grid;grid-template-columns:108px 1fr;align-items:center;gap:9px;min-height:132px;background:linear-gradient(135deg,#113f78,#092856);border-radius:18px;overflow:hidden;padding:6px 12px 0 4px}
+  .mobile-home-mimmo{height:132px;width:110px;object-fit:contain;object-position:bottom;align-self:end;filter:drop-shadow(0 6px 6px rgba(0,0,0,.28))}
+  .mobile-home-logo{font-size:31px;font-weight:1000;line-height:.9;color:#fff2d3;text-shadow:3px 3px 0 #c91f32}.mobile-home-logo span{color:#ffd047}
+  .mobile-home-brand p{margin:8px 0 0;color:#d8ecff;font-size:12px;font-weight:750;line-height:1.2}
+  .mobile-mode-button{border:4px solid white;border-radius:19px;min-height:105px;padding:12px 14px;color:white;text-align:left;display:grid;grid-template-columns:54px 1fr;align-items:center;gap:10px;box-shadow:0 8px 17px rgba(0,0,0,.18);touch-action:manipulation}
+  .mobile-mode-fall{background:linear-gradient(145deg,#167ce1,#0b4387)}
+  .mobile-mode-match{background:linear-gradient(145deg,#ff6db0,#bc2f74)}
+  .mobile-mode-icon{font-size:38px;text-align:center}.mobile-mode-button b{display:block;font-size:25px;line-height:1}.mobile-mode-button small{display:block;margin-top:5px;font-size:12px;font-weight:800;opacity:.96}
+  .mobile-home-actions{display:grid;grid-template-columns:1fr .55fr;gap:8px}.mobile-home-actions button{margin:0;min-height:50px}
+}
+
+/* MAP portrait: compact sticky header; no buttons/audio sitting over the station card. */
+@media (orientation:portrait) and (max-width:900px){
+  #mapScreen{height:100dvh;min-height:0;overflow:hidden}
+  #mapScreen .map-head{height:auto;min-height:72px;padding:max(8px,env(safe-area-inset-top)) 10px 8px;gap:7px;align-items:center;position:relative;z-index:50}
+  #mapScreen .map-head>div:first-child{min-width:0;flex:1}
+  #mapScreen .map-head h2{font-size:22px;line-height:1.05;white-space:nowrap}
+  #mapScreen .map-head .sub{font-size:10px;line-height:1.2;margin-top:3px;max-width:300px}
+  #mapScreen .map-head>div:last-child{display:flex;gap:5px;flex:0 0 auto}
+  #mapScreen .map-head .small-btn{padding:8px 9px;border-radius:10px;font-size:12px;min-width:0}
+  #mapScreen .map-scroll{min-height:0;flex:1}
+  #mapScreen .route{padding:18px 8px 58px}
+  #mapScreen .station-section{min-height:440px;width:min(100%,620px);margin-bottom:18px;border-radius:27px;border-width:3px}
+  #mapScreen .station-label{top:14px;left:14px;padding:7px 10px;border-width:3px;max-width:75%}
+  #mapScreen .station-label b{font-size:20px;line-height:1.05}#mapScreen .station-label span{font-size:10px}
+  #mapScreen .track-line{inset:78px 18px 45px}
+  #mapScreen .level-node{width:55px;height:55px;font-size:20px;border-width:4px}
+  #mapScreen .train-marker{font-size:44px}
+  #mapScreen .station-caption{left:10px;right:10px;bottom:12px;font-size:13px;line-height:1.18;padding:7px 10px;text-align:center}
+}
+
+/* Global audio control: don't float over HUD/map header on phones. */
+@media (max-width:900px){
+  .sound-toggle{width:44px;height:44px;font-size:19px;right:8px;top:auto;bottom:calc(10px + env(safe-area-inset-bottom));box-shadow:0 6px 14px rgba(0,0,0,.28),inset 0 -3px 0 rgba(0,0,0,.14)}
+}
+
+/* BINARI portrait phone — give board priority, rule becomes one compact line. */
+@media (orientation:portrait) and (max-width:600px){
+  #fallGame .fall-portrait-shell{width:100%;max-width:520px;height:100dvh;padding:max(4px,env(safe-area-inset-top)) 6px max(5px,env(safe-area-inset-bottom));gap:4px}
+  #fallGame .fall-header{min-height:40px;padding:4px 7px;border-radius:12px}.fall-station b{font-size:14px}.fall-help-btn{width:32px;height:32px;font-size:17px}.fall-map-btn{padding:7px 9px;font-size:12px}
+  #fallGame .fall-stats{gap:3px}.fall-stat{min-height:43px;border-radius:10px}.fall-stat small{font-size:7.5px}.fall-stat b{font-size:14px}.fall-next #nextPreview{height:30px}.fall-next #nextPreview img{width:30px!important;height:30px!important}
+  #fallGame .fall-speed{min-height:19px;padding-inline:5px}
+  #fallGame .fall-match-rule{height:31px;min-height:31px;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:8.5px;line-height:18px;padding:4px 7px;border-width:2px;border-radius:9px}
+  #fallGame .fall-board-wrap{flex:1;min-height:0;max-width:455px;align-items:center}
+  #fallGame #fallCanvas{height:min(64vh,620px)!important;max-height:100%;border-width:4px;border-radius:18px}
+  #fallGame .fall-controls{gap:4px}.fall-controls button{min-height:50px;border-radius:12px;font-size:22px}.fall-controls button small{font-size:7px}
+  #fallGame .fall-info{font-size:10px;padding:4px 7px;border-radius:10px}.fall-info .story-text{font-size:9px}.fall-touch-help{display:none!important}
+  #fallGame~.sound-toggle{bottom:76px}
+}
+
+/* BINARI on wide computer/landscape remains a centered vertical cabinet, not a stretched game. */
+@media (orientation:landscape) and (min-width:901px){
+  #fallGame .fall-portrait-shell{width:520px;max-width:520px;height:100vh;min-height:0;padding:8px;gap:5px}
+  #fallGame .fall-board-wrap{flex:1;min-height:0;width:100%;max-width:455px}
+  #fallGame #fallCanvas{height:min(61vh,640px)!important;width:auto!important}
+  #fallGame .fall-controls{width:100%;max-width:520px;grid-template-columns:repeat(4,1fr)}
+  #fallGame .fall-controls button{min-width:0;width:auto}
+  #fallGame .fall-match-rule{font-size:9px;padding:4px 7px}
+}
+
+/* LOCOMOTIVE MATCH — small landscape phone/tablet: board first, HUD second. */
+@media (orientation:landscape) and (max-height:720px){
+  #matchGame{overflow:hidden}
+  #matchGame .match-layout{height:100dvh;grid-template-columns:116px minmax(0,1fr) 128px;gap:5px;padding:5px}
+  #matchGame .hud-col{gap:5px}
+  #matchGame .hud-card{padding:5px 6px;border-width:2px;border-radius:12px;box-shadow:0 5px 10px rgba(0,0,0,.14)}
+  #matchGame .hud-card h3{font-size:9px;margin-bottom:1px}.value{font-size:22px}
+  #matchGame .hud-progress{height:8px;margin-top:3px}
+  #matchGame .mimmo-card{display:none}
+  #matchGame .center-game{padding:5px;gap:3px;border-width:3px;border-radius:15px;min-width:0}
+  #matchGame .game-title{font-size:17px;line-height:1;margin:0}
+  #matchGame .match-wrap{grid-template-columns:minmax(0,1fr) 118px;gap:5px;width:100%;height:calc(100dvh - 48px);max-width:none;min-height:0}
+  #matchGame .match-board{height:100%;width:auto;max-width:100%;aspect-ratio:1/1;justify-self:center;align-self:center;gap:2px;padding:4px;border-width:4px;border-radius:14px}
+  #matchGame .match-tile{border-width:1px;border-radius:7px}
+  #matchGame .match-tile img{width:100%;height:100%}
+  #matchGame .match-side{gap:5px;min-width:0;overflow:hidden}
+  #matchGame .match-side .goalbox{padding:7px;border-width:3px;border-radius:12px;font-size:11px;line-height:1.15;overflow:hidden}
+  #matchGame .match-side .goalbox b{font-size:17px}.match-side .goalbox small{font-size:9px;line-height:1.15;margin-top:3px}
+  #matchGame .match-side .goalbox:nth-child(2){display:none}
+  #matchGame .match-side .icon-row{display:none}
+  #matchGame .hud-col.right .hud-card:nth-of-type(2){display:none}
+  #matchGame .hud-col.right #mMessage{font-size:11px;line-height:1.2}
+  #matchGame #matchMap{font-size:11px;padding:8px 5px;min-height:42px}
+  #matchGame~.sound-toggle{width:38px;height:38px;font-size:16px;bottom:7px;right:7px}
+}
+
+/* Medium landscape tablets: larger board than the old desktop-like composition. */
+@media (orientation:landscape) and (min-height:721px) and (max-width:1200px){
+  #matchGame .match-layout{grid-template-columns:150px minmax(0,1fr) 165px;gap:7px;padding:7px}
+  #matchGame .match-wrap{grid-template-columns:minmax(0,1fr) 160px;gap:7px;max-width:none;height:min(82vh,720px)}
+  #matchGame .match-board{aspect-ratio:1;width:auto;height:100%;max-width:100%;justify-self:center}
+  #matchGame .mimmo-card img{max-height:105px}
+}
+
+
+/* V1.5.2 — Safari / PWA / standalone fixes */
+html,body,#app{
+  width:100%;
+  max-width:100%;
+  min-width:0;
+  overflow-x:hidden;
+}
+html,body{
+  min-height:100%;
+  min-height:100dvh;
+  overscroll-behavior:none;
+  -webkit-text-size-adjust:100%;
+}
+#app{
+  height:100vh;
+  height:100dvh;
+}
+.screen{
+  width:100%;
+  max-width:100%;
+  min-width:0;
+}
+
+/* Safari fix: the flex child must explicitly fill the screen.
+   This removes the large empty area on the right in landscape Safari. */
+.game-layout{
+  width:100%;
+  max-width:100%;
+  min-width:0;
+  flex:1 1 100%;
+}
+#matchGame,
+#fallGame,
+#mapScreen,
+#homeScreen{
+  width:100%;
+  max-width:100%;
+  min-width:0;
+}
+#matchGame .center-game,
+#matchGame .match-wrap,
+#matchGame .match-layout{
+  min-width:0;
+  max-width:100%;
+}
+
+/* Installed web app: no Safari address/search bar, use full usable viewport. */
+@media (display-mode: standalone){
+  html,body,#app,.screen{
+    height:100dvh;
+    min-height:100dvh;
+  }
+  body{
+    padding:
+      env(safe-area-inset-top)
+      env(safe-area-inset-right)
+      env(safe-area-inset-bottom)
+      env(safe-area-inset-left);
+    background:#06172d;
+  }
+  #app{
+    height:calc(100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+  }
+}
+
+/* WebKit landscape: don't let the match layout collapse to the left. */
+@supports (-webkit-touch-callout:none){
+  @media (orientation:landscape){
+    #matchGame .match-layout{
+      width:100vw;
+      width:100dvw;
+      margin:0;
+    }
+    #matchGame .center-game{
+      width:100%;
+      min-width:0;
+    }
+    #matchGame .match-wrap{
+      margin-inline:auto;
+      width:100%;
+    }
+  }
+}
+
+/* Audio becomes part of the current toolbar/HUD instead of floating over Menu. */
+.sound-toggle.sound-inline{
+  position:static!important;
+  inset:auto!important;
+  width:52px!important;
+  height:52px!important;
+  min-width:52px!important;
+  min-height:52px!important;
+  flex:0 0 52px!important;
+  border-radius:14px!important;
+  font-size:22px!important;
+  box-shadow:inset 0 -3px 0 rgba(0,0,0,.15),0 4px 10px rgba(0,0,0,.18)!important;
+  touch-action:manipulation;
+}
+#mapScreen .map-head>div:last-child{
+  align-items:center;
+}
+#fallGame .fall-header{
+  align-items:center;
+}
+#matchGame .hud-col.right .sound-toggle.sound-inline{
+  width:100%!important;
+  min-width:0!important;
+  min-height:52px!important;
+  height:52px!important;
+  flex:0 0 52px!important;
+}
+
+/* Larger touch targets for big fingers. */
+#mapScreen .small-btn,
+#fallGame .fall-map-btn,
+#fallGame .fall-help-btn,
+#matchGame #matchMap{
+  min-height:48px;
+}
+#mapScreen .small-btn{
+  min-width:72px;
+  padding-inline:12px;
+}
+#fallGame .fall-map-btn{
+  min-width:96px;
+}
+#fallGame .fall-controls button{
+  min-height:62px;
+}
+.match-tile{
+  touch-action:manipulation;
+}
+
+/* Normal Safari tab: keep controls away from the Home indicator. */
+@media (max-width:1200px){
+  #mapScreen .map-scroll{
+    padding-bottom:max(8px,env(safe-area-inset-bottom));
+  }
+}
+
+
+/* V1.6 — cinematiche, Match più pulito, mondi realmente diversi */
+:root{--match-accent:#e34991;--match-soft:#fff4fc}
+.train-marker img{display:block;width:64px;height:auto;filter:drop-shadow(0 5px 4px rgba(0,0,0,.4))}
+
+/* Match: togliamo i doppioni informativi e lasciamo respirare il tabellone. */
+#matchGame .center-game{border-color:var(--match-accent)}
+#matchGame .match-board{border-color:var(--match-accent);background:linear-gradient(180deg,#ffffff,var(--match-soft))}
+#matchGame .match-wrap-clean{display:flex;align-items:center;justify-content:center;width:100%;min-height:0}
+#matchGame .match-title-row{display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;padding-inline:4px}
+#matchGame .match-world-chip{font-size:11px;font-weight:1000;background:var(--match-accent);color:#fff;border-radius:999px;padding:5px 9px;white-space:nowrap;box-shadow:0 3px 8px rgba(0,0,0,.16)}
+#matchGame .match-combo-strip{width:100%;display:flex;justify-content:center;gap:5px;flex-wrap:wrap}
+#matchGame .match-combo-strip span{background:#fff;color:#153d6f;border:2px solid var(--match-accent);border-radius:999px;padding:4px 8px;font-size:10px;font-weight:900;line-height:1}
+#matchGame .match-right-clean{min-width:0}
+#matchGame .match-mimmo-clean{min-height:0;padding:2px}
+#matchGame .match-mimmo-clean img{max-height:130px;width:auto;object-fit:contain}
+#matchGame .match-story-card,#matchGame .match-mission-card{border-color:var(--match-accent)}
+#matchGame .match-story-card h3,#matchGame .match-mission-card h3{font-size:11px;margin:0 0 3px;color:#365a86}
+#matchGame .match-story-card .story-text,#matchGame .match-mission-card #mMessage{font-size:11px;line-height:1.2;font-weight:800}
+
+/* La cinematica deve stare tutta nel viewport Safari, anche con barre browser visibili. */
+.cinematic-screen{overflow:auto;align-items:stretch}
+.cine-overlay{min-height:100dvh;align-items:center;box-sizing:border-box;padding:max(6px,env(safe-area-inset-top)) 8px max(6px,env(safe-area-inset-bottom))}
+.cine-card{max-height:calc(100dvh - max(12px,env(safe-area-inset-top)) - max(12px,env(safe-area-inset-bottom)));overflow:auto;overscroll-behavior:contain;scrollbar-width:none}
+.cine-card::-webkit-scrollbar{display:none}
+.cine-train{display:block;width:82px;height:auto;position:absolute;left:-10px;top:2px;filter:drop-shadow(0 6px 8px rgba(0,0,0,.3))}
+
+@media (orientation:landscape) and (max-height:760px){
+  .cine-overlay{padding:5px 8px;align-items:flex-start}
+  .cine-card{width:min(1080px,97vw);max-height:calc(100dvh - 10px);padding:7px 10px 8px;border-radius:20px}
+  .cine-year{font-size:13px;padding:3px 10px;margin-bottom:2px}
+  .cine-station{font-size:26px}
+  .cine-title{font-size:16px;margin-top:2px}
+  .cine-scene-wrap{margin:5px auto 3px;max-width:760px}
+  .cine-scene{height:min(39dvh,270px);aspect-ratio:auto;object-fit:cover}
+  .cine-text{margin:4px auto 5px;font-size:13px;line-height:1.2}
+  .cine-anim{height:94px;border-radius:14px}
+  .cine-mimmo{height:83px;left:13px}
+  .cine-mini-route{left:110px;right:15px;bottom:54px}
+  .cine-track{left:105px;right:15px;bottom:31px;height:8px}
+  .cine-track::before{top:10px;height:6px}
+  .cine-train-wrap{left:105px;right:12px;bottom:35px;height:48px}
+  .cine-train{width:60px;top:4px}
+  .cine-btn{margin-top:5px;padding:8px 18px;font-size:15px}
+  .cine-note{display:none}
+}
+
+/* Piccoli schermi landscape: il tabellone resta il protagonista. */
+@media (orientation:landscape) and (max-height:720px){
+  #matchGame .match-layout{grid-template-columns:112px minmax(0,1fr) 132px}
+  #matchGame .match-wrap-clean{height:calc(100dvh - 92px);max-height:none}
+  #matchGame .match-board{height:100%;width:auto;aspect-ratio:1/1}
+  #matchGame .match-combo-strip{gap:3px}
+  #matchGame .match-combo-strip span{font-size:8px;padding:3px 5px;border-width:1px}
+  #matchGame .match-world-chip{font-size:8px;padding:3px 6px}
+  #matchGame .match-mimmo-clean img{max-height:80px}
+  #matchGame .match-story-card .story-text,#matchGame .match-mission-card #mMessage{font-size:9px;line-height:1.12}
+}
+
+
+/* V1.6.1 — cinematiche complete, ostacoli leggibili, celle fragili */
+.cine-scene-wrap{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  background:#061a32!important;
+  padding:6px!important;
+  overflow:hidden!important;
+}
+.cine-scene{
+  width:100%!important;
+  height:auto!important;
+  max-height:min(44dvh,430px)!important;
+  aspect-ratio:auto!important;
+  object-fit:contain!important;
+  object-position:center center!important;
+  background:#061a32!important;
+}
+.cine-card{
+  max-height:96dvh!important;
+  overflow-y:auto!important;
+}
+.cine-train{width:86px;height:48px;display:block}
+.cine-train svg{display:block;width:100%;height:100%;overflow:visible}
+.train-marker svg{display:block;width:72px;height:42px;filter:drop-shadow(0 4px 4px rgba(0,0,0,.35))}
+
+/* Ostacolo: deve sembrare chiaramente NON giocabile */
+.match-tile.blocked{
+  background:#26354b!important;
+  border-color:#ffcf55!important;
+  box-shadow:inset 0 0 0 3px #182235,0 0 0 2px rgba(255,207,85,.7)!important;
+  filter:none!important;
+}
+.match-tile.blocked>img:first-child{opacity:.22;filter:grayscale(.9) brightness(.7)!important}
+.match-tile .blocker-overlay{
+  inset:2px!important;
+  background:rgba(17,27,44,.80)!important;
+  border-radius:9px!important;
+  z-index:5!important;
+}
+.match-tile .blocker-overlay img{width:90%!important;height:90%!important;filter:drop-shadow(0 2px 3px rgba(0,0,0,.45))!important}
+.match-tile .blocker-hp{
+  right:3px!important;top:3px!important;bottom:auto!important;
+  min-width:24px!important;height:24px!important;
+  background:#ffcf45!important;color:#4c2b00!important;
+  z-index:7!important;font-size:12px!important;
+}
+
+/* Casella fragile: resta sotto al pezzo e non si muove con esso */
+.match-tile.has-fragile-cell{box-shadow:inset 0 0 0 3px rgba(139,99,63,.62),0 4px 8px rgba(18,42,75,.08)}
+.match-tile .floor-overlay{position:absolute;inset:0;z-index:3;pointer-events:none;display:flex;align-items:center;justify-content:center}
+.match-tile .floor-overlay img{width:100%!important;height:100%!important;object-fit:contain!important;filter:none!important;opacity:.93}
+.match-tile .floor-hp{position:absolute;left:3px;bottom:3px;z-index:7;background:#724823;color:#fff5d7;border:2px solid #fff;border-radius:999px;min-width:23px;height:23px;padding:0 5px;font-size:11px;font-weight:1000;display:flex;align-items:center;justify-content:center}
+
+@media (orientation:landscape) and (max-height:700px){
+  .cine-card{width:min(1120px,98vw)!important;max-height:96dvh!important;padding:5px 8px 7px!important}
+  .cine-scene{max-height:38dvh!important}
+  .cine-text{margin:5px auto 6px!important;font-size:14px!important}
+  .cine-anim{height:112px!important}
+}
+
+
+/* V1.6.2 — Fix verso locomotiva mini-tratta / mappa
+   La steam locomotive viene letta meglio con il camino in avanti.
+   Quindi ribaltiamo orizzontalmente le SVG della mini-tratta e del marker percorso. */
+.cine-train svg,
+.train-marker svg{
+  transform: scaleX(-1);
+  transform-origin: center center;
+}
+
+
+/* ============================================================
+   MIMMO EXPRESS V2 — VISUAL / WORLD / MOBILE OVERHAUL
+   ============================================================ */
+:root{--v2-navy:#082957;--v2-blue:#146bc1;--v2-gold:#ffd457;--v2-cream:#fff7df;--v2-red:#e64545}
+
+/* ---------- Vertical world map: progress goes upward ---------- */
+.route.route-v2{display:flex!important;flex-direction:column;gap:22px;width:min(820px,94vw);margin:0 auto;padding:32px 0 60px}
+.world-card-v2{position:relative;min-height:620px;border-radius:34px;overflow:hidden;background-size:cover;background-position:center;border:5px solid rgba(255,255,255,.85);box-shadow:0 18px 42px rgba(16,44,78,.25);isolation:isolate}
+.world-card-v2::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(4,30,68,.03),rgba(4,30,68,.12) 58%,rgba(4,30,68,.72));z-index:-1}
+.world-card-v2.future{filter:saturate(.55)}
+.world-card-v2.current-world{box-shadow:0 0 0 7px rgba(255,212,87,.65),0 22px 48px rgba(16,44,78,.32)}
+.world-head-v2{position:absolute;left:22px;top:20px;z-index:6;background:linear-gradient(180deg,#1b70c8,#0b448d);color:#fff;border:5px solid #fff;border-radius:24px;padding:13px 18px;box-shadow:0 8px 20px rgba(0,0,0,.2);display:flex;flex-direction:column;max-width:62%}
+.world-head-v2 b{font-size:28px;line-height:1}.world-head-v2 small{font-size:14px;margin-top:6px}.world-number-v2{font-size:11px;font-weight:1000;letter-spacing:1.4px;color:#ffe577}
+.world-track-v2{position:absolute;inset:12% 5% 14%;width:90%;height:74%;z-index:2;overflow:visible}
+.world-track-shadow-v2,.world-track-rail-v2{fill:none;vector-effect:non-scaling-stroke;stroke-linecap:round;stroke-linejoin:round}
+.world-track-shadow-v2{stroke:#6c3b20;stroke-width:20}.world-track-rail-v2{stroke:#f3f6f8;stroke-width:8;stroke-dasharray:1 16}
+.level-node-v2{position:absolute;transform:translate(-50%,-50%);z-index:5;width:66px;height:66px;border-radius:50%;border:6px solid #fff;background:linear-gradient(180deg,#ff655d,#ef3f42);color:#fff;font-size:25px;font-weight:1000;box-shadow:0 8px 14px rgba(0,0,0,.25);touch-action:manipulation}
+.level-node-v2.done{background:linear-gradient(180deg,#4fd574,#27a957)}.level-node-v2.current{animation:v2NodePulse 1.4s ease-in-out infinite;box-shadow:0 0 0 8px rgba(255,212,87,.42),0 8px 16px rgba(0,0,0,.25)}.level-node-v2.locked{background:#7d8796;color:#fff}.level-node-v2 i{position:absolute;right:-4px;top:-5px;background:#ffd457;color:#694000;border-radius:50%;width:24px;height:24px;font-size:14px;display:grid;place-items:center;font-style:normal;border:3px solid #fff}
+@keyframes v2NodePulse{50%{transform:translate(-50%,-50%) scale(1.10)}}
+.world-caption-v2{position:absolute;left:22px;right:22px;bottom:20px;z-index:6;background:rgba(255,249,225,.95);border:4px solid rgba(255,255,255,.85);border-radius:20px;padding:12px 16px;color:#12355d;font-weight:850;font-size:17px}
+.train-marker-v2{position:absolute;transform:translate(-50%,-50%);z-index:7;width:78px;height:44px;filter:drop-shadow(0 5px 5px rgba(0,0,0,.35));pointer-events:none}.train-marker-v2 svg{width:100%;height:100%;transform:scaleX(-1)}
+.world-complete-v2{position:absolute;right:18px;top:20px;z-index:7;background:#2bb65f;color:#fff;padding:8px 12px;border-radius:999px;font-size:12px;font-weight:1000;border:3px solid #fff}
+
+/* ---------- V2 match pieces: larger, glossy, unmistakable ---------- */
+.match-board{background:linear-gradient(145deg,#dbeaf8,#aecbe7);gap:5px;padding:7px!important;border:5px solid #ff67ad!important;box-shadow:inset 0 0 0 4px rgba(255,255,255,.72),0 12px 30px rgba(0,0,0,.2)}
+.match-tile{background:rgba(255,255,255,.64)!important;border:2px solid rgba(255,255,255,.92)!important;border-radius:13px!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.9),0 3px 5px rgba(23,55,93,.16)!important;overflow:visible!important}
+.match-tile .base-piece{width:94%!important;height:94%!important;object-fit:contain!important;filter:drop-shadow(0 4px 3px rgba(20,46,80,.20))!important;transition:.18s ease}
+.match-tile.special-tile .base-piece{opacity:.20;transform:scale(.82)}
+.match-tile .special-overlay{position:absolute!important;inset:4%!important;width:92%!important;height:92%!important;object-fit:contain!important;z-index:6!important;filter:drop-shadow(0 5px 4px rgba(0,0,0,.25));animation:v2SpecialFloat 1.2s ease-in-out infinite alternate}
+@keyframes v2SpecialFloat{to{transform:translateY(-2px) scale(1.03)}}
+.match-tile.blocked{background:linear-gradient(145deg,#293848,#172534)!important;border-color:#ffd457!important;box-shadow:inset 0 0 0 3px rgba(255,212,87,.3),0 4px 8px rgba(0,0,0,.26)!important}
+.match-tile.blocked .base-piece{opacity:.12;filter:grayscale(1)}
+.blocker-overlay{position:absolute!important;inset:4%!important;z-index:8!important;background:none!important;display:grid!important;place-items:center!important}.blocker-overlay img{width:96%!important;height:96%!important;object-fit:contain!important;filter:drop-shadow(0 4px 4px rgba(0,0,0,.35))!important}
+.blocker-hp{display:none!important}
+.floor-overlay{position:absolute!important;inset:0!important;z-index:3!important;pointer-events:none!important}.floor-overlay img{width:100%!important;height:100%!important;object-fit:cover!important;opacity:.88!important}.floor-hp{position:absolute!important;left:4px!important;bottom:3px!important;z-index:9!important;background:#ff604e!important;color:#fff!important;border:2px solid #fff!important;border-radius:999px!important;min-width:20px!important;height:20px!important;font-size:11px!important;display:grid!important;place-items:center!important;font-weight:1000!important}
+.match-tile.hinted{animation:v2Hint 1s ease-in-out infinite}.match-tile.hinted::after{content:'👆';position:absolute;right:-8px;top:-16px;font-size:24px;z-index:12;filter:drop-shadow(0 2px 3px rgba(0,0,0,.3))}@keyframes v2Hint{50%{box-shadow:0 0 0 5px #ffd457,0 0 20px #ffd457!important}}
+.match-fx-text{display:flex!important;align-items:center;gap:8px}.match-fx-text img{width:34px;height:34px;object-fit:contain}.match-fx-text span{display:block}
+.mission-progress{height:8px;background:#d5e1ef;border-radius:999px;overflow:hidden;margin-top:8px}.mission-progress>div{height:100%;width:0;background:linear-gradient(90deg,#ffca3d,#4ed577);transition:width .25s ease}.match-mission-card small{display:block;margin-top:6px;font-weight:800;color:#284766;line-height:1.2}.match-mobile-mission{display:none}
+
+/* ---------- V2 cinematic: never crop story art ---------- */
+.cine-card{max-height:94dvh;overflow-y:auto;overscroll-behavior:contain}.cine-scene-wrap{height:auto!important;min-height:0!important;background:#061b38!important;padding:8px!important}.cine-scene{width:100%!important;height:auto!important;max-height:min(48dvh,520px)!important;object-fit:contain!important;object-position:center!important;background:#061b38!important}
+
+/* ---------- Mobile landscape: board is the game, not sidebars ---------- */
+@media (max-width:980px) and (orientation:landscape){
+ #matchGame{overflow:hidden!important}
+ #matchGame .match-layout{display:grid!important;grid-template-columns:1fr!important;grid-template-rows:auto 1fr!important;height:100dvh!important;padding:4px 7px 6px!important;gap:4px!important;overflow:hidden!important}
+ #matchGame .hud-col.left{grid-row:1!important;display:grid!important;grid-template-columns:repeat(4,1fr)!important;gap:4px!important;width:100%!important;height:43px!important}
+ #matchGame .hud-col.left .hud-card{min-height:0!important;height:43px!important;padding:3px 7px!important;border-width:2px!important;border-radius:9px!important;display:flex!important;align-items:center!important;justify-content:space-between!important;gap:4px!important}
+ #matchGame .hud-col.left h3{font-size:9px!important;margin:0!important}#matchGame .hud-col.left .value{font-size:20px!important;line-height:1!important}#matchGame .hud-progress{display:none!important}
+ #matchGame .center-game{grid-row:2!important;width:100%!important;min-height:0!important;display:grid!important;grid-template-rows:25px 24px 1fr 18px!important;justify-items:center!important;overflow:hidden!important}
+ #matchGame .match-title-row{height:25px!important;width:min(96vw,680px)!important;margin:0!important}.game-title{font-size:16px!important}.match-world-chip{font-size:9px!important;padding:3px 8px!important}
+ #matchGame .match-mobile-mission{display:block!important;width:min(96vw,680px);height:22px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;background:#fff6d7;border:2px solid #e7476e;border-radius:999px;padding:2px 9px;color:#74213e;font-size:10px;font-weight:900}
+ #matchGame .match-wrap{height:100%!important;max-height:none!important;width:100%!important;display:grid!important;place-items:center!important;margin:0!important;min-height:0!important}
+ #matchGame .match-board{height:min(100%,calc(100dvh - 116px))!important;width:auto!important;aspect-ratio:1/1!important;max-width:96vw!important}
+ #matchGame .match-combo-strip{height:18px!important;font-size:8px!important;gap:4px!important;overflow:hidden!important}
+ #matchGame .hud-col.right{position:absolute!important;right:5px!important;bottom:5px!important;width:auto!important;display:flex!important;gap:4px!important;z-index:30!important;background:transparent!important;pointer-events:none}
+ #matchGame .hud-col.right .match-mimmo-clean,#matchGame .hud-col.right .match-story-card,#matchGame .hud-col.right .match-mission-card,#matchGame .hud-col.right .sound-toggle{display:none!important}
+ #matchGame #matchMap{display:block!important;pointer-events:auto!important;width:auto!important;min-width:115px!important;height:34px!important;min-height:34px!important;padding:5px 12px!important;font-size:11px!important;border-radius:10px!important}
+}
+
+/* ---------- Portrait map ---------- */
+@media (max-width:700px){
+ .route.route-v2{width:94vw;gap:16px;padding-top:20px}.world-card-v2{min-height:580px;border-radius:28px}.world-head-v2{left:15px;top:15px;max-width:72%;padding:10px 13px}.world-head-v2 b{font-size:23px}.world-caption-v2{left:14px;right:14px;bottom:14px;font-size:14px;padding:10px 12px}.level-node-v2{width:58px;height:58px;font-size:21px}.train-marker-v2{width:68px;height:40px}.map-head{padding:8px 10px!important}.map-head h2{font-size:24px!important}.map-head .sub{font-size:11px!important}
+}
+
+
+/* ============================================================
+   MIMMO EXPRESS V2.1 — RECOVERY / SINGLE-WORLD MAP / BOARD FIX
+   ============================================================ */
+
+/* The match board must always be a real square. This also fixes portrait
+   desktop windows where an auto width could collapse to a thin vertical strip. */
+#matchGame .match-board{
+  width:min(620px,100%)!important;
+  height:auto!important;
+  aspect-ratio:1/1!important;
+  min-width:280px!important;
+  min-height:280px!important;
+  align-self:center!important;
+  justify-self:center!important;
+}
+#matchGame .match-wrap,
+#matchGame .match-wrap-clean{
+  width:100%!important;
+  min-width:0!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+}
+
+/* Narrow / portrait desktop and tablets: stack the UI and give the board a
+   deterministic width rather than deriving it from height. */
+@media (orientation:portrait), (max-width:1100px){
+  #matchGame .game-layout.match-layout{
+    grid-template-columns:1fr!important;
+    grid-template-rows:auto auto auto!important;
+    height:auto!important;
+    min-height:100dvh!important;
+    overflow:auto!important;
+    padding:8px!important;
+  }
+  #matchGame .hud-col.left{
+    display:grid!important;
+    grid-template-columns:repeat(4,minmax(0,1fr))!important;
+    gap:6px!important;
+    width:100%!important;
+  }
+  #matchGame .hud-col.left .hud-card{min-width:0!important}
+  #matchGame .center-game{
+    width:100%!important;
+    min-height:0!important;
+    padding:8px!important;
+  }
+  #matchGame .match-board{
+    width:min(82vw,620px)!important;
+    height:auto!important;
+    max-width:620px!important;
+  }
+  #matchGame .hud-col.right{
+    display:grid!important;
+    grid-template-columns:1fr 1fr!important;
+    width:100%!important;
+  }
+  #matchGame .hud-col.right .match-mimmo-clean{display:none!important}
+}
+
+/* Phone landscape: use viewport HEIGHT to size the square, but set width
+   explicitly so Safari/Chrome cannot shrink it to content width. */
+@media (max-width:980px) and (orientation:landscape){
+  #matchGame .match-board{
+    width:min(calc(100dvh - 118px),72vw,560px)!important;
+    height:auto!important;
+    min-width:250px!important;
+  }
+}
+
+/* V2.1 map: only one world is visible at a time. The top of the card acts as
+   the crest of a hill: the future stays hidden until the player reaches it. */
+.route.route-v2.route-v21{
+  width:min(820px,94vw)!important;
+  padding:24px 0 48px!important;
+  gap:0!important;
+}
+.world-card-v2.world-card-v21{
+  animation:v21WorldReveal .52s cubic-bezier(.2,.75,.25,1) both;
+}
+@keyframes v21WorldReveal{
+  from{opacity:0;transform:translateY(38px) scale(.985)}
+  to{opacity:1;transform:none}
+}
+.world-horizon-v21{
+  position:absolute;
+  top:-1px;left:-1px;right:-1px;
+  height:104px;
+  z-index:5;
+  pointer-events:none;
+  background:
+    radial-gradient(100px 48px at 12% 100%,#224f74 98%,transparent 100%),
+    radial-gradient(145px 62px at 39% 100%,#183e62 98%,transparent 100%),
+    radial-gradient(125px 54px at 66% 100%,#224f74 98%,transparent 100%),
+    radial-gradient(150px 66px at 92% 100%,#173b5d 98%,transparent 100%),
+    linear-gradient(180deg,#0b315b 0%,#0b315b 62%,transparent 63%);
+  opacity:.92;
+}
+.world-secret-v21{
+  position:absolute;
+  top:16px;left:50%;transform:translateX(-50%);
+  z-index:8;
+  background:rgba(7,32,61,.92);
+  border:3px solid #fff;
+  color:#fff7d5;
+  border-radius:999px;
+  padding:7px 14px;
+  font-size:12px;
+  font-weight:1000;
+  box-shadow:0 5px 13px rgba(0,0,0,.25);
+  white-space:nowrap;
+}
+.world-nav-v21{
+  display:flex;
+  justify-content:center;
+  gap:10px;
+  margin:14px auto 0;
+  width:min(820px,94vw);
+}
+.world-nav-v21 button{
+  border:0;border-radius:14px;
+  min-height:48px;
+  padding:10px 18px;
+  background:linear-gradient(180deg,#2477cc,#1252a0);
+  color:#fff;font:inherit;font-weight:950;
+  box-shadow:0 5px 0 #093d7f;
+  touch-action:manipulation;
+}
+.world-nav-v21 button:disabled{opacity:.35;filter:grayscale(.6)}
+
+/* If an image ever fails, the fallback SVG remains centered and visible. */
+.match-tile .base-piece[src^="data:image/svg+xml"]{
+  width:88%!important;height:88%!important;
+}
